@@ -183,7 +183,6 @@
     </div> <!-- end row -->
 
     <div class="container mt-5">
-
         <!-- Search Bar -->
         <div class="search-bar d-flex align-items-center">
 
@@ -199,32 +198,35 @@
         <div class="card mt-2">
             <div class="card-body">
                 <div class="nav-container">
-                    <div class="nav-links d-flex justify-content-between">
-                        @foreach ($bannerLists as $bnr)
-                            <a href="{{$bnr->url}}">
-                                <div class="carousel-item @if($loop->first) active @endif">
-                                    <img class="d-block w-100" src="{{asset('storage/' . $bnr->image)}}"
-                                        alt="{{asset($bnr->image)}}" style="border-radius: 15px;">
-                                    <!-- Menambahkan border-radius -->
-                                </div>
-                            </a>
+                    <div class="nav-links row">
+                        @foreach ($kategori as $ktg)
+                            <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
+                                <a href="{{ route('ofoods.by.kategori', $ktg->nama) }}"><i
+                                        class="fas fa-utensils"></i><br>{{$ktg->nama}}</a>
+                            </div>
                         @endforeach
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container mt-5">
-            <div class="row mt-5" id="adsListsWithDistance">
 
-                <div class="spinner-border text-light" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
             </div>
+            @foreach($adsLists as $ads)
+                <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
 
+                    <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
+                        :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
+                        :linkTujuan="route('ofood-detail', $ads->slug)">
+                    </x-Layout.Item.ProductItem>
 
+                </div><!-- end col -->
+            @endforeach
 
         </div>
-
     </div>
     @endslot
 </x-Layout.Horizontal.Master>

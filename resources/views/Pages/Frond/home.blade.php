@@ -220,35 +220,36 @@
         <div class="card mt-2">
             <div class="card-body">
                 <div class="nav-container">
-                    <div class="nav-links d-flex justify-content-between">
-                        <div class="nav-item ml-2">
+                    <div class="nav-links row">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('latest') }}"><i class="fas fa-home"></i><br>Properti Baru</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('auction') }}"><i class="fas fa-gavel"></i><br>Properti Lelang</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('ofoods') }}"><i class="fas fa-utensils"></i><br>OFoods</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('omerchant') }}"><i class="fas fa-store"></i><br>OMerchant</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('law-helper') }}"><i class="fas fa-balance-scale"></i><br>Cari LBH</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('notaris') }}"><i class="fas fa-file-signature"></i><br>Cari Notaris</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('agent') }}"><i class="fas fa-user-tie"></i><br>Cari Agen</a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <div class="nav-item col-6 col-md-4 col-lg-1 mb-3">
                             <a href="{{ route('omerchant') }}"><i class="fas fa-ellipsis-h"></i><br>Lainnya</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- end wrapper -->
 
         <div class="row mt-5" id="adsListsWithDistance">

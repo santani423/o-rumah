@@ -1,0 +1,1 @@
+import{o,f as r,b as e,t as a,H as d}from"./app-0e08b8e7.js";const c={class:"border-[1px] border-[#D1D5DB] rounded-md"},n={class:"border-b-[1px] border-[#D1D5DB] p-3 font-semibold text-base"},l={class:"p-3"},_={__name:"Card",props:{cardTitle:String},setup(s){return(t,i)=>(o(),r("div",c,[e("div",n,[e("p",null,a(s.cardTitle),1)]),e("div",l,[d(t.$slots,"default")])]))}};export{_};

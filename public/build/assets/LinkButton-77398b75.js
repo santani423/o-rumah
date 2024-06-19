@@ -1,0 +1,1 @@
+import{o as a,c as r,w as t,H as o,n,D as l,E as c}from"./app-0e08b8e7.js";const i={__name:"LinkButton",props:{href:String},setup(e){return(s,f)=>(a(),r(l(c),{href:e.href,role:"button",class:n(`${s.$attrs.class}`)},{default:t(()=>[o(s.$slots,"default")]),_:3},8,["href","class"]))}};export{i as _};

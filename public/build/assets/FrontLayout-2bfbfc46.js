@@ -1,0 +1,1 @@
+import{a as o}from"./Navbar-db97468d.js";import{_ as a}from"./Footer-1cc72079.js";import{o as t,f as r,a as e,b as _,H as c}from"./app-0e08b8e7.js";const l={class:"flex flex-col h-full"},n={class:"flex-1 mt-16 min-h-[600px]"},u={__name:"FrontLayout",setup(m){return(s,f)=>(t(),r("div",l,[e(o),_("div",n,[c(s.$slots,"default")]),e(a)]))}};export{u as _};

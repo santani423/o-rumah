@@ -47,25 +47,78 @@
     <!-- Navigation Bar-->
     <x-Layout.Horizontal.NavBar></x-Layout.Horizontal.NavBar>
     <!-- End Navigation Bar-->
-    <div class="wrapper " style="min-height: 100vh;">
+    <div class="wrapper mb-6" style="min-height: 100vh;">
         <div class="container-fluid">
             {{$body}}
+
         </div>
+
     </div>
 
+    <div class="bg-white">
+        <section class="container-fluid">
+            <!--Grid row-->
+            <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Company name</h6>
+                    <p>Here you can use rows and columns to organize your div content. Lorem ipsum dolor sit
+                        amet, consectetur adipisicing elit.</p>
+                </div>
+                <!-- Grid column -->
 
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Follow us</h6>
+
+                    <!-- Social buttons -->
+                    <div class="social-buttons">
+                        <!-- Facebook -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="#!"
+                            role="button"><i class="fab fa-facebook-f"></i></a>
+                        <!-- Twitter -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!"
+                            role="button"><i class="fab fa-twitter"></i></a>
+                        <!-- Google -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!"
+                            role="button"><i class="fab fa-google"></i></a>
+                        <!-- Instagram -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!"
+                            role="button"><i class="fab fa-instagram"></i></a>
+                        <!-- Linkedin -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #0082ca" href="#!"
+                            role="button"><i class="fab fa-linkedin-in"></i></a>
+                        <!-- Github -->
+                        <a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!"
+                            role="button"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-6 col-lg-4 col-xl-4 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                    <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+                    <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+                    <p> </p>
+                </div>
+                <!-- Grid column -->
+            </div>
+            <!--Grid row-->
+        </section>
+    </div>
+    <!-- Footer -->
     <!-- Footer -->
     <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    © 2024 O-Rumah.---
-                </div>
-            </div>
-        </div>
+        © 2024 O-Rumah.
     </footer>
     <!-- End Footer -->
 
+    <!-- End Footer -->
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+
+    <!-- End of .container -->
 
 
     <!-- jQuery  -->

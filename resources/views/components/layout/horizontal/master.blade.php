@@ -28,6 +28,10 @@
             border-color: #47C8C5;
             color: white
         }
+
+        .footer {
+            padding: 23px 0;
+        }
     </style>
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('zenter/horizontal/assets/css/icons.css')}}" rel="stylesheet" type="text/css">

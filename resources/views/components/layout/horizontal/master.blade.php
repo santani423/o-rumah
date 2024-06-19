@@ -59,7 +59,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    © 2024 O-Rumah.
+                    © 2024 O-Rumah.---
                 </div>
             </div>
         </div>

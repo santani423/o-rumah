@@ -61,9 +61,10 @@
             <div class="row">
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 font-weight-bold">Company name</h6>
-                    <p>Here you can use rows and columns to organize your div content. Lorem ipsum dolor sit
-                        amet, consectetur adipisicing elit.</p>
+                    <h6 class="text-uppercase mb-4 font-weight-bold">o-Rumah</h6>
+                    <p>O-Rumah adalah perusahaan periklanan terkemuka yang berdedikasi untuk menciptakan solusi
+                        pemasaran yang inovatif dan berdampak. Kami membantu bisnis terhubung dengan audiens mereka
+                        melalui strategi periklanan yang kreatif dan efektif.</p>
                 </div>
                 <!-- Grid column -->
 
@@ -79,18 +80,12 @@
                         <!-- Twitter -->
                         <a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!"
                             role="button"><i class="fab fa-twitter"></i></a>
-                        <!-- Google -->
-                        <a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!"
-                            role="button"><i class="fab fa-google"></i></a>
+
                         <!-- Instagram -->
                         <a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!"
                             role="button"><i class="fab fa-instagram"></i></a>
-                        <!-- Linkedin -->
-                        <a class="btn btn-primary btn-floating m-1" style="background-color: #0082ca" href="#!"
-                            role="button"><i class="fab fa-linkedin-in"></i></a>
-                        <!-- Github -->
-                        <a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!"
-                            role="button"><i class="fab fa-github"></i></a>
+
+
                     </div>
                 </div>
                 <!-- Grid column -->
@@ -98,9 +93,10 @@
                 <!-- Grid column -->
                 <div class="col-md-6 col-lg-4 col-xl-4 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-                    <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-                    <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
-                    <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+                    <p><i class="fas fa-home mr-3"></i> Paragon Village Blog CLG-00L Jl.Raya Binong Kav 9 Karawaci 15810
+                        Banten-Indonesia</p>
+                    <p><i class="fas fa-envelope mr-3"></i> robiansyah333@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> 085694352237</p>
                     <p> </p>
                 </div>
                 <!-- Grid column -->

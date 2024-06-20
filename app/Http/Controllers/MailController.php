@@ -70,8 +70,8 @@ class MailController extends Controller
             'body' => 'This is for testing email using smtp'
         ];
 
-      
-    
+
+
         Mail::to($request->bank_umum_email)->send(new \App\Mail\BankEmail($details));
         Mail::to($request->bank_bpr_email)->send(new \App\Mail\BankEmail($details));
 
@@ -85,12 +85,12 @@ class MailController extends Controller
     {
         $kpr = Kpr::orderBy('created_at', 'asc')
             ->join('ads', 'ads.id', '=', 'kpr.ads_id')
-            ->join('ads_properties','ads_properties.ads_id','=','ads.id')
+            ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
             ->join('users as userAgen', 'userAgen.id', '=', 'ads.user_id')
             ->join('banks as bankUmum', 'bankUmum.id', '=', 'kpr.bank_id')
             ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
             ->join('jobs', 'jobs.id', '=', 'kpr.job_id')
-            ->join('kpr_response_banks','kpr_response_banks.kpr_id','=','kpr.id')
+            ->join('kpr_response_banks', 'kpr_response_banks.kpr_id', '=', 'kpr.id')
             ->where('kpr.id', $request->kpr_id)
             ->select(
                 'kpr.*',
@@ -110,22 +110,22 @@ class MailController extends Controller
                 'bankBpr.email as bank_bpr_email'
             )
             ->first();
-     
+
         // return response()->json([
         //     'message' => 'Email berhasil dikirim',
         //     'request' => $request->all(),
         //     'kpr'=>$kpr,
         // ]);
         $details = [
-            'title'=>'',
+            'title' => '',
             'kodeKpr' => $kpr->kode_kpr,
-            'kodeProerty' =>$kpr->kode_properti,
+            'kodeProerty' => $kpr->kode_properti,
             'agent' => $kpr->namaAgen,
             'namaPengaju' => $kpr->namaPengajuan,
             'status' => $kpr->status,
             'proses' => $kpr->proses
         ];
-        
+
         $message = "Response bank,\n Kode Pengajuan KPR:$kpr->kode_kpr,\nKode Property:$kpr->kode_properti,\nAgent:$kpr->namaAgen,\nNama Pengajuan:$kpr->namaPengajuan ,\nProses:$kpr->proses";
         $response = $this->whatsAppService->sendMessage($kpr->kpr_phone, $message);
         $response = $this->whatsAppService->sendMessage($kpr->phoneAgent, $message);
@@ -137,84 +137,90 @@ class MailController extends Controller
 
     }
 
-    
 
-    function adminEmailBankLelang(Request $request)  {
+
+    function adminEmailBankLelang(Request $request)
+    {
         $pengajuanLelang = Lelang::query()
-        ->join('ads', 'ads.id', '=', 'lelangs.ads_id')
-        ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
-        ->join('users as agen', 'agen.id', '=', 'lelangs.agen_id')
-        ->join('ads_bank_lelangs','ads_bank_lelangs.ads_id','=','ads.id')
-        ->join('banks','banks.id','=','ads_bank_lelangs.bank_id')
-        ->where('lelangs.id',$request->lelang_id)
-        ->select(
-            'lelangs.id',
-            'banks.id as bank_id',
-            'lelangs.uuid as kd_lelang',
-            'lelangs.created_at',
-            'lelangs.status',
-            'lelangs.image_ktp',
-            'lelangs.image_kk',
-            'lelangs.agen_id',
-            'lelangs.agreement',
-            'lelangs.kpr_name',
-            'lelangs.kpr_email',
-            'banks.alias_name',
-            'banks.type as bank_type',
-            'lelangs.kpr_phone',
-            'ads.slug as ads_slug',
-            'ads.id as ads_id',
-            'ads.title',
-            'agen.name as namaAgen',
-            'agen.email as emailAgent',
-            'ads_properties.image',
-            'ads_properties.price',
-            'ads.uuid as kd_property',
-        )
-        ->distinct()
-        ->first();
+            ->join('ads', 'ads.id', '=', 'lelangs.ads_id')
+            ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
+            ->join('users as agen', 'agen.id', '=', 'lelangs.agen_id')
+            ->join('ads_bank_lelangs', 'ads_bank_lelangs.ads_id', '=', 'ads.id')
+            ->join('banks', 'banks.id', '=', 'ads_bank_lelangs.bank_id')
+            ->where('lelangs.id', $request->lelang_id)
+            ->select(
+                'lelangs.id',
+                'banks.id as bank_id',
+                'lelangs.uuid as kd_lelang',
+                'lelangs.created_at',
+                'lelangs.status',
+                'lelangs.image_ktp',
+                'lelangs.image_kk',
+                'lelangs.agen_id',
+                'lelangs.agreement',
+                'lelangs.kpr_name',
+                'lelangs.kpr_email',
+                'banks.alias_name',
+                'banks.type as bank_type',
+                'lelangs.kpr_phone',
+                'ads.slug as ads_slug',
+                'ads.id as ads_id',
+                'ads.title',
+                'agen.name as namaAgen',
+                'agen.email as emailAgent',
+                'ads_properties.image',
+                'ads_properties.price',
+                'ads.uuid as kd_property',
+            )
+            ->distinct()
+            ->first();
         // dd(str_replace('/storage','app/public',$pengajuanLelang->image_ktp));
         // $ads = Ads::where('ads.slug', $slug)
         // ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
         // ->select('ads.*', 'ads_properties.*')
         // ->first();
-        $emailBank = EmailBank::where('bank_id',$pengajuanLelang->bank_id)->where('email_type','lelang')->first();
+        $emailBank = EmailBank::where('bank_id', $pengajuanLelang->bank_id)->where('email_type', 'lelang')->first();
         // dd($pengajuanLelang->bank_id);
         if ($emailBank) {
-           
-    $user = User::find($pengajuanLelang->agen_id); 
-    $agent = [
-        "id" => $user->id,
-        "name" => $user->name,
-        "joined_at" => $user->created_at->format('Y-m-d'),
-        "username" => $user->username,
-        "company_name" => $user->company_name,
-        "company_image" => $user->company_image,
-        "phone" => $user->phone,
-        "wa_phone" => $user->wa_phone,
-        "total_ads" => 100,
-        "total_sold" => 50,
-        "average_price" => "$500,000",
-        "image" => $user->image,
-    ];
-    $details = [
-        'title'=>'',
-        'kd_lelang'=>$pengajuanLelang->kd_lelang,
-        'kd_property' => $pengajuanLelang->kd_property,
-        'nama' => $pengajuanLelang->kpr_name,
-        'email' => $pengajuanLelang->kpr_email, 
-        'agent' => $pengajuanLelang->namaAgen,
-        'emailAgent' => $pengajuanLelang->emailAgent,
-    ];
-  
-      // Path to the image file
-      $filePath = storage_path(str_replace('/storage','app/public',$pengajuanLelang->image_ktp));
 
-      
-      Mail::to(  $emailBank->email)->send(new \App\Mail\BankEmailLelang($details, $filePath));
-      return back()->with('success', 'Email berhasil terkirim ke bank');
+            $user = User::find($pengajuanLelang->agen_id);
+            $agent = [
+                "id" => $user->id,
+                "name" => $user->name,
+                "joined_at" => $user->created_at->format('Y-m-d'),
+                "username" => $user->username,
+                "company_name" => $user->company_name,
+                "company_image" => $user->company_image,
+                "phone" => $user->phone,
+                "wa_phone" => $user->wa_phone,
+                "total_ads" => 100,
+                "total_sold" => 50,
+                "average_price" => "$500,000",
+                "image" => $user->image,
+            ];
+            $details = [
+                'title' => '',
+                'kd_lelang' => $pengajuanLelang->kd_lelang,
+                'kd_property' => $pengajuanLelang->kd_property,
+                'nama' => $pengajuanLelang->kpr_name,
+                'email' => $pengajuanLelang->kpr_email,
+                'agent' => $pengajuanLelang->namaAgen,
+                'emailAgent' => $pengajuanLelang->emailAgent,
+            ];
+
+            // Path to the image file
+            $filePath = storage_path(str_replace('/storage', 'app/public', $pengajuanLelang->image_ktp));
+
+
+            Mail::to($emailBank->email)->send(new \App\Mail\BankEmailLelang($details, $filePath));
+            return back()->with('success', 'Email berhasil terkirim ke bank');
         }
         return back()->with('error', 'Email bank  tidak di temukan');
-   
+
+    }
+
+    function forgetPassword(Request $request)
+    {
+        return response()->json(['status' => 'success'], 200);
     }
 }

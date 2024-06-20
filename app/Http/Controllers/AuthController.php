@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -14,17 +16,33 @@ class AuthController extends Controller
             // Validasi input
             $credentials = $request->validate([
                 'email' => 'required|email',
-                'password' => 'required'
+                'password' => 'required|min:8'
             ]);
+
+            // Cek rate limiting
+            if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+                return back()->withErrors([
+                    'email' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.',
+                ])->onlyInput('email');
+            }
 
             // Mencoba melakukan autentikasi
             if (auth()->attempt($credentials)) {
                 // Regenerasi session ID untuk mencegah fixation attacks
                 $request->session()->regenerate();
 
+                // Reset rate limiter
+                RateLimiter::clear($this->throttleKey($request));
+
                 // Mengembalikan response redirect ke halaman home
                 return redirect()->route('home')->with('success', 'Login berhasil, dialihkan ke dashboard.');
             }
+
+            // Inkrement rate limiter
+            RateLimiter::hit($this->throttleKey($request));
+
+            // Logging untuk autentikasi yang gagal
+            \Log::warning('Login gagal untuk email: ' . $request->email);
 
             // Mengembalikan response kembali ke halaman login dengan pesan error
             return back()->withErrors([
@@ -37,6 +55,12 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    protected function throttleKey(Request $request)
+    {
+        return Str::lower($request->input('email')) . '|' . $request->ip();
+    }
+
 
 
     public function inRegistrasi(Request $request)

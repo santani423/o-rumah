@@ -22,9 +22,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($banners as $banner)
+                        @foreach ($banners as $key => $banner)
                             <tr>
-                                <td>{{ $banner->id }}</td>
+                                <td>{{ ++$key }}</td>
                                 <td>{{ $banner->name }}</td>
                                 <td>{{ $banner->description }}</td>
                                 <td>{{ $banner->url }}</td>

@@ -28,11 +28,17 @@
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Password"
                                 name="password" id="password">
-                            <label>
+                            <label class="mt-2 text-black ">
                                 <input type="checkbox" onclick="togglePasswordVisibility()"> Lihat Password
                             </label>
+                            <a href=" " class="text-black float-right mt-2">
+                                <label>Lupa Password?</label>
+                            </a>
                         </div>
                     </div>
+
+
+
                     <!-- <div class="form-group row">
                         <div class="col-12">
                             <div class="custom-control custom-checkbox">
@@ -55,8 +61,8 @@
                             <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i>
                                 <small>Forgot your password ?</small></a>
                         </div> -->
-                        <div class="col-sm-5 m-t-20">
-                            <a data-toggle="modal" data-animation="bounce" data-target=".Registrasi" class="text-muted"
+                        <div class="col-sm-5 m-t-20" style="cursor: pointer;">
+                            <a data-toggle="modal" data-animation="bounce" data-target=".Registrasi" class="text-black"
                                 data-dismiss="modal" aria-label="Close"><i class="mdi mdi-account-circle"></i>
                                 <small>Tidak Punya Akun ?</small></a>
                         </div>

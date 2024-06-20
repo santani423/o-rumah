@@ -31,7 +31,7 @@
                             <label class="mt-2 text-black ">
                                 <input type="checkbox" onclick="togglePasswordVisibility()"> Lihat Password
                             </label>
-                            <a href=" " class="text-black float-right mt-2">
+                            <a href="{{route('forget.passwrod')}}" class="text-black float-right mt-2">
                                 <label>Lupa Password?</label>
                             </a>
                         </div>

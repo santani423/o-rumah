@@ -19,6 +19,7 @@ use App\Http\Controllers\ToolController;
 use App\Http\Controllers\KprFileBankController;
 use App\Http\Controllers\Front\ProfileController;
 use App\Http\Controllers\WhatsAppController;
+use App\Http\Controllers\Auth\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -231,7 +232,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/kirim-email/email/bank', [MailController::class, 'adminEmailBank'])->name('admin.email.bank');
     Route::get('/kirim-email/email/responseBackPengajuanKpr', [MailController::class, 'responseBackPengajuanKpr'])->name('admin.email.responseBackPengajuanKpr');
-    
+
     Route::post('/kirim-email/email/bank/lelang', [MailController::class, 'adminEmailBankLelang'])->name('admin.email.bank.lelang');
 
 
@@ -288,6 +289,10 @@ Route::get('/tool/getFoodListsWithDistance', [ToolController::class, 'getFoodLis
 Route::get('/tool/getMarchantListsWithDistance', [ToolController::class, 'getMarchantListsWithDistance'])->name('tool.getMarchantListsWithDistance');
 Route::get('/tool/tes', [ToolController::class, 'tes'])->name('tool.tes');
 Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
+
+
+Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
+
 Route::get('/testing/location', function () {
     return view('testing/location');
 });

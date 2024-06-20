@@ -26,4 +26,9 @@ class PasswordController extends Controller
 
         return back();
     }
+
+    function forgetPassword()
+    {
+        return view('Pages/forgetPassword');
+    }
 }

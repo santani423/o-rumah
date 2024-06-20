@@ -3,12 +3,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('forgot-password-form');
+            const spinner = document.getElementById('spinner');
+            const alertBox = document.getElementById('response-alert');
+
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
 
-                const email = document.getElementById('email').value;
+                const email = document.getElementById('emailSend').value;
+                // console.log("🚀 ~ email:", email)
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                const alertBox = document.getElementById('response-alert');
+
+                spinner.style.display = 'inline-block'; // Tampilkan spinner saat form disubmit
+                alertBox.style.display = 'none'; // Sembunyikan alert box setiap kali form disubmit
 
                 fetch('{{ route('forget.passwrod.email') }}', {
                     method: 'POST',
@@ -16,10 +22,12 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': token
                     },
-                    body: JSON.stringify({ email: email })
+                    body: JSON.stringify({ email: email }) // Pastikan data yang dikirim adalah objek dengan properti email
                 })
                     .then(response => response.json())
                     .then(data => {
+                        spinner.style.display = 'none'; // Sembunyikan spinner setelah mendapat respons
+
                         if (data.status === 'success') {
                             alertBox.classList.remove('alert-danger');
                             alertBox.classList.add('alert-success');
@@ -27,11 +35,16 @@
                         } else {
                             alertBox.classList.remove('alert-success');
                             alertBox.classList.add('alert-danger');
-                            alertBox.textContent = 'Terjadi kesalahan, silakan coba lagi.';
+                            if (data.message) {
+                                alertBox.textContent = data.message;
+                            } else {
+                                alertBox.textContent = 'Terjadi kesalahan, silakan coba lagi.';
+                            }
                         }
                         alertBox.style.display = 'block';
                     })
                     .catch(error => {
+                        spinner.style.display = 'none'; // Sembunyikan spinner jika terjadi kesalahan
                         alertBox.classList.remove('alert-success');
                         alertBox.classList.add('alert-danger');
                         alertBox.textContent = 'Terjadi kesalahan, silakan coba lagi.';
@@ -54,11 +67,16 @@
                         @csrf
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required
+                            <input type="email" class="form-control" id="emailSend" name="emailSend" required
                                 placeholder="Masukkan email Anda">
                         </div>
                         <div class="form-group text-center mt-4">
-                            <button type="submit" class="btn btn-primary">Kirim Link Reset Password</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span id="spinner" style="display:none;">
+                                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                                </span>
+                                Kirim Link Reset Password
+                            </button>
                         </div>
                     </form>
                 </div>

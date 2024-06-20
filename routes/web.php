@@ -292,7 +292,7 @@ Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
 
 
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
-Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
+Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/testing/location', function () {
     return view('testing/location');
 });

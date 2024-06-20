@@ -227,7 +227,8 @@ class MailController extends Controller
             'kodeProerty' => ''
         ];
 
-        Mail::to('santani423@gmail.com')->send(new \App\Mail\ForgetPassword($details));
-        return response()->json(['status' => 'success'], 200);
+        // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));
+        Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+        return response()->json(['status' => 'success', 'request' => $request->all()], 200);
     }
 }

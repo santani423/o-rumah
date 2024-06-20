@@ -221,6 +221,13 @@ class MailController extends Controller
 
     function forgetPassword(Request $request)
     {
+        $details = [
+            'title' => '',
+            'kodeKpr' => '',
+            'kodeProerty' => ''
+        ];
+
+        Mail::to('santani423@gmail.com')->send(new \App\Mail\ForgetPassword($details));
         return response()->json(['status' => 'success'], 200);
     }
 }

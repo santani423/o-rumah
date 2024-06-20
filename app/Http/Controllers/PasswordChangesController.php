@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\PasswordChanges;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordChangesController extends Controller
 {
@@ -36,7 +39,7 @@ class PasswordChangesController extends Controller
      */
     public function show(PasswordChanges $passwordChanges)
     {
-        //
+        return view('Pages/PasswordUpdate', compact('passwordChanges'));
     }
 
     /**
@@ -52,7 +55,26 @@ class PasswordChangesController extends Controller
      */
     public function update(Request $request, PasswordChanges $passwordChanges)
     {
-        //
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::find(auth()->user()->id);
+
+        // Validasi password saat ini
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password saat ini tidak cocok.']);
+        }
+
+        // Ubah password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Auto login setelah perubahan password berhasil
+        Auth::login($user);
+
+        return redirect('/home')->with('success', 'Password berhasil diubah dan Anda telah login.');
     }
 
     /**

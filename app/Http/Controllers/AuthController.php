@@ -10,26 +10,34 @@ class AuthController extends Controller
 {
     public function inLogin(Request $request)
     {
-        // Validasi input
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        try {
+            // Validasi input
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
 
-        // Mencoba melakukan autentikasi
-        if (auth()->attempt($credentials)) {
-            // Regenerasi session ID untuk mencegah fixation attacks
-            $request->session()->regenerate();
+            // Mencoba melakukan autentikasi
+            if (auth()->attempt($credentials)) {
+                // Regenerasi session ID untuk mencegah fixation attacks
+                $request->session()->regenerate();
 
-            // Mengembalikan response redirect ke halaman home
-            return redirect()->route('home')->with('success', 'Login berhasil, dialihkan ke dashboard.');
+                // Mengembalikan response redirect ke halaman home
+                return redirect()->route('home')->with('success', 'Login berhasil, dialihkan ke dashboard.');
+            }
+
+            // Mengembalikan response kembali ke halaman login dengan pesan error
+            return back()->withErrors([
+                'email' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+            ])->onlyInput('email'); // Mempertahankan input email
+        } catch (\Exception $e) {
+            \Log::error('Error during login: ' . $e->getMessage());
+            return back()->withErrors([
+                'error' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
+            ]);
         }
-
-        // Mengembalikan response kembali ke halaman login dengan pesan error
-        return back()->withErrors([
-            'email' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
-        ])->onlyInput('email'); // Mempertahankan input email
     }
+
 
     public function inRegistrasi(Request $request)
     {

@@ -6,7 +6,16 @@
                 <div class="card-body">
                     <h3 class="card-title text-center">Update Password</h3>
                     <div id="response-alert" class="alert" style="display:none;" role="alert"></div>
-                    <form action="{{ route('password.update', $passwordChanges) }}" method="POST">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form action="{{ route('password.change.update', $passwordChanges) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -18,8 +27,8 @@
 
                         <div class="form-group">
                             <label for="password_confirmation">Konfirmasi Password</label>
-                            <input type="password" class="form-control" id="password_confirmation"
-                                name="password_confirmation" required placeholder="Masukkan konfirmasi password Anda">
+                            <input type="password" class="form-control" id="current_password" name="current_password"
+                                required placeholder="Masukkan konfirmasi password Anda">
                         </div>
 
                         <div class="form-group text-center mt-4">

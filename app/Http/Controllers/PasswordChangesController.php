@@ -37,8 +37,9 @@ class PasswordChangesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PasswordChanges $passwordChanges)
+    public function show($passwordChanges)
     {
+        // dd($passwordChanges);
         return view('Pages/PasswordUpdate', compact('passwordChanges'));
     }
 
@@ -53,28 +54,26 @@ class PasswordChangesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PasswordChanges $passwordChanges)
+    public function update(Request $request, $passwordChanges)
     {
-        $request->validate([
-            'current_password' => 'required',
-            'password' => 'required|min:8|confirmed',
-        ]);
+        // dd($request->all());
+        // $request->validate([
+        //     'current_password' => 'required',
+        //     'password' => 'required',
+        // ]);
+        $passwordChanges = PasswordChanges::where('uuid', $passwordChanges)->first();
+        $user = User::find($passwordChanges->user_id);
 
-        $user = User::find(auth()->user()->id);
 
-        // Validasi password saat ini
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Password saat ini tidak cocok.']);
-        }
 
         // Ubah password
         $user->password = Hash::make($request->password);
         $user->save();
 
         // Auto login setelah perubahan password berhasil
-        Auth::login($user);
+        // Auth::login($user);
 
-        return redirect('/home')->with('success', 'Password berhasil diubah dan Anda telah login.');
+        return redirect(route('home'))->with('success', 'Password berhasil diubah silahkan login');
     }
 
     /**

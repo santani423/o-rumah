@@ -84,8 +84,8 @@ class AuthController extends Controller
                 'type' => $validatedData['pilihanType'],
             ]);
             // dd($request->all());
-            auth()->login($user);
-            return redirect(route('home'));
+            // auth()->login($user);
+            return redirect(route('home'))->with('success', 'Password berhasil diubah silahkan login');
             // return response()->json([
             //     'success' => true,
             //     'message' => 'Registrasi berhasil, dialihkan ke dashboard.'

@@ -295,7 +295,7 @@ Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
 Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
-Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('passwrod.update');
+Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update');
 
 Route::get('/testing/location', function () {
     return view('testing/location');

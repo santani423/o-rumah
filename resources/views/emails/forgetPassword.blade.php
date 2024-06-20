@@ -345,9 +345,11 @@
 
                                         <span class="position">Kami telah menerima permintaan ubah password Anda. Untuk
                                             melanjutkan, klik tombol di bawah ini:</span>
-                                        <p><a href="#" class="btn btn-primary">Ubah Password</a></p>
+                                        <p><a href="{{$details['reset_link']}}" class="btn btn-primary">Ubah
+                                                Password</a></p>
                                         <p>Jika Anda tidak membuat permintaan ubah password, silakan abaikan email ini.
                                             Akun Anda akan tetap aman dan password tidak akan berubah.</p>
+
                                     </div>
                                 </td>
                             </tr>

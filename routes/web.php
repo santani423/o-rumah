@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Front;
+use App\Http\Controllers\PasswordChangesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminNavController;
 use App\Http\Controllers\Admin\ManagementAdsController;
@@ -293,6 +294,8 @@ Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
 
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
 Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
+Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
+
 Route::get('/testing/location', function () {
     return view('testing/location');
 });

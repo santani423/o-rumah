@@ -9,8 +9,11 @@ use App\Models\EmailBank;
 use App\Models\Kpr;
 use App\Models\Lelang;
 use App\Models\User;
+use App\Models\PasswordChanges;
 use Illuminate\Support\Facades\Mail;
 use App\Services\WhatsAppService;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class MailController extends Controller
 {
@@ -221,14 +224,22 @@ class MailController extends Controller
 
     function forgetPassword(Request $request)
     {
-        $details = [
-            'title' => '',
-            'kodeKpr' => '',
-            'kodeProerty' => ''
-        ];
 
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            $data = new PasswordChanges();
+            $data->user_id = $user->id;
+            $data->email = $request->email;
+            $data->uuid = Str::uuid();
+            $data->save();
+            $details = [
+                'reset_link' => route('passwrod.change', $data->uuid),
+            ];
+            Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+        }
         // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));
-        Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+
+
         return response()->json(['status' => 'success', 'request' => $request->all()], 200);
     }
 }

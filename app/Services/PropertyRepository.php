@@ -23,6 +23,7 @@ trait PropertyRepository
             })
             ->join('users', 'users.id', '=', 'ads.user_id')
             ->where('ads.type', 'property')
+            ->where('ads.is_active', 1)
             ->select(
                 "ads_properties.id as ads_property_id",
                 DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
@@ -54,7 +55,6 @@ trait PropertyRepository
             })
             ->orderBy('ads.id', 'desc')
             ->paginate($perPage);
-
         return $adsLists;
     }
 }

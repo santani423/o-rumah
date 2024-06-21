@@ -120,7 +120,7 @@
 
 
             // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load('{{ route('tool.getAdsListsWithDistance') }}' + '?latitude=' + lat + '&longitude=' + long);
+            $('#adsListsWithDistance').load(`{{ route('tool.getAdsListsWithDistance') }}` + '?latitude=' + lat + '&longitude=' + long);
         }
 
 
@@ -313,11 +313,30 @@
             <div class="card-body" style=" background-color: #f0f0f0;">
                 <div class="nav-container">
                     <div class="nav-links d-flex justify-content-between">
-                        @for($i = 1; $i <= 100; $i++)
-                            <div class="nav-item ml-2">
-                                <a href="#"> <br>Brand</a>
-                            </div>
-                        @endfor
+                     
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                       
+
                     </div>
                 </div>
             </div>

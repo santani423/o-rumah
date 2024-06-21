@@ -15,6 +15,8 @@
     <link href="{{asset('zenter/vertical/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('zenter/vertical/assets/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('zenter/vertical/assets/css/style.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
     <style>
         .btn-turquoise {
             background-color: #47C8C5;

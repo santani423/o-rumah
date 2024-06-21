@@ -78,7 +78,7 @@
                         </li>
                     @endif
                     <li class="has-submenu ">
-                        <a href="{{route('aboutAs')}}"> About As</a>
+                        <a href="{{route('aboutAs')}}"> About Us</a>
                     </li>
                     <!-- <li class="has-submenu">
                         <a href="#"> Components</a>

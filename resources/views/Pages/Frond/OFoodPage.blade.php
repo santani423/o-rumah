@@ -121,7 +121,7 @@
             document.getElementById("location").innerHTML = "Latitude: " + lat + "<br>Longitude: " + long;
 
             // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load('{{ route('tool.getAdsListsWithDistance') }}' + '?latitude=' + lat + '&longitude=' + long);
+            $('#adsListsWithDistance').load("{{ route('tool.getAdsListsWithDistance') }}" + '?latitude=' + lat + '&longitude=' + long);
         }
 
 

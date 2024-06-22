@@ -100,6 +100,14 @@
             flex: 0 0 auto;
             text-align: center;
         }
+
+        .banner-image {
+    width: 1250px;
+    height: 335px;
+    object-fit: cover; /* Ensures the image covers the specified dimensions without distortion */
+    border-radius: 15px; /* Maintain the border-radius */
+}
+
     </style>
 
     @endslot
@@ -144,6 +152,8 @@
         window.onload = function () {
             getLocation();
         };
+
+        
     </script>
     @endslot
     @slot('body')
@@ -161,12 +171,11 @@
             @endforeach
         </ol>
         <div class="carousel-inner">
-            @foreach ($bannerLists as $bnr)
-                <div class="carousel-item @if($loop->first) active @endif">
-                    <img class="d-block w-100" src="{{asset('storage/' . $bnr->image)}}" alt="{{asset($bnr->image)}}"
-                        style="border-radius: 15px;"> <!-- Menambahkan border-radius -->
-                </div>
-            @endforeach
+        @foreach ($bannerLists as $bnr)
+            <div class="carousel-item @if($loop->first) active @endif">
+                <img class="d-block w-100 banner-image" src="{{ asset('storage/' . $bnr->image) }}" alt="Banner image">
+            </div>
+        @endforeach
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

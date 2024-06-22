@@ -101,8 +101,8 @@
                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
                     <p><i class="fas fa-home mr-3"></i> Paragon Village Blog CLG-00L Jl.Raya Binong Kav 9 Karawaci 15810
                         Banten-Indonesia</p>
-                    <p><i class="fas fa-envelope mr-3"></i> robiansyah333@gmail.com</p>
-                    <p><i class="fas fa-phone mr-3"></i> 085694352237</p>
+                    <p><i class="fas fa-envelope mr-3"></i> jubelse@o-rumah.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> 021-59493900</p>
                     <p> </p>
                 </div>
                 <!-- Grid column -->

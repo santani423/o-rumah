@@ -260,8 +260,8 @@ class HomeController extends Controller
         $bannerLists = Banner::where('show_on', 'marchent')->orderBy('order', 'asc')->active()->get();
 
 
-        
-        $kategori = Kategori::where('tipe', 'food')->join('sup_kategoris','sup_kategoris.kategori_id','=','kategoris.id')->select('sup_kategoris.*')->get();
+       
+        $kategori = Kategori::where('tipe', 'merchant')->join('sup_kategoris','sup_kategoris.kategori_id','=','kategoris.id')->select('sup_kategoris.*')->get();
 
         return view('Pages/Frond/OMearchntPage', compact('adsLists', 'bannerLists', 'kategori'));
         // return Inertia::render('Front/Pages/OMerchantPage', [

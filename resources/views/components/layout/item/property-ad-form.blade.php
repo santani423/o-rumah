@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="judulIklan">Judul Iklan</label>
                     <input type="text" class="form-control" id="judulIklan" name="title"
-                        placeholder="Masukkan Judul Iklan" value="{{ old('title') }}">
+                        placeholder="Masukkan Judul Iklan" value="{{ old('title', $ads['title'] ?? '') }}">
                     <!-- Menampilkan error untuk judul iklan -->
                     <div id="cektitle"></div>
                     @error('title')
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label for="deskripsiIklan">Deskripsi Iklan</label>
                     <textarea id="elm1" name="description"
-                        onkeyup="updateCharCount()">{{ old('description') }}</textarea>
+                        onkeyup="updateCharCount()">{{ old('description', $ads['price'] ?? '') }}</textarea>
                     <!-- <div id="charCount" class="char-count">0 karakter</div> -->
                     <!-- Menampilkan error untuk deskripsi iklan -->
                     @error('description')
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="harga">Harga</label>
                     <input type="text" class="form-control" id="harga" name="price" placeholder="Masukkan Harga"
-                        onkeyup="formatRupiah(this, 'Rp. ')" value="{{ old('price') }}">
+                        onkeyup="formatRupiah(this, 'Rp. ')" value="{{ old('price', 'Rp. '.number_format($ads['price'], 0) ?? '') }}">
                     <!-- Menampilkan error untuk harga -->
                     @error('price')
                         <div class="alert alert-danger">{{ $message }}</div>

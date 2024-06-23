@@ -207,7 +207,7 @@
 @endslot
     @slot('body')
     
-    <x-Layout.Item.PropertyAdForm>
+    <x-Layout.Item.PropertyAdForm :ads="$ads">
     </x-Layout.Item.PropertyAdForm>
 
     <x-Layout.Item.PropertyDetailsForm :ads="$ads">

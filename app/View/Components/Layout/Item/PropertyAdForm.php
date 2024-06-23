@@ -11,9 +11,11 @@ class PropertyAdForm extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public $ads;
+    public function __construct($ads=null)
     {
-        //
+        // dd($ads);
+        $this->ads = $ads;
     }
 
     /**

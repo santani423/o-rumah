@@ -209,7 +209,18 @@
     <form action="{{route('listing.control-panel.properti.update.tentang-properti',$ads->ads_id)}}" method="post">
         @csrf
         @method('PUT')
-       
+       <!-- Jika terdapat error dari validasi -->
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Oops! Terdapat kesalahan dalam pengisian form:</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <x-Layout.Item.PropertyCategoryComponent :ads="$ads">
         </x-Layout.Item.PropertyCategoryComponent>
     <x-Layout.Item.PropertyAdForm :ads="$ads">
@@ -223,13 +234,13 @@
                         <div class="form-group">
 
                             <label for="other_facility">Fasilitas Perumahan</label>
-                            <div class="input-group">
+                            <div class="input-group"> 
                                 @forelse ($getAllEnvironmentalConditions as $key => $condition)
                                     <div class="checkbox my-2 col-lg-6">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="other_facility{{$key}}"
                                                 name="other_facility[]" value="{{$condition}}"
-                                                data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                                data-parsley-multiple="groups" data-parsley-mincheck="2" @if(in_array($condition, json_decode($ads['other_facility'], true)) || in_array($condition, old('other_facility', []))) checked @endif>
                                             <label class="custom-control-label"
                                                 for="other_facility{{$key}}">{{$condition}}</label>
                                         </div>
@@ -238,7 +249,9 @@
                                     <p>Tidak ada kondisi lingkungan yang tersedia.</p>
                                 @endforelse
                             </div>
-
+                            <label for="youtube_link" class="mt-3">Link YouTube</label>
+            <input type="text" class="form-control" id="youtube_link" name="videoYoutube"
+                placeholder="Masukkan Link YouTube">
                         </div>
                         <button class="btn btn-primary">Simpan</button>
                     </div>

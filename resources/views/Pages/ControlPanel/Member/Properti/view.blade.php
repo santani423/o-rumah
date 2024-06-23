@@ -6,15 +6,20 @@
                                         <div class="card-body">
             
                                             <h4 class="mt-0 header-title">Default Tabs</h4>
-                                            
+                                            @if (session()->has('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
             
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+                                                    <a class="nav-link @if(!$navLink) active @endif" data-toggle="tab" href="#home" role="tab">Home</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Tentang Properti</a>
+                                                    <a class="nav-link  @if($navLink == 'properti') active @endif" data-toggle="tab" href="#properti" role="tab">Tentang Properti</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
@@ -26,14 +31,14 @@
             
                                             <!-- Tab panes -->
                                             <div class="tab-content">
-                                                <div class="tab-pane active p-3" id="home" role="tabpanel">
+                                                <div class="tab-pane @if(!$navLink) active @endif p-3" id="home" role="tabpanel">
                                                     <p class="font-14 mb-0">
                                                         Home
                                                     </p>
                                                 </div>
-                                                <div class="tab-pane p-3" id="profile" role="tabpanel">
+                                                <div class="tab-pane  @if($navLink == 'properti') active @endif p-3" id="properti" role="tabpanel">
                                                 <table class="table">
-                                                                 
+                                                                
                                                                  <tbody> 
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Tipe Iklan</th>
@@ -89,15 +94,34 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Fasilitas</th>
-                                                                            <td>{{ $ads['house_facility'] ?? 'Tidak tersedia' }}</td>
+                                                                            <td>
+                                                                                @if (!empty($ads['house_facility']))
+                                                                                    <ul>
+                                                                                        @foreach (json_decode($ads['house_facility']) as $facility)
+                                                                                            <li>{{ $facility }}</li>
+                                                                                        @endforeach
+                                                                                    </ul>
+                                                                                @else
+                                                                                    Tidak tersedia
+                                                                                @endif
+                                                                            </td>
                                                                         </tr>
+
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Kondisi Prabotan</th>
                                                                             <td>{{ $ads['furniture_condition'] }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Fasilitas Perumahan</th>
-                                                                            <td>{{ $ads['other_facility'] ?? 'Tidak tersedia' }}</td>
+                                                                            <td>@if (!empty($ads['other_facility']))
+                                                                                    <ul>
+                                                                                        @foreach (json_decode($ads['other_facility']) as $facility)
+                                                                                            <li>{{ $facility }}</li>
+                                                                                        @endforeach
+                                                                                    </ul>
+                                                                                @else
+                                                                                    Tidak tersedia
+                                                                                @endif</td>
                                                                         </tr>
                                                                  </tbody>
                                                                  </table>

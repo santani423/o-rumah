@@ -70,11 +70,12 @@ class ListingController extends Controller
         //     'title' => 'Lelang'
         // ]);
     }
-    function viewProperty($slug=''){
+    function viewProperty(Request $request,$slug=''){
         $ads = Ads::where('ads.slug', $slug)
         ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
-        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id')
         ->first();
+        // dd($ads);
     $media = Media::where('model_id', $ads->ads_id)->select('disk', 'file_name')->get()->map(function ($item) {
         return [
             'url' => $item->disk . '/' . $item->file_name
@@ -96,11 +97,11 @@ class ListingController extends Controller
         "average_price" => "$500,000",
         "image" => $auth->image,
     ];
-
+    $navLink = $request->navLink;
 
        
 
-        return view('Pages/ControlPanel/Member/Properti/view',compact('ads'));
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink'));
     }
 
     function editPropertiTentangProperti($slug='')  {
@@ -136,12 +137,67 @@ class ListingController extends Controller
     }
 
     function updatePropertiTentangProperti(Request $request,$id) {
-        // dd($request);
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required',
+            'property_type' => 'required',
+            'year_built' => 'required|date_format:Y',
+            'lt' => 'required',
+            'lb' => 'required',
+            'dl' => 'required',
+            'jl' => 'required',
+            'jk' => 'required',
+            'jkm' => 'required',
+            'furniture_condition' => 'required',
+            'house_facility' => 'array',
+            'other_facility' => 'array',
+        ], [
+            'required' => ':attribute harus diisi.',
+            'numeric' => ':attribute harus berupa angka.',
+            'date_format' => ':attribute harus dalam format tahun (YYYY).',
+            'array' => ':attribute harus berupa array.',
+            'url' => ':attribute harus berupa URL yang valid.'
+        ]);
+        // dd($request->certificate);
         $ads = Ads::whereId($id)->first();
         // dd($ads);
         $ads->title = $request->title; 
         $ads->description = $request->description; 
         $ads->save();
+        $harga = $request->price;
+        $hargaInt = (int) str_replace(['Rp', '.', ','], '', $harga);
+      
+        $AdsProperty =  AdsProperty::where('ads_id',$ads->id)->first(); 
+        $AdsProperty->property_type = $request->property_type;
+        // $AdsProperty->rent_type = $request->adds;
+        $AdsProperty->price = $hargaInt;
+        $certificate = $request->certificate;
+        $AdsProperty->certificate = json_encode($certificate);
+        // $AdsProperty->housing_name = $request->adds;
+        // $AdsProperty->cluster_name = $request->adds;
+        $AdsProperty->year_built = date('Y', strtotime($request->year_built));
+
+        $AdsProperty->lt = $request->lt;
+        $AdsProperty->lb = $request->lb;
+        $AdsProperty->dl = $request->dl;
+        $AdsProperty->jl = $request->jl;
+        $AdsProperty->jk = $request->jk;
+        $AdsProperty->jkm = $request->jkm;
+        // $AdsProperty->apartment_type = $request->adds;
+        // $AdsProperty->floor_location = $request->adds;
+        $AdsProperty->furniture_condition = $request->furniture_condition;
+        
+        $house_facility = $request->house_facility;
+        $other_facility = $request->other_facility;
+        $AdsProperty->house_facility = json_encode($house_facility);
+        $AdsProperty->other_facility = json_encode($other_facility); 
+        $AdsProperty->video = $request->videoYoutube; 
+        $AdsProperty->save();
+
+        return redirect()->route('listing.control-panel.view.property', ['slug' => $ads->slug, 'navLink' => 'properti'])->with('success', 'Properti berhasil diperbarui.');
+
     }
 
     public function create()

@@ -157,7 +157,7 @@
                                     <input type="checkbox" class="custom-control-input" id="house_facility{{$key}}"
                                         name="house_facility[]" value="{{$ctf}}" data-parsley-multiple="groups"
                                         data-parsley-mincheck="2" 
-                                        @if(is_array(old('house_facility', explode(',', $ads['house_facility'] ?? ''))) && in_array($ctf, old('house_facility', explode(',', $ads['house_facility'] ?? '')))) checked @endif>
+                                        @if(in_array($ctf, json_decode($ads['house_facility'], true)) || in_array($ctf, old('house_facility', []))) checked @endif>
                                     <label class="custom-control-label" for="house_facility{{$key}}">{{$ctf}}</label>
                                 </div>
                             </div>

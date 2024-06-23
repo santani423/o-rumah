@@ -36,6 +36,7 @@ use App\Services\AdvertisingPointsManager;
 use App\Services\ToolService;
 use App\Services\PropertyRepository;
 use Illuminate\Support\Str;
+use App\Services\WhatsAppService;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -44,6 +45,11 @@ class HomeController extends Controller
     use AdvertisingPointsManager;
     use PropertyRepository;
     use ToolService;
+    protected $whatsAppService;
+    public function __construct(WhatsAppService $whatsAppService)
+    {
+        $this->whatsAppService = $whatsAppService;
+    }
     /**
      * Retrieves data for the index page.
      *
@@ -846,10 +852,43 @@ class HomeController extends Controller
         $kpr->image_rekening_koran = str_replace('public/', '/storage/', $request->file('fotoRekeningKoranSrc')->store('public/images/kpr/' . $timestamp . '/' . $kpr->id));
 
         $kpr->image_slip_gaji = str_replace('public/', '/storage/', $request->file('fotoSlipGajiSrc')->store('public/images/kpr/' . $timestamp . '/' . $kpr->id));
-        // $kpr->status = $request->status;
-        // $kpr->history = $request->history;
+        $kpr->status = $request->status;
+        $kpr->history = $request->history; 
+        $ads = Ads::whereId($kpr->ads_id)->first();
+        $agent = User::whereId($ads->user_id)->first();
+        // dd($agent->wa_phone);
+        $message = "Halo {$kpr->kpr_name},\n\n"
+        . "Terima kasih telah mengajukan KPR di O Rumah. Pengajuan Anda telah berhasil kami terima dan akan segera diproses. Berikut adalah detail pengajuan Anda:\n\n"
+        . "Kode Pengajuan KPR: {$kpr->uuid}\n"
+        . "Kode Properti: {$ads->uuid}\n"
+        . "Nama: {$kpr->kpr_name}\n"
+        . "Email: {$kpr->kpr_email}\n\n"
+        . "Nama Agen: {$agent->name}\n"
+        . "Email Agen: {$agent->email}\n"
+        . "No HP Agen: {$agent->wa_phone}\n\n"
+        . "Kami akan segera menghubungi Anda untuk langkah selanjutnya. Jika Anda memiliki pertanyaan atau memerlukan informasi lebih lanjut, jangan ragu untuk menghubungi agen kami, {$agent->name}, melalui email atau nomor telepon yang tertera di atas.\n\n"
+        . "Terima kasih telah memilih O Rumah.\n\n"
+        . "Hormat kami,\n"
+        . "Tim O Rumah";
 
-        $kpr->save();
+        $agentMessage = "Halo {$agent->name},\n\n"
+              . "Kami ingin menginformasikan bahwa ada pengajuan KPR baru yang memerlukan perhatian Anda. Berikut adalah detail pengajuan tersebut:\n\n"
+              . "Kode Pengajuan KPR: {$kpr->uuid}\n"
+              . "Kode Properti: {$ads->uuid}\n"
+              . "Nama Pengaju: {$kpr->kpr_name}\n"
+              . "Email Pengaju: {$kpr->kpr_email}\n\n"
+              . "Informasi Kontak Agen:\n"
+              . "Nama Agen: {$agent->name}\n"
+              . "Email Agen: {$agent->email}\n"
+              . "No HP Agen: {$agent->wa_phone}\n\n"
+              . "Mohon segera hubungi pengaju untuk langkah selanjutnya.\n\n"
+              . "Terima kasih,\n"
+              . "Tim O Rumah";
+
+// $response = $this->whatsAppService->sendMessage($request->noHp, $message);
+$response = $this->whatsAppService->sendMessage($agent->wa_phone, $agentMessage);
+
+        // $kpr->save();
         // return redirect(route('member.pengajuan.kpr'));
         // Mengembalikan response sukses
         // return response()->json([

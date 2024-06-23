@@ -60,7 +60,7 @@ Route::get('/user/{username}', [Front\HomeController::class, 'agentDetail'])->na
 
 Route::get('/properti/kpr/{slug}', [Front\HomeController::class, 'linkKpr'])->name('linkKpr');
 Route::post('/properti/kpr', [Front\HomeController::class, 'linkKprStore'])->name('linkKpr.store');
-Route::post('/visitor/properti/kpr', [VisitorKprController::class, 'linkKprStore'])->name('visitor.linkKpr.store');
+// Route::post('/visitor/properti/kpr', [VisitorKprController::class, 'linkKprStore'])->name('visitor.linkKpr.store');
 
 Route::post('/properti/kpr/finish', [Front\HomeController::class, 'kprFormFinish'])->name('linkKpr.kprFormFinish');
 

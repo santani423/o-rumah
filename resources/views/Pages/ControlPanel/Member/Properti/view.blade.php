@@ -1,72 +1,146 @@
 <x-Layout.Vertical.Master>
     @slot('body') 
-     <div class="row">
-                                <div class="col-lg-12">
+    <div class="row">
+                                <div class="col-lg-6">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="mt-0 header-title">Vertical Tabs</h4>
-                                            <p class="text-muted mb-4 font-14">The tabs plugin also works and with vertical pills.</p>
-                                            <div class="row">
-                                                <div class="col-3">
-                                                    <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                                        <a class="nav-link waves-effect waves-light active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
-                                                        <a class="nav-link waves-effect waves-light" id="tentang-properti-tab" data-toggle="pill" href="#tentang-properti" role="tab" aria-controls="v-pills-profiletentang-properti" aria-selected="false">Tentang Properti</a>
-                                                        <a class="nav-link waves-effect waves-light" id="media-tab" data-toggle="pill" href="#media" role="tab" aria-controls="media" aria-selected="false">Media</a>
-                                                        <a class="nav-link waves-effect waves-light" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-                                                    </div>
+            
+                                            <h4 class="mt-0 header-title">Default Tabs</h4>
+                                            
+            
+                                            <!-- Nav tabs -->
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+                                                </li>
+                                            </ul>
+            
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane active p-3" id="home" role="tabpanel">
+                                                    <p class="font-14 mb-0">
+                                                        Home
+                                                    </p>
                                                 </div>
-                                                <div class="col-9">
-                                                    <div class="tab-content" id="v-pills-tabContent">
-                                                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                                            <p class="font-14 mb-0">
-                                                                Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                                                                art party before they sold out master cleanse gluten-free squid
-                                                                scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                                                                art party locavore wolf cliche high life echo park Austin. Cred
-                                                                vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                                                                farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral,
-                                                                mustache readymade thundercats keffiyeh craft beer marfa
-                                                                ethical. Wolf salvia freegan, sartorial keffiyeh echo park
-                                                                vegan.
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="tentang-properti" role="tabpanel" aria-labelledby="tentang-properti-tab">
-                                                            <p class="font-14 mb-0">
-                                                                tentang properti
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
-                                                            <p class="font-14 mb-0">
-                                                                Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                                                                art party before they sold out master cleanse gluten-free squid
-                                                                scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                                                                art party locavore wolf cliche high life echo park Austin. Cred
-                                                                vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                                                                farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral,
-                                                                mustache readymade thundercats keffiyeh craft beer marfa
-                                                                ethical. Wolf salvia freegan, sartorial keffiyeh echo park
-                                                                vegan.
-                                                            </p>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                                                            <p class="font-14 mb-0">
-                                                                Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin
-                                                                coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next
-                                                                level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                                                                booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco
-                                                                    ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magn
-                                                                    a delectus mollitbooth letterpress, commodo enim craft beer mlkshk aliquip jean 
-                                                                    shorts ullamco.
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                <div class="tab-pane p-3" id="profile" role="tabpanel">
+                                                <table class="table">
+                                                                 
+                                                                 <tbody>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Tipe Iklan</th>
+                                                                     <td>Jacob</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Tipe Properti</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Judul Iklan</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Harga</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Nama Komplek</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Nama Cluster</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Luas Tanah</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Luas Tanah</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Luas Bangunan</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Tahun DI Bangun</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Tipe Sertifikat</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Kamar Tidur</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Kamar Mandi</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Jumlah Lantai</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Fasilitas</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Kondisi Prabotan</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                     <tr>
+                                                                     <th scope="row" style="width: 200px">Fasilitas Perumahan</th>
+                                                                     <td>Larry</td> 
+                                                                     </tr>
+                                                                 </tbody>
+                                                                 </table>
+                                                         </div>
+                                           
+                                                <div class="tab-pane p-3" id="messages" role="tabpanel">
+                                                    <p class="font-14 mb-0">
+                                                        Etsy mixtape wayfarers, ethical wes anderson tofu before they
+                                                        sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                                                        farm-to-table readymade. Messenger bag gentrify pitchfork
+                                                        tattooed craft beer, iphone skateboard locavore carles etsy
+                                                        salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                                                        Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+                                                        mi whatever gluten-free, carles pitchfork biodiesel fixie etsy
+                                                        retro mlkshk vice blog. Scenester cred you probably haven't
+                                                        heard of them, vinyl craft beer blog stumptown. Pitchfork
+                                                        sustainable tofu synth chambray yr.
+                                                    </p>
+                                                </div>
+                                                <div class="tab-pane p-3" id="settings" role="tabpanel">
+                                                    <p class="font-14 mb-0">
+                                                        Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
+                                                        art party before they sold out master cleanse gluten-free squid
+                                                        scenester freegan cosby sweater. Fanny pack portland seitan DIY,
+                                                        art party locavore wolf cliche high life echo park Austin. Cred
+                                                        vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
+                                                        farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral,
+                                                        mustache readymade thundercats keffiyeh craft beer marfa
+                                                        ethical. Wolf salvia freegan, sartorial keffiyeh echo park
+                                                        vegan.
+                                                    </p>
                                                 </div>
                                             </div>
+            
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
             
-                               
-                            </div><!--end row-->    
+                                
+                            </div>
     @endslot
 </x-Layout.Vertical.Master>

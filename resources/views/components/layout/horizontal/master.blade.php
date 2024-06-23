@@ -68,9 +68,7 @@
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">o-Rumah</h6>
-                    <p>O-Rumah adalah perusahaan periklanan terkemuka yang berdedikasi untuk menciptakan solusi
-                        pemasaran yang inovatif dan berdampak. Kami membantu bisnis terhubung dengan audiens mereka
-                        melalui strategi periklanan yang kreatif dan efektif.</p>
+                    <p>Merupakan platform marketplace yang menyediakan pilihan fitur-fitur yang menarik dan lengkap seperti properti, food, merchant, estate management serta akan terus mengembangkan fitur-fitur lainnya untuk memenuhi kebutuhan customer dengan konsep <b> ONE STOP SHOPPING </b>yang didukung oleh perbankan, daveloper, agent property, UMKM dan lainnya.</p>
                 </div>
                 <!-- Grid column -->
 

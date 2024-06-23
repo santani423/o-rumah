@@ -22,13 +22,13 @@
         </div>
         <div class="row ">
             <div class="col-md-12 mt-1">
-                <div class="card m-1 bg-light pr-2">
-                    <h3 class="mt-0 mb-1 font-14">Anggota Sejak</h3>
-                    <p class="card-text p-0">dd</p>
-                    <hr>
-                    <h3 class="mt-0 mb-1 font-14">Poin</h3>
+                <div class="card m-3 bg-light pr-2">
+                    <!-- <h3 class="mt-0 mb-1 font-14">Anggota Sejak</h3>
+               
+                    <hr> -->
+                    <h3 class="mt-0 mb-1 ml-2 font-14">Poin</h3>
 
-                    <p class="card-text mb-2 p-0">{{ number_format($poin->balance, 0, '.', '') }}</p>
+                    <p class="card-text mb-2 ml-2 p-0">{{ number_format($poin->balance, 0, '.', '') }}</p>
                 </div>
             </div>
         </div>

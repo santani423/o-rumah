@@ -101,7 +101,12 @@
             text-align: center;
         }
 
-       
+        .banner-image {
+    width: 1250px;
+    height: 335px;
+    object-fit: cover; /* Ensures the image covers the specified dimensions without distortion */
+    border-radius: 15px; /* Maintain the border-radius */
+}
 
     </style>
 

@@ -701,7 +701,7 @@ class MemberNavController extends Controller
             'ads_type' => 'nullable|string|max:255',
             'property_type' => 'nullable|string|max:255',
             'price' => 'nullable',
-            'certificate' => 'nullable|string|max:255',
+            'certificate' => 'nullable|max:255',
             'year_built' => 'nullable|date_format:Y|max:' . date('Y'),
             'lt' => 'nullable|integer',
             'lb' => 'nullable|integer',
@@ -785,7 +785,7 @@ class MemberNavController extends Controller
         $AdsProperty->property_type = $request->property_type;
         // $AdsProperty->rent_type = $request->adds;
         $AdsProperty->price = $hargaInt;
-        $AdsProperty->certificate = $request->certificate;
+        $AdsProperty->certificate = json_encode($request->certificate);
         // $AdsProperty->housing_name = $request->adds;
         // $AdsProperty->cluster_name = $request->adds;
         $AdsProperty->year_built = date('Y', strtotime($request->year_built));

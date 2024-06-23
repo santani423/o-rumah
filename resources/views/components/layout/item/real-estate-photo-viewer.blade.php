@@ -22,18 +22,20 @@
     <div class="col-lg-6 mt-3">
         <div class="zoom-gallery">
             <div class="row">
-                @foreach($media as $key => $md)
-                    @if ($key < 4)
-                        <div class="col-3 col-sm-3 col-md-6">
-                            <a class="float-left mb-3" href="{{ asset($md['url']) }}" title="Project {{ ++$key }}">
-                                <img src="{{ asset($md['url']) }}" alt="" width="275" height="183"
-                                    style="width: 275px; height: auto;" class="img-fluid" />
-                            </a>
-                        </div>
-                    @else
-                        <a href="{{ asset($md['url']) }}" title="Project {{ $key }}"></a>
-                    @endif
-                @endforeach
+            @foreach($media as $key => $md)
+                @if ($key < 4)
+                    <div class="col-3 col-sm-3 col-md-6 d-flex align-items-center justify-content-center">
+                        <a class="mb-3" href="{{ asset($md['url']) }}" title="Project {{ $key + 1 }}">
+                            <img src="{{ asset($md['url']) }}" alt="" class="img-fluid img-cover" style="width: 100%;
+    height: 100%;
+    object-fit: cover;" />
+                        </a>
+                    </div>
+                @else
+                    <a href="{{ asset($md['url']) }}" title="Project {{ $key }}"></a>
+                @endif
+            @endforeach
+
             </div>
         </div>
     </div>

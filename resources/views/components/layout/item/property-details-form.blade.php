@@ -152,15 +152,16 @@
                     <label for="house_facility">Fasilitas </label>
                     <div class="input-group">
                         @foreach ($house_facility as $key => $ctf)
-                            <div class="checkbox my-2 mr-2">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="house_facility{{$key}}"
-                                        name="house_facility[]" value="{{$ctf}}" data-parsley-multiple="groups"
-                                        data-parsley-mincheck="2" 
-                                        @if(in_array($ctf, json_decode($ads['house_facility'], true)) || in_array($ctf, old('house_facility', []))) checked @endif>
-                                    <label class="custom-control-label" for="house_facility{{$key}}">{{$ctf}}</label>
-                                </div>
+                        <div class="checkbox my-2 mr-2">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="house_facility{{$key}}"
+                                    name="house_facility[]" value="{{$ctf}}" data-parsley-multiple="groups"
+                                    data-parsley-mincheck="2" 
+                                    @if((is_array($houseFacilities = $ads ? json_decode($ads['house_facility'], true) : []) && in_array($ctf, $houseFacilities)) || in_array($ctf, old('house_facility', []))) checked @endif>
+                                <label class="custom-control-label" for="house_facility{{$key}}">{{$ctf}}</label>
                             </div>
+                        </div>
+
                         @endforeach
                     </div>
                 </div>

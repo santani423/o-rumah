@@ -265,7 +265,15 @@
     <div class="row">
         <div class="col-12">
 
-
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title font-20 mt-0">Lokasi</h4>
@@ -315,7 +323,8 @@
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="other_facility{{$key}}"
                                                 name="other_facility[]" value="{{$condition}}"
-                                                data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                                data-parsley-multiple="groups" data-parsley-mincheck="2"
+                                                @if(in_array($condition, old('other_facility', []))) checked @endif>
                                             <label class="custom-control-label"
                                                 for="other_facility{{$key}}">{{$condition}}</label>
                                         </div>

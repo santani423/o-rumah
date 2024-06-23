@@ -702,7 +702,7 @@ class HomeController extends Controller
                 return redirect()->back()->with('error', 'Password lama tidak sesuai');
             }
             $user->password = bcrypt($request->password);
-            $user->update();
+            $user->save();
 
             return redirect()->back()->with('success', 'Password berhasil diubah');
         } catch (Exception $e) {

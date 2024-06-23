@@ -165,7 +165,7 @@
             });
             $('#cektitle').html('');
             $.ajax({
-                url: '{{ route('tool.cekJudul') }}',
+                url: "{{ route('tool.cekJudul') }}",
                 type: 'POST',
                 data: {
                     judulIklan: this.value

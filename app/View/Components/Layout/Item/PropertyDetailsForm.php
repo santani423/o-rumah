@@ -14,8 +14,11 @@ class PropertyDetailsForm extends Component
      */
     public $certificate;
     public $house_facility;
-    public function __construct()
+    public $ads;
+    public function __construct($ads=null)
     {
+        // dd($ads);
+         $this->ads = $ads;
         $this->certificate = AdsProperty::getAllCertificates();
         $this->house_facility = AdsProperty::getAllHouseFacility();
     }

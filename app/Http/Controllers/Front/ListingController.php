@@ -129,6 +129,8 @@ class ListingController extends Controller
         "average_price" => "$500,000",
         "image" => $auth->image,
     ];
+  
+    return view('Pages/ControlPanel/Member/Properti/Edit/tentangProperti',compact('ads'));
     }
     public function create()
     {

@@ -44,7 +44,13 @@
                         </ul>
                     </div>
                 @endif
+                @if(Auth()->user())
                 <form action="{{ route('linkKpr.store') }}" method="post" enctype="multipart/form-data">
+    
+                    @else
+                    <form action="{{ route('visitor.linkKpr.store') }}" method="post" enctype="multipart/form-data">
+
+                @endif
                     <input type="hidden" name="ads_id" value="{{$ads->ads_id}}">
                     @csrf
                     <div class="row">

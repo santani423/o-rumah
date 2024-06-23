@@ -134,6 +134,16 @@ class ListingController extends Controller
   
     return view('Pages/ControlPanel/Member/Properti/Edit/tentangProperti',compact('ads','getAllEnvironmentalConditions'));
     }
+
+    function updatePropertiTentangProperti(Request $request,$id) {
+        // dd($request);
+        $ads = Ads::whereId($id)->first();
+        // dd($ads);
+        $ads->title = $request->title; 
+        $ads->description = $request->description; 
+        $ads->save();
+    }
+
     public function create()
     {
         return Inertia::render('Listing/CreateListingPage', [

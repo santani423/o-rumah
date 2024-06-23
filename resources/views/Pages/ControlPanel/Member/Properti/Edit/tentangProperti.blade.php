@@ -206,7 +206,12 @@
 </script>
 @endslot
     @slot('body')
-    
+    <form action="{{route('listing.control-panel.properti.update.tentang-properti',$ads->ads_id)}}" method="post">
+        @csrf
+        @method('PUT')
+       
+        <x-Layout.Item.PropertyCategoryComponent :ads="$ads">
+        </x-Layout.Item.PropertyCategoryComponent>
     <x-Layout.Item.PropertyAdForm :ads="$ads">
     </x-Layout.Item.PropertyAdForm>
 
@@ -235,7 +240,10 @@
                             </div>
 
                         </div>
+                        <button class="btn btn-primary">Simpan</button>
                     </div>
                 </div>
+
+</form>
     @endslot
 </x-Layout.Vertical.Master>

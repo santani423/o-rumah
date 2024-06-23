@@ -33,7 +33,8 @@
                 <div class="form-group">
                     <label for="harga">Harga</label>
                     <input type="text" class="form-control" id="harga" name="price" placeholder="Masukkan Harga"
-                        onkeyup="formatRupiah(this, 'Rp. ')" value="{{ old('price', 'Rp. '.number_format($ads['price'], 0) ?? '') }}">
+                        onkeyup="formatRupiah(this, 'Rp. ')" 
+                        value="{{ old('price', isset($ads['price']) ? 'Rp. ' . number_format($ads['price'], 0) : '') }}">
                     <!-- Menampilkan error untuk harga -->
                     @error('price')
                         <div class="alert alert-danger">{{ $message }}</div>

@@ -12,9 +12,11 @@ class PropertyCategoryComponent extends Component
     /**
      * Create a new component instance.
      */
-    public $propertyType;
-    public function __construct()
+    public $propertyType,$ads;
+
+    public function __construct($ads=null)
     {
+        $this->ads = $ads;
         $this->propertyType = AdsProperty::getAllPropertyType();
     }
 

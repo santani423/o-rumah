@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::get('', [Front\ListingController::class, 'index'])->name('index');
         Route::get('/control-panel/property/view/{slug}', [Front\ListingController::class, 'viewProperty'])->name('control-panel.view.property');
         Route::get('/control-panel/property/edit/{slug}', [Front\ListingController::class, 'editPropertiTentangProperti'])->name('control-panel.properti.edit.tentang-properti');
+        Route::put('/control-panel/property/update/{slug}', [Front\ListingController::class, 'updatePropertiTentangProperti'])->name('control-panel.properti.update.tentang-properti');
 
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');

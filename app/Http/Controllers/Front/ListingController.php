@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Ads;
 use App\Models\Media;
 use App\Models\AdsProperty;
+use App\Models\Kpr;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -69,7 +71,36 @@ class ListingController extends Controller
         // ]);
     }
     function viewProperty($slug=''){
-        return view('Pages/ControlPanel/Member/Properti/view');
+        $ads = Ads::where('ads.slug', $slug)
+        ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id')
+        ->first();
+    $media = Media::where('model_id', $ads->ads_id)->select('disk', 'file_name')->get()->map(function ($item) {
+        return [
+            'url' => $item->disk . '/' . $item->file_name
+        ];
+    });
+    $auth = User::find($ads->user_id);
+
+    $agent = [
+        "id" => $auth->id,
+        "name" => $auth->name,
+        "joined_at" => $auth->created_at->format('Y-m-d'),
+        "username" => $auth->username,
+        "company_name" => $auth->company_name,
+        "company_image" => $auth->company_image,
+        "phone" => $auth->phone,
+        "wa_phone" => $auth->wa_phone,
+        "total_ads" => 100,
+        "total_sold" => 50,
+        "average_price" => "$500,000",
+        "image" => $auth->image,
+    ];
+
+
+       
+
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads'));
     }
     public function create()
     {

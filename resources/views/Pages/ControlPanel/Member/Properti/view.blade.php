@@ -1,7 +1,7 @@
 <x-Layout.Vertical.Master>
     @slot('body') 
     <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="card">
                                         <div class="card-body">
             
@@ -34,75 +34,71 @@
                                                 <div class="tab-pane p-3" id="profile" role="tabpanel">
                                                 <table class="table">
                                                                  
-                                                                 <tbody>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Tipe Iklan</th>
-                                                                     <td>Jacob</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Tipe Properti</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Judul Iklan</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Harga</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Nama Komplek</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Nama Cluster</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Luas Tanah</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Luas Tanah</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Luas Bangunan</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Tahun DI Bangun</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Tipe Sertifikat</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Kamar Tidur</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Kamar Mandi</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Jumlah Lantai</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Fasilitas</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Kondisi Prabotan</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
-                                                                     <tr>
-                                                                     <th scope="row" style="width: 200px">Fasilitas Perumahan</th>
-                                                                     <td>Larry</td> 
-                                                                     </tr>
+                                                                 <tbody> 
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Tipe Iklan</th>
+                                                                            <td>{{ $ads['ads_type'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Tipe Properti</th>
+                                                                            <td>{{ $ads['property_type'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Judul Iklan</th>
+                                                                            <td>{{ $ads['title'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Harga</th>
+                                                                            <td>{{ number_format($ads['price'], 2) }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Nama Komplek</th>
+                                                                            <td>{{ $ads['housing_name'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Nama Cluster</th>
+                                                                            <td>{{ $ads['cluster_name'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Luas Tanah</th>
+                                                                            <td>{{ $ads['lt'] }} m²</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Luas Bangunan</th>
+                                                                            <td>{{ $ads['lb'] }} m²</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Tahun Dibangun</th>
+                                                                            <td>{{ $ads['year_built'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Tipe Sertifikat</th>
+                                                                            <td>{{ $ads['certificate'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Kamar Tidur</th>
+                                                                            <td>{{ $ads['jk'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Kamar Mandi</th>
+                                                                            <td>{{ $ads['jkm'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Jumlah Lantai</th>
+                                                                            <td>{{ $ads['dl'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Fasilitas</th>
+                                                                            <td>{{ $ads['house_facility'] ?? 'Tidak tersedia' }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Kondisi Prabotan</th>
+                                                                            <td>{{ $ads['furniture_condition'] }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row" style="width: 200px">Fasilitas Perumahan</th>
+                                                                            <td>{{ $ads['other_facility'] ?? 'Tidak tersedia' }}</td>
+                                                                        </tr>
                                                                  </tbody>
                                                                  </table>
                                                          </div>

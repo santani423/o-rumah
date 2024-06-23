@@ -883,9 +883,9 @@ class HomeController extends Controller
               . "No HP Agen: {$agent->wa_phone}\n\n"
               . "Mohon segera hubungi pengaju untuk langkah selanjutnya.\n\n"
               . "Terima kasih,\n"
-              . "Tim O Rumah";
+              . "Tim O Rumah"; 
 
-// $response = $this->whatsAppService->sendMessage($request->noHp, $message);
+$response = $this->whatsAppService->sendMessage($request->noHp, $message);
 $response = $this->whatsAppService->sendMessage($agent->wa_phone, $agentMessage);
 
         // $kpr->save();

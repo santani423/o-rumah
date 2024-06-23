@@ -12,7 +12,7 @@ class VisitorKprController extends Controller
 {
     function linkKprStore(Request $request)
     {
-        dd($request);
+        // dd($request);
         $validatedData = $request->validate([
             'ads_id' => 'required',
             'bankUmum' => 'required',

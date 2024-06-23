@@ -850,7 +850,7 @@ class HomeController extends Controller
         // $kpr->history = $request->history;
 
         $kpr->save();
-        return redirect(route('member.pengajuan.kpr'));
+        // return redirect(route('member.pengajuan.kpr'));
         // Mengembalikan response sukses
         // return response()->json([
         //     'message' => 'Data berhasil disimpan',

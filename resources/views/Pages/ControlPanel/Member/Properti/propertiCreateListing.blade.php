@@ -330,7 +330,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title font-20 mt-0">Upload Dokumen</h4>
+                        <h4 class="card-title font-20 mt-0">Upload Media</h4>
                         @error('fileInput')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror

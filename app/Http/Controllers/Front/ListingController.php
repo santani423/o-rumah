@@ -129,8 +129,10 @@ class ListingController extends Controller
         "average_price" => "$500,000",
         "image" => $auth->image,
     ];
+    
+    $getAllEnvironmentalConditions = AdsProperty::getAllEnvironmentalConditions();
   
-    return view('Pages/ControlPanel/Member/Properti/Edit/tentangProperti',compact('ads'));
+    return view('Pages/ControlPanel/Member/Properti/Edit/tentangProperti',compact('ads','getAllEnvironmentalConditions'));
     }
     public function create()
     {

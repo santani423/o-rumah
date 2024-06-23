@@ -212,5 +212,30 @@
 
     <x-Layout.Item.PropertyDetailsForm :ads="$ads">
     </x-Layout.Item.PropertyDetailsForm>
+    <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title font-20 mt-0">Lingkungan</h4>
+                        <div class="form-group">
+
+                            <label for="other_facility">Fasilitas Perumahan</label>
+                            <div class="input-group">
+                                @forelse ($getAllEnvironmentalConditions as $key => $condition)
+                                    <div class="checkbox my-2 col-lg-6">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="other_facility{{$key}}"
+                                                name="other_facility[]" value="{{$condition}}"
+                                                data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                            <label class="custom-control-label"
+                                                for="other_facility{{$key}}">{{$condition}}</label>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p>Tidak ada kondisi lingkungan yang tersedia.</p>
+                                @endforelse
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
     @endslot
 </x-Layout.Vertical.Master>

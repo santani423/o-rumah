@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label for="deskripsiIklan">Deskripsi Iklan</label>
                     <textarea id="elm1" name="description"
-                        onkeyup="updateCharCount()">{{ old('description', $ads['price'] ?? '') }}</textarea>
+                        onkeyup="updateCharCount()">{!! old('description', $ads['description'] ?? '') !!}</textarea>
                     <!-- <div id="charCount" class="char-count">0 karakter</div> -->
                     <!-- Menampilkan error untuk deskripsi iklan -->
                     @error('description')

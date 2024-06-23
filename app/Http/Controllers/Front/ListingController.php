@@ -68,13 +68,17 @@ class ListingController extends Controller
         //     'title' => 'Lelang'
         // ]);
     }
-
+    function viewProperty($slug=''){
+        return view('Pages/ControlPanel/Member/Properti/view');
+    }
     public function create()
     {
         return Inertia::render('Listing/CreateListingPage', [
             'isUpdate' => false,
         ]);
     }
+
+    
 
     public function edit($id, Request $request)
     {

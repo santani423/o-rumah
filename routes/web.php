@@ -81,6 +81,8 @@ Route::get('/properti/{slug}/ajukan-kpr', [Front\HomeController::class, 'kprRegi
 Route::middleware('auth')->group(function () {
     Route::prefix('listing')->name('listing.')->group(function () {
         Route::get('', [Front\ListingController::class, 'index'])->name('index');
+        Route::get('/control-panel/property/view/{slug}', [Front\ListingController::class, 'viewProperty'])->name('control-panel.view.property');
+
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');
         Route::get('/ads-properties', [Front\ListingController::class, 'adsProperties'])->name('adsProperties');

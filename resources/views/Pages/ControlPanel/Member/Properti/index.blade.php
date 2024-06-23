@@ -11,7 +11,7 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <h6 class="card-header mt-0">Data Iklan</h6>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="row">
 
 
@@ -30,7 +30,7 @@
 
                 <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
                     :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
-                    :linkTujuan="route('ofood-detail', ['slug' => $ads->slug])">
+                    :linkTujuan="route('listing.control-panel.view.property', ['slug' => $ads->slug])">
                 </x-Layout.Item.ProductItem>
 
             </div><!-- end col -->

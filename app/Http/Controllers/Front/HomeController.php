@@ -823,7 +823,7 @@ class HomeController extends Controller
             $userId = $user->id;
         }
         // Menyimpan setiap gambar dan mengembalikan path penyimpanannya
-
+        // dd($request->status);
         $timestamp = now()->format('Y_m_d');
         $job = Job::find($request->pekerjaan);
         $kpr = new Kpr();
@@ -852,8 +852,8 @@ class HomeController extends Controller
         $kpr->image_rekening_koran = str_replace('public/', '/storage/', $request->file('fotoRekeningKoranSrc')->store('public/images/kpr/' . $timestamp . '/' . $kpr->id));
 
         $kpr->image_slip_gaji = str_replace('public/', '/storage/', $request->file('fotoSlipGajiSrc')->store('public/images/kpr/' . $timestamp . '/' . $kpr->id));
-        $kpr->status = $request->status;
-        $kpr->history = $request->history; 
+        // $kpr->status = $request->status;
+        // $kpr->history = $request->history; 
         $ads = Ads::whereId($kpr->ads_id)->first();
         $agent = User::whereId($ads->user_id)->first();
         // dd($agent->wa_phone);
@@ -888,8 +888,15 @@ class HomeController extends Controller
 $response = $this->whatsAppService->sendMessage($request->noHp, $message);
 $response = $this->whatsAppService->sendMessage($agent->wa_phone, $agentMessage);
 
-        // $kpr->save();
-        // return redirect(route('member.pengajuan.kpr'));
+        $kpr->save();
+        if (Auth::user()) {
+            # code...
+            return redirect(route('member.pengajuan.kpr'));
+        } else {
+            # code...
+            return redirect(route('visitor.linkKpr.store',$kpr->uuid));
+        }
+        
         // Mengembalikan response sukses
         // return response()->json([
         //     'message' => 'Data berhasil disimpan',

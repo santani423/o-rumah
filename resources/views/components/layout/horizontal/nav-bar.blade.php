@@ -10,9 +10,9 @@
                 <!--</a>-->
                 <!-- Image Logo -->
                 <a href="/" class="logo">
-                    <img src="{{ asset('assets/logo.png')}}" alt="" class="logo-large"
-                        style="width: 90px; height: auto;">
-                </a>
+    <img src="{{ asset('assets/logo-o-rumah.png')}}" alt="" class="logo-orumah img-fluid">
+</a>
+
 
             </div>
             <!-- End Logo container-->

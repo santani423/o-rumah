@@ -32,6 +32,27 @@
         .footer {
             padding: 23px 0;
         }
+        
+        .logo {
+    /* width: 90px; */
+    height: 100%;
+}
+
+.logo {
+    width: 50px; /* Sesuaikan dengan lebar yang diinginkan */
+    height: auto; /* Sesuaikan dengan tinggi yang diinginkan */
+    overflow: hidden; /* Pastikan gambar tidak keluar dari pembungkus */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-orumah {
+    height: 56px; /* Tinggi gambar mengikuti tinggi pembungkus */
+    width: auto; /* Lebar gambar otomatis mengikuti tinggi gambar */
+}
+
+
     </style>
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('zenter/horizontal/assets/css/icons.css')}}" rel="stylesheet" type="text/css">

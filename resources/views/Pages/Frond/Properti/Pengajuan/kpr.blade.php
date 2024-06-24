@@ -25,7 +25,7 @@
     <div class="row mt-3">
         <div class="col-md-6">
             <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
-                :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
+                :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address" :price="$ads->price"
                 :linkTujuan="route('property-detail', $ads->slug)">
             </x-Layout.Item.ProductItem>
             <x-Layout.Item.AgentContactCard :agent="$agent" :ads="$ads"></x-Layout.Item.AgentContactCard>

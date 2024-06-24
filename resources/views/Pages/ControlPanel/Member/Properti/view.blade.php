@@ -5,6 +5,16 @@
             rel="stylesheet"
             type="text/css"
         />
+        <link
+            href="{{asset('zenter/horizontal/assets/plugins/dropzone/dist/dropzone.css')}}"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="{{asset('zenter/horizontal/assets/plugins/dropify/css/dropify.min.css')}}"
+            rel="stylesheet"
+        />
+
         <style>
             .square {
     position: relative;
@@ -27,6 +37,37 @@
      <!-- Magnific popup -->
      <script src="{{asset('zenter/horizontal/assets/plugins/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
         <script src="{{asset('zenter/horizontal/assets/pages/lightbox.js')}}"></script>
+                <!-- Dropzone js -->
+                <script src="{{asset('zenter/horizontal/assets/plugins/dropzone/dist/dropzone.js')}}"></script>
+        <script src="{{asset('zenter/horizontal/assets/plugins/dropify/js/dropify.min.js')}}"></script>
+        <script src="{{asset('zenter/horizontal/assets/pages/upload.init.js')}}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+    // Handle Image Modal
+    $('#imageModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var url = button.data('url');
+        var modal = $(this);
+        modal.find('#modalImage').attr('src', url);
+    });
+
+    // Handle Confirm Modal
+    var form;
+    $('#confirmModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var url = button.data('url');
+        form = button.closest('form');
+        var modal = $(this);
+    });
+
+    $('#confirmButton').on('click', function () {
+        if (form) {
+            form.submit();
+        }
+    });
+});
+
+        </script>
     @endslot
     @slot('body') 
     <div class="row">
@@ -160,29 +201,77 @@
                                                 <div class="tab-pane @if($navLink == 'galeri') active @endif  p-3" id="galeri" role="tabpanel">
                                                     
 
+                                                
                                                 <div class="container zoom-gallery">
                                                     <div class="row">
                                                         @foreach($media as $key => $md)
                                                             <div class="col-md-4 mb-4">
                                                                 <div class="square">
-                                                                    <a href="{{ asset($md['url']) }}" title="Media {{ ++$key }}">
+                                                                    <a href="{{ asset($md['url']) }}" title="Media {{ ++$key }}" data-url="{{ asset($md['url']) }}">
                                                                         <img src="{{ asset($md['url']) }}" alt="" class="img-fluid square-img" />
                                                                     </a>
                                                                 </div>
                                                                 @if($ads['image'] != $md['url'])
-                                                                <form action="{{route('listing.control-panel.properti.set.media.utama',['ads_properties_id'=>$ads['ads_properties_id']])}}" method="post">
+                                                                <form action="{{ route('listing.control-panel.properti.set.media.utama', ['ads_properties_id' => $ads['ads_properties_id']]) }}" method="post">
                                                                     @csrf
                                                                     @method('PUT')
-                                                                    <input type="hidden" name="url" value="{{$md['url']}}">
-                                                                    <button class="btn btn-primary mt-2">Jadikan Utama</button>
+                                                                    <input type="hidden" name="url" value="{{ $md['url'] }}">
+                                                                    <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#confirmModal" data-url="{{ $md['url'] }}">Jadikan Utama</button>
                                                                 </form>
                                                                 @else
                                                                 <button class="btn btn-success mt-2">Utama</button>
                                                                 @endif
+                                                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#imageModal" data-url="{{ $md['url'] }}">Edit</button>
+                                                               
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                 </div>
+
+                                                <!-- Image Modal -->
+                                                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="imageModalLabel">Ubah Media</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                            <div class="col-xl-6"> 
+                                                                            <input
+                                                                                type="file"
+                                                                                id="input-file-now"
+                                                                                class="dropify"
+                                                                            /> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Confirm Modal -->
+                                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirmModalLabel">Konfirmasi</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Apakah Anda yakin ingin menjadikan gambar ini sebagai media utama?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                                <button type="button" class="btn btn-primary" id="confirmButton">Jadikan Utama</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
 
                                                    

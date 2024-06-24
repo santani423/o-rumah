@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +9,13 @@
     <meta content="Mannatthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="{{$title}} - O-Rumah" />
+    <meta property="og:description" content="{{$title}}" />
+    <meta property="og:image" content="{{ asset('assets/logo-o-rumah-crop.png')}}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
 
     <link rel="shortcut icon" href="{{ asset('assets/logo-o-rumah-crop.png')}}">
     {{$css}}
@@ -34,25 +40,22 @@
         }
         
         .logo {
-    /* width: 90px; */
-    height: 100%;
-}
+            height: 100%;
+        }
 
-.logo {
-    width: 50px; /* Sesuaikan dengan lebar yang diinginkan */
-    height: auto; /* Sesuaikan dengan tinggi yang diinginkan */
-    overflow: hidden; /* Pastikan gambar tidak keluar dari pembungkus */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .logo {
+            width: 50px; /* Sesuaikan dengan lebar yang diinginkan */
+            height: auto; /* Sesuaikan dengan tinggi yang diinginkan */
+            overflow: hidden; /* Pastikan gambar tidak keluar dari pembungkus */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.logo-orumah {
-    height: 56px; /* Tinggi gambar mengikuti tinggi pembungkus */
-    width: auto; /* Lebar gambar otomatis mengikuti tinggi gambar */
-}
-
-
+        .logo-orumah {
+            height: 56px; /* Tinggi gambar mengikuti tinggi pembungkus */
+            width: auto; /* Lebar gambar otomatis mengikuti tinggi gambar */
+        }
     </style>
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('zenter/horizontal/assets/css/icons.css')}}" rel="stylesheet" type="text/css">
@@ -60,6 +63,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 
 </head>
+
 
 
 <body class="bg-dark">

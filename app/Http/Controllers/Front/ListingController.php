@@ -81,6 +81,7 @@ class ListingController extends Controller
             'url' => $item->disk . '/' . $item->file_name
         ];
     });
+    // dd($media);
     $auth = User::find($ads->user_id);
 
     $agent = [
@@ -101,7 +102,7 @@ class ListingController extends Controller
 
        
 
-        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink'));
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media'));
     }
 
     function editPropertiTentangProperti($slug='')  {
@@ -198,6 +199,13 @@ class ListingController extends Controller
 
         return redirect()->route('listing.control-panel.view.property', ['slug' => $ads->slug, 'navLink' => 'properti'])->with('success', 'Properti berhasil diperbarui.');
 
+    }
+
+    function setMediaUtama(Request $request,$ads_properties_id){
+        $AdsProperty =  AdsProperty::whereId($ads_properties_id)->first(); 
+        $AdsProperty->image = $request->url;
+        $AdsProperty->save(); 
+        return back()->with(['navLink' => 'galeri', 'success' => 'Media berhasil diperbarui.']);
     }
 
     public function create()

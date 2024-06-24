@@ -1,4 +1,33 @@
 <x-Layout.Vertical.Master>
+    @slot('css')
+    <link
+            href="{{asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css')}}"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <style>
+            .square {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* Membuat pembungkus berbentuk bujur sangkar */
+}
+
+.square-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Menyesuaikan gambar agar tetap proporsional */
+}
+
+        </style>
+    @endslot
+    @slot('js')
+     <!-- Magnific popup -->
+     <script src="{{asset('zenter/horizontal/assets/plugins/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
+        <script src="{{asset('zenter/horizontal/assets/pages/lightbox.js')}}"></script>
+    @endslot
     @slot('body') 
     <div class="row">
                                 <div class="col-lg-12">
@@ -22,7 +51,7 @@
                                                     <a class="nav-link  @if($navLink == 'properti') active @endif" data-toggle="tab" href="#properti" role="tab">Tentang Properti</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
+                                                    <a class="nav-link @if($navLink == 'galeri') active @endif" data-toggle="tab" href="#galeri" role="tab">Galeri</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
@@ -128,10 +157,35 @@
                                                                  <a href="{{route('listing.control-panel.properti.edit.tentang-properti',$ads['slug'])}}"><button class="btn btn-primary">Edit</button></a>
                                                          </div>
                                            
-                                                <div class="tab-pane p-3" id="messages" role="tabpanel">
-                                                    <p class="font-14 mb-0">
-                                                         
-                                                    </p>
+                                                <div class="tab-pane @if($navLink == 'galeri') active @endif  p-3" id="galeri" role="tabpanel">
+                                                    
+
+                                                <div class="container zoom-gallery">
+                                                    <div class="row">
+                                                        @foreach($media as $key => $md)
+                                                            <div class="col-md-4 mb-4">
+                                                                <div class="square">
+                                                                    <a href="{{ asset($md['url']) }}" title="Media {{ ++$key }}">
+                                                                        <img src="{{ asset($md['url']) }}" alt="" class="img-fluid square-img" />
+                                                                    </a>
+                                                                </div>
+                                                                @if($ads['image'] != $md['url'])
+                                                                <form action="{{route('listing.control-panel.properti.set.media.utama',['ads_properties_id'=>$ads['ads_properties_id']])}}" method="post">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <input type="hidden" name="url" value="{{$md['url']}}">
+                                                                    <button class="btn btn-primary mt-2">Jadikan Utama</button>
+                                                                </form>
+                                                                @else
+                                                                <button class="btn btn-success mt-2">Utama</button>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+
+
+                                                   
                                                 </div>
                                                 <div class="tab-pane p-3" id="settings" role="tabpanel">
                                                     <p class="font-14 mb-0">

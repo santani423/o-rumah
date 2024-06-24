@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/control-panel/property/view/{slug}', [Front\ListingController::class, 'viewProperty'])->name('control-panel.view.property');
         Route::get('/control-panel/property/edit/{slug}', [Front\ListingController::class, 'editPropertiTentangProperti'])->name('control-panel.properti.edit.tentang-properti');
         Route::put('/control-panel/property/update/{slug}', [Front\ListingController::class, 'updatePropertiTentangProperti'])->name('control-panel.properti.update.tentang-properti');
+        Route::put('/control-panel/property/update/media/utama/{ads_properties_id}', [Front\ListingController::class, 'setMediaUtama'])->name('control-panel.properti.set.media.utama');
 
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');

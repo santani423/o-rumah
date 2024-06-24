@@ -67,6 +67,24 @@
     });
 });
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Dropify
+    $('.dropify').dropify();
+
+    // Handle Image Modal
+    $('#imageModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var mediaId = button.data('media-id');
+        var modal = $(this);
+        modal.find('#mediaId').val(mediaId);
+    });
+});
+function setFomMediaId(id){
+   
+    $('#mediaIdValue').val(id);
+  
+}
         </script>
     @endslot
     @slot('body') 
@@ -221,7 +239,7 @@
                                                                 @else
                                                                 <button class="btn btn-success mt-2">Utama</button>
                                                                 @endif
-                                                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#imageModal" data-url="{{ $md['url'] }}">Edit</button>
+                                                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#imageModal" onclick="setFomMediaId(`{{ $md['id'] }}`)" data-url="{{ $md['url'] }}">Edit</button>
                                                                
                                                             </div>
                                                         @endforeach
@@ -239,17 +257,20 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body text-center">
-                                                            <div class="col-xl-6"> 
-                                                                            <input
-                                                                                type="file"
-                                                                                id="input-file-now"
-                                                                                class="dropify"
-                                                                            /> 
-                                                                </div>
+                                                                <form id="mediaForm" action="{{ route('listing.control-panel.properti.set.media.update',['ads_properties_id'=>$ads['ads_properties_id']]) }}" method="POST" enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <input type="hidden" name="mediaId" id="mediaIdValue">
+                                                                    <div class="col-xl-12">
+                                                                        <input type="file" id="input-file-now" class="dropify" name="media" required />
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary mt-3">Simpan Perubahan</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
 
                                                 <!-- Confirm Modal -->
                                                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">

@@ -76,11 +76,16 @@ class ListingController extends Controller
         ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id')
         ->first();
         // dd($ads);
-    $media = Media::where('model_id', $ads->ads_id)->select('disk', 'file_name')->get()->map(function ($item) {
-        return [
-            'url' => $item->disk . '/' . $item->file_name
-        ];
-    });
+        $media = Media::where('model_id', $ads->ads_id)
+        ->select('id', 'disk', 'file_name')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'url' => asset($item->disk . '/' . $item->file_name), // Menggunakan asset helper untuk URL yang benar
+                'id' => $item->id
+            ];
+        });
+    
     // dd($media);
     $auth = User::find($ads->user_id);
 
@@ -206,6 +211,34 @@ class ListingController extends Controller
         $AdsProperty->image = $request->url;
         $AdsProperty->save(); 
         return back()->with(['navLink' => 'galeri', 'success' => 'Media berhasil diperbarui.']);
+    }
+
+    function setMediaUpdate(Request $request, $ads_properties_id) {
+        // Temukan media berdasarkan ID
+        $media = Media::find($request->mediaId);
+        $properti = AdsProperty::whereId($ads_properties_id)->first();
+    
+        if (!$media) {
+            return back()->withErrors(['error' => 'Media tidak ditemukan.']);
+        }
+    
+        if ($properti['image'] != $media['url']) {
+            // Hapus gambar lama dari storage
+            $oldImagePath = $media->disk . '/' . $media->file_name;
+            Storage::disk('public')->delete($oldImagePath);
+        }
+    
+        // Simpan file baru
+        $image = $request->file('media');
+        $path = $image->store('/images/properti/property/' . $ads_properties_id, 'public');
+        
+        // Perbarui informasi media
+        $media->disk = '/storage/images/properti/property/' . $ads_properties_id;
+        $media->file_name = basename($path);
+        $media->save();
+    
+        // Redirect dengan pesan sukses
+        return back()->with(['success' => 'Media berhasil diperbarui.']);
     }
 
     public function create()

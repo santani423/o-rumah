@@ -1,6 +1,8 @@
+ 
+
 <a href="{{ $linkTujuan }}" style="text-decoration: none; color: inherit;">
     <div class="card">
-        <img class="card-img-top img-fluid" src="{{$image}}" alt="Card image cap" style="width: 100%; height: 200px;" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`">
+        <img class="card-img-top img-fluid" src="{{$image}}" alt="Card image cap"   onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`">
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>
             <h4 class="card-title font-20 mt-0 text-primary">{{$price}}</h4>

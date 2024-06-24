@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>{{$title}} O-Rumah</title>
-    <meta content="Admin Dashboard" name="description" />
+    <meta content="{{$title}}" name="description" />
     <meta content="Mannatthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ asset('android-chrome-512x512.png')}}">
+    <link rel="shortcut icon" href="{{ asset('assets/logo-o-rumah-crop.png')}}">
 
     <link href="{{asset('zenter/vertical/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('zenter/vertical/assets/css/icons.css')}}" rel="stylesheet" type="text/css">

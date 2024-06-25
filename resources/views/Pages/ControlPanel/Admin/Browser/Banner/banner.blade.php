@@ -7,6 +7,12 @@
             <a href="{{route('admin.nav.banner.create')}}" class="btn btn-primary float-right">Tambah Banner</a>
         </div>
         <div class="card-body">
+        @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -19,6 +25,9 @@
                             <th>Aktif</th>
                             <th>Tampilkan Pada</th>
                             <th>Urutan</th>
+                            <th>
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +42,9 @@
                                 <td>{{ $banner->is_active ? 'Ya' : 'Tidak' }}</td>
                                 <td>{{ $banner->show_on }}</td>
                                 <td>{{ $banner->order }}</td>
+                                <td>
+                                    <a href="{{route('admin.nav.banner.edit',$banner->id)}}" class="btn btn-primary">Edit</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -659,7 +659,7 @@ class AdminNavController extends Controller
         $banners = Banner::orderBy('name', 'asc')
             ->paginate(10)->items();
         // dd($banners);
-        return view('Pages/ControlPanel/Admin/Browser/banner', compact('banners'));
+        return view('Pages/ControlPanel/Admin/Browser/Banner/banner', compact('banners'));
 
         // return Inertia::render('Admin/Page/Banner/Index', ['banner' => $banner]);
     }
@@ -667,14 +667,14 @@ class AdminNavController extends Controller
     {
         $banners = Banner::orderBy('name', 'asc')
             ->paginate(10)->items();
-        return view('Pages/ControlPanel/Admin/Browser/create', compact('banners'));
+        return view('Pages/ControlPanel/Admin/Browser/Banner/create', compact('banners'));
         // return Inertia::render('Admin/Page/Banner/Create', ['banner' => $banner]);
     }
-    function bannerEdit()
+    function bannerEdit($id='')
     {
-        $banner = Banner::find(request('id'));
-
-        return Inertia::render('Admin/Page/Banner/Edit', ['banner' => $banner]);
+        $banner = Banner::whereId($id)->first();
+        return view('Pages/ControlPanel/Admin/Browser/Banner/edit', compact('banner'));
+        // return Inertia::render('Admin/Page/Banner/Edit', ['banner' => $banner]);
     }
     function bannerStore(Request $request)
     {
@@ -724,8 +724,9 @@ class AdminNavController extends Controller
         $banner->show_on = $request->show_on;
         $banner->order = $request->order;
         $banner->save();
+        return redirect()->route('admin.nav.banner')->with('success', 'Banner berhasil disimpan');
 
-        return response()->json(['message' => 'Banner updated successfully']);
+        // return response()->json(['message' => 'Banner updated successfully']);
     }
 
     function plans()

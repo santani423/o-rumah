@@ -146,11 +146,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/districts', 'districts')->name('nav.districts');
         Route::get('/citie', 'citie')->name('nav.citie');
         Route::get('/provinces', 'provinces')->name('nav.provinces');
+
         Route::get('/banner', 'banner')->name('nav.banner');
         Route::get('/banner/create', 'bannerCreate')->name('nav.banner.create');
-        Route::post('/banner/store', 'bannerStore')->name('nav.banner.store');
-        Route::post('/banner/updated/{id}', 'bannerUpdate')->name('nav.banner.updated');
+        Route::post('/banner/store', 'bannerStore')->name('nav.banner.store'); 
+        Route::put('/banner/updated/{id}', 'bannerUpdate')->name('nav.banner.updated');
         Route::get('/banner/edit/{id}', 'bannerEdit')->name('nav.banner.edit');
+
+        
         Route::get('/plans', 'plans')->name('nav.plans');
         Route::get('/website-ads-sections', 'websiteAdsSections')->name('nav.websiteAdsSections');
         Route::get('/settings', 'settings')->name('nav.settings');

@@ -17,7 +17,7 @@
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:type" content="website" />
 
-    <link rel="shortcut icon" href="{{ asset('assets/logo-o-rumah-crop.png')}}">
+    <link rel="shortcut icon" href="{{ asset($ogImage)}}">
     {{$css}}
     <style>
         .bg-custom {

@@ -24,7 +24,7 @@
             $('#searchInput').select2({
                 placeholder: 'Masukkan nilai pencarian...',
                 ajax: {
-                    url: '{{ route('tool.searchAds') }}',
+                    url: "{{ route('tool.searchAds') }}",
                     type: 'POST',
                     dataType: 'json',
                     delay: 250,
@@ -45,7 +45,7 @@
             }).on('select2:select', function (e) {
                 var data = e.params.data;
                 $.ajax({
-                    url: '{{ route('tool.showDistirct') }}',
+                    url: "{{ route('tool.showDistirct') }}",
                     type: 'POST',
                     data: {
                         code: data.id

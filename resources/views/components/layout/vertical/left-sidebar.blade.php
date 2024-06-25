@@ -43,12 +43,15 @@
                             <span> Dashboard </span>
                         </a>
                     </li>
+                    
+                        @if(Auth::user()->type == 'agen' || Auth::user()->type == 'agent' || Auth::user()->type == 'notaris' || Auth::user()->type == 'lbh')
                     <li>
                         <a href="{{route('member.lelang')}}" class="waves-effect">
                             <i class="mdi mdi-airplay"></i>
                             <span> Lelang </span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{route('member.plans')}}" class="waves-effect">
                             <i class="far fa-paper-plane"></i>
@@ -67,12 +70,15 @@
                             <span> Merchant </span>
                         </a>
                     </li>
+                    
+                        @if(Auth::user()->type == 'agen' || Auth::user()->type == 'agent' || Auth::user()->type == 'notaris' || Auth::user()->type == 'lbh')
                     <li>
                         <a href="{{route('member.pengajuan.kpr')}}" class="waves-effect">
                             <i class="mdi mdi-airplay"></i>
                             <span> Pengajuan KPR </span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{route('member.transaksi')}}" class="waves-effect">
                             <i class="mdi mdi-airplay"></i>

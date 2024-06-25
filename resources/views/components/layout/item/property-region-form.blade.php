@@ -84,7 +84,7 @@
         kecamatanSelect.addEventListener('change', function () {
             var selectedOption = kecamatanSelect.options[kecamatanSelect.selectedIndex];
             $.ajax({
-                url: '{{ route('tool.showDistirct') }}',
+                url: "{{ route('tool.showDistirct') }}",
                 type: 'POST',
                 data: {
                     code: selectedOption.value

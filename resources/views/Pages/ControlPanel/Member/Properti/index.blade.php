@@ -3,10 +3,12 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
+                @if(Auth::user()->type == 'agen' || Auth::user()->type == 'agent' || Auth::user()->type == 'notaris' || Auth::user()->type == 'lbh')
                 <div class="btn-group float-right">
                     <a href="{{route('member.properti.create')}}" class="btn btn-turquoise">Pasang Iklan</a>
                 </div>
-                <h4 class="page-title">Dashboard</h4>
+                @endif
+                <h4 class="page-title">Dashboard  </h4>
             </div>
         </div>
         <div class="clearfix"></div>

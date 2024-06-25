@@ -12,12 +12,13 @@ class PropertyRegionForm extends Component
     /**
      * Create a new component instance.
      */
-    public $url, $provinces;
-    public function __construct($url = null)
+    public $url, $provinces,$method;
+    public function __construct($url = null,$method='GET')
     {
         $provinces = Provinces::orderBy('name', 'asc')->get();
         $this->provinces = $provinces;
         $this->url = $url;
+        $this->method = $method;
     }
 
     /**

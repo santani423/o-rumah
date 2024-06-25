@@ -91,14 +91,12 @@ function setFomMediaId(id){
     <div class="row">
                                 <div class="col-lg-12">
                                     <div class="card">
-                                        <div class="card-body">
-            
-                                            <h4 class="mt-0 header-title">Default Tabs</h4>
+                                        <div class="card-body">  
                                             @if (session()->has('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+                                                <div class="alert alert-success">
+                                                    {{ session('success') }}
+                                                </div>
+                                            @endif
 
             
                                             <!-- Nav tabs -->
@@ -113,7 +111,7 @@ function setFomMediaId(id){
                                                     <a class="nav-link @if($navLink == 'galeri') active @endif" data-toggle="tab" href="#galeri" role="tab">Galeri</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+                                                    <a class="nav-link @if($navLink == 'lokasi') active @endif" data-toggle="tab" href="#lokasi" role="tab">Lokasi</a>
                                                 </li>
                                             </ul>
             
@@ -297,18 +295,36 @@ function setFomMediaId(id){
 
                                                    
                                                 </div>
-                                                <div class="tab-pane p-3" id="settings" role="tabpanel">
-                                                    <p class="font-14 mb-0">
-                                                        Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                                                        art party before they sold out master cleanse gluten-free squid
-                                                        scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                                                        art party locavore wolf cliche high life echo park Austin. Cred
-                                                        vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                                                        farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral,
-                                                        mustache readymade thundercats keffiyeh craft beer marfa
-                                                        ethical. Wolf salvia freegan, sartorial keffiyeh echo park
-                                                        vegan.
-                                                    </p>
+                                                <div class="tab-pane p-3 @if($navLink == 'lokasi') active @endif" id="lokasi" role="tabpanel">
+                                                <table class="table">
+                                                                
+                                                                <tbody> 
+                                                                       <tr>
+                                                                           <th scope="row" style="width: 200px">Provinsi</th>
+                                                                           <td>{{ $ads['name_provinces'] }}</td>
+                                                                       </tr>
+                                                                       <tr>
+                                                                           <th scope="row" style="width: 200px">Kabupaten/Kota</th>
+                                                                           <td>{{ $ads['name_cities'] }}</td>
+                                                                       </tr>
+                                                                       <tr>
+                                                                           <th scope="row" style="width: 200px">Kecamatan</th>
+                                                                           <td>{{ $ads['district_name'] }}</td>
+                                                                       </tr>
+                                                                       <tr>
+                                                                           <th scope="row" style="width: 200px">Area</th>
+                                                                           <td>{{ $ads['area'] }}</td>
+                                                                       </tr>
+                                                                       <tr>
+                                                                           <th scope="row" style="width: 200px">Alamat</th>
+                                                                           <td>{{ $ads['address'] }}</td>
+                                                                       </tr>
+                                                                </tbody>
+                                                                </table>
+                                                                <a href="{{route('listing.control-panel.properti.edit.addres',$ads['slug'])}}"><button class="btn btn-primary">Edit</button></a>
+                                                        
+                                          
+                                              
                                                 </div>
                                             </div>
             

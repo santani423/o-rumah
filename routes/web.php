@@ -83,6 +83,8 @@ Route::middleware('auth')->group(function () {
         Route::get('', [Front\ListingController::class, 'index'])->name('index');
         Route::get('/control-panel/property/view/{slug}', [Front\ListingController::class, 'viewProperty'])->name('control-panel.view.property');
         Route::get('/control-panel/property/edit/{slug}', [Front\ListingController::class, 'editPropertiTentangProperti'])->name('control-panel.properti.edit.tentang-properti');
+        Route::get('/control-panel/addres/edit/{slug}', [Front\ListingController::class, 'editPropertiAddres'])->name('control-panel.properti.edit.addres');
+        Route::put('/control-panel/addres/update/addres/{adsId}', [Front\ListingController::class, 'updatePropertiAddres'])->name('control-panel.properti.update.addres');
         Route::put('/control-panel/property/update/{slug}', [Front\ListingController::class, 'updatePropertiTentangProperti'])->name('control-panel.properti.update.tentang-properti');
         Route::put('/control-panel/property/update/media/utama/{ads_properties_id}', [Front\ListingController::class, 'setMediaUtama'])->name('control-panel.properti.set.media.utama');
         Route::put('/control-panel/property/update/media/update/{ads_properties_id}', [Front\ListingController::class, 'setMediaUpdate'])->name('control-panel.properti.set.media.update');

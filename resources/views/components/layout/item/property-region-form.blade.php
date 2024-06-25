@@ -1,7 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <form action="{{$url}}" method="get">
+            <form action="{{$url}}" method="post">
+                @csrf
+                @method($method)
                 <div class="card-body">
                     <input type="hidden" id="lat" name="lat" />
                     <input type="hidden" id="lng" name="lng" />

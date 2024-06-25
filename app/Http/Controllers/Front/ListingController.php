@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class ListingController extends Controller
 {
@@ -73,7 +74,10 @@ class ListingController extends Controller
     function viewProperty(Request $request,$slug=''){
         $ads = Ads::where('ads.slug', $slug)
         ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
-        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id')
+        ->join('id_districts','id_districts.id','=','ads_properties.district_id')
+        ->join('id_cities','id_cities.code','=','id_districts.city_code')
+        ->join('id_provinces','id_provinces.code','=','id_cities.province_code')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
         ->first();
         // dd($ads);
         $media = Media::where('model_id', $ads->ads_id)
@@ -239,6 +243,57 @@ class ListingController extends Controller
     
         // Redirect dengan pesan sukses
         return back()->with(['success' => 'Media berhasil diperbarui.']);
+    }
+
+
+    function editPropertiAddres($slug){
+        $ads = Ads::where('ads.slug', $slug)
+        ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
+        ->join('id_districts','id_districts.id','=','ads_properties.district_id')
+        ->join('id_cities','id_cities.code','=','id_districts.city_code')
+        ->join('id_provinces','id_provinces.code','=','id_cities.province_code')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
+        ->first();
+        return view('Pages/ControlPanel/Member/Properti/Edit/addres',compact('ads'));
+    }
+
+    function updatePropertiAddres(Request $request,$adsId = '') {
+        $validator = Validator::make($request->all(), [
+            'lat' => 'required',
+            'lng' => 'required',
+            'district' => 'required', 
+            'area' => 'required',
+            'adres' => 'required',
+        ], [
+            'lat.required' => 'Latitude harus diisi.',
+            'lat.numeric' => 'Latitude harus berupa angka.',
+            'lat.between' => 'Latitude harus antara -90 dan 90.',
+            'lng.required' => 'Longitude harus diisi.',
+            'lng.numeric' => 'Longitude harus berupa angka.',
+            'lng.between' => 'Longitude harus antara -180 dan 180.',
+            'district.required' => 'Kecamatan harus diisi.',
+            'district.string' => 'Kecamatan harus berupa teks.',
+            'district.max' => 'Kecamatan tidak boleh lebih dari 255 karakter.',
+            'districtId.required' => 'ID kecamatan harus diisi.',
+            'districtId.integer' => 'ID kecamatan harus berupa angka.',
+            'districtId.exists' => 'ID kecamatan tidak ditemukan.',
+            'area.required' => 'Area harus diisi.',
+            'area.string' => 'Area harus berupa teks.',
+            'area.max' => 'Area tidak boleh lebih dari 255 karakter.',
+            'adres.required' => 'Alamat harus diisi.',
+            'adres.string' => 'Alamat harus berupa teks.',
+            'adres.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
+        ]);
+        $AdsProperty = AdsProperty::where('ads_id',$adsId)->first();
+        $AdsProperty->lat = $request->lat;
+        $AdsProperty->lng = $request->lng;
+        $AdsProperty->address = $request->district;
+        $AdsProperty->district_id = $request->districtId;
+        $AdsProperty->area = $request->area;
+        $AdsProperty->address = $request->adres;
+        $AdsProperty->save(); 
+        $ads = Ads::whereId($AdsProperty->ads_id)->first();
+        return redirect()->route('listing.control-panel.view.property', ['slug' => $ads->slug, 'navLink' => 'lokasi'])->with('success', 'Alamat berhasil diperbarui.');
     }
 
     public function create()

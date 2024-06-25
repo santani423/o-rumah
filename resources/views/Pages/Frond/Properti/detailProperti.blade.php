@@ -1,4 +1,4 @@
-<x-Layout.Horizontal.Master>
+<x-Layout.Horizontal.Master :title="$ads->title" :ogImage="$ads->image">
 
 
     @slot('js')
@@ -25,7 +25,7 @@
             const likeButton = document.getElementById('likeButton');
             likeButton.addEventListener('click', function () {
                 const addId = '{{$ads->ads_id}}'; // Pastikan ini adalah ID iklan yang benar
-                const agentId = '{{$agent['id']}}'; // Pastikan ini adalah ID agen yang benar
+                const agentId = "{{$agent['id']}}" // Pastikan ini adalah ID agen yang benar
                 const type = 'properti'; // Pastikan ini adalah tipe yang benar
                 $.ajax({
                     url: "{{ route('ad.like') }}",
@@ -61,6 +61,7 @@
     @endslot
 
     @slot('body')
+   
     <div class="row">
         <div class="col-lg-12">
             <div class="card">

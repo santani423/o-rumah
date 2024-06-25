@@ -13,7 +13,7 @@
     <!-- Open Graph tags -->
     <meta property="og:title" content="{{$title}} - O-Rumah" />
     <meta property="og:description" content="{{$title}}" />
-    <meta property="og:image" content="{{ asset('assets/logo-o-rumah-crop.png')}}" />
+    <meta property="og:image" content="{{ asset($ogImage)}}" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:type" content="website" />
 

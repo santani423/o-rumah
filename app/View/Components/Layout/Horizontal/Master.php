@@ -11,8 +11,8 @@ class Master extends Component
     /**
      * Create a new component instance.
      */
-    public $title, $body, $css, $js;
-    public function __construct($title = '', $body = '', $css = '', $js = '')
+    public $title, $body, $css, $js,$ogImage;
+    public function __construct($title = '', $body = '', $css = '', $js = '',$ogImage='assets/logo-o-rumah-crop.png')
     {
         $this->title = $title;
         $this->body = $body;

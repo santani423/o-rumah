@@ -16,6 +16,7 @@ trait PropertyRepository
 {
     private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10)
     {
+        // dd($perPage);
         $adsLists = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
             ->join('media', function ($join) {
                 $join->on('media.model_id', '=', 'ads.id')

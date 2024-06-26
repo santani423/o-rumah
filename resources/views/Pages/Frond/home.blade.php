@@ -123,7 +123,7 @@
 
 
             // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load(`{{ route('tool.getAdsListsWithDistance') }}` + '?latitude=' + lat + '&longitude=' + long);
+            $('#adsListsWithDistance').load(`{{ route('tool.getAdsListsWithDistance') }}` + '?latitude=' + lat + '&longitude=' + long+'&perPage=12');
         }
 
 
@@ -262,6 +262,12 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+        <div class="row mt-2">
+    <div class="col-12 d-flex justify-content-center">
+        <button class="btn btn-primary btn-lg mt-3" id="nextButton">Next</button>
+    </div>
+</div>
+
         <!-- <div class="row mt-5">
             <div class="col-12 text-center">
                 <h4 class="text-white">Mengapa ORumah</h4>

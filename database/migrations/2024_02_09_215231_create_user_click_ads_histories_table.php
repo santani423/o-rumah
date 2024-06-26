@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -40,9 +39,11 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('user_click_ads_histories', function (Blueprint $table) {
+            $table->dropForeign(['advertising_points_id']);
             $table->dropForeign(['user_id']);
             $table->dropForeign(['ads_id']);
         });
+
         Schema::dropIfExists('user_click_ads_histories');
     }
 };

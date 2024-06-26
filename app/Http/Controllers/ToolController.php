@@ -12,6 +12,7 @@ use App\Services\FoodService;
 use App\Services\MarchantService;
 
 use App\Services\PropertyRepository;
+use Illuminate\Support\Facades\DB;
 
 class ToolController extends Controller
 {
@@ -22,7 +23,7 @@ class ToolController extends Controller
     public function searchAds(Request $request)
     {
         $query = $request->input('search'); // asumsikan inputan pencarian disimpan dalam parameter 'query'
-        $results = \DB::table('id_districts')
+        $results = DB::table('id_districts')
             ->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('code', 'like', '%' . $query . '%')
                     ->orWhere('city_code', 'like', '%' . $query . '%')
@@ -37,7 +38,7 @@ class ToolController extends Controller
     {
         $query = $request->input('code'); // asumsikan inputan pencarian disimpan dalam parameter 'query'
 
-        $results = \DB::table('id_districts') // ganti 'nama_tabel' dengan nama tabel yang sesuai
+        $results = DB::table('id_districts') // ganti 'nama_tabel' dengan nama tabel yang sesuai
             ->where('code', $query)->where('meta', '!=', null)->first();
 
         return response()->json($results);
@@ -77,10 +78,12 @@ class ToolController extends Controller
     function adsListsWithDistance(Request $request)
     {
         // dd($request);
-        $searchQuery = request()->input('search');
-        $radius = 300;
-
-        $adsLists = $this->getAdsListsWithDistance($request->latitude, $request->longitude, $radius, $searchQuery, $request->kategori);
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+        $radius = $request->input('radius', 300); // default radius of 300 if not provided
+        $searchQuery = $request->input('searchQuery', '');
+        $perPage = $request->input('perPage', 10);
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));

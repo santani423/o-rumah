@@ -46,8 +46,8 @@ class PropertiBaruSeeder extends Seeder
                     'ads_id' => $ad->id,
                     'district_id' => rand(1, 100), // Contoh nilai random untuk district_id
                     'district_name' => 'Nama Distrik',
-                    'lat' => 0.0000000,
-                    'lng' => 0.0000000,
+                    'lat' => -6.207168,
+                    'lng' => 106.622738,
                     'location' => DB::raw("ST_GeomFromText('POINT(0 0)')"),
                     'area' => 'Area ' . $i,
                     'address' => 'Alamat ' . $i,

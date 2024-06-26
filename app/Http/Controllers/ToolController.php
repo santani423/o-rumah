@@ -83,9 +83,11 @@ class ToolController extends Controller
         $radius = $request->input('radius', 300); // default radius of 300 if not provided
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
-        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage);
+        $page = $request->input('page', 10);
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage,$page);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
+        // dd($adsLists);
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
 

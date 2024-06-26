@@ -1,6 +1,4 @@
-<div class="col-12">
-    <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
-</div>
+ 
 @foreach($adsLists as $ads)
     <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
 
@@ -12,5 +10,5 @@
             @endslot
         </x-Layout.Item.ProductItem>
 
-    </div><!-- end col -->
+    </div> 
 @endforeach

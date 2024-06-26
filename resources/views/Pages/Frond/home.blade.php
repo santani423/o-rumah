@@ -150,6 +150,41 @@
 
         
     </script>
+      <script>
+        let currentPage = 1;
+        const perPage = 5;
+        const latitude = -6.191491;
+        const longitude = 106.617169;
+        const baseUrl = 'http://127.0.0.1:8000/tool/getAdsListsWithDistance';
+
+        function loadAds(page) {
+            const url = `${baseUrl}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+            document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    appendAds(data);
+                })
+                .catch(error => console.error('Error:', error))
+                .finally(() => {
+                    document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+                });
+        }
+
+        function appendAds(html) {
+            const container = document.getElementById('adsListsWithDistance');
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        document.getElementById('nextButton').addEventListener('click', function() {
+            currentPage++;
+            loadAds(currentPage);
+        });
+
+        // Load the first set of ads when the page loads
+        loadAds(currentPage);
+    </script>
     @endslot
     @slot('body')
 
@@ -264,8 +299,20 @@
         </div>
         <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">
-        <button class="btn btn-primary btn-lg mt-3" id="nextButton">Next</button>
+    <button type="button" class="btn   "  
+        style="background-color: #47C8C5;
+            border-color: #47C8C5;
+            color: white" id="nextButton">
+        Next <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+    </button>
     </div>
+    <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-center">
+                
+            </div>
+        </div>
 </div>
 
         <!-- <div class="row mt-5">

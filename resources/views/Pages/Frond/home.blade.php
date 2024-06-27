@@ -108,77 +108,78 @@
     @endslot
     @slot('js')
     <script>
-        let currentPage = 1;
-        const perPage = 5;
-        let latitude, longitude;
+    let currentPage = 1;
+    const perPage = 5;
+    let latitude = null;
+    let longitude = null;
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-            }
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+            loadAds(currentPage); // Load ads with latitude and longitude as null
         }
+    }
 
-        function showPosition(position) {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            loadAds(currentPage);
+    function showPosition(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        loadAds(currentPage);
+    }
+
+    function showError(error) {
+        let errorMessage = "";
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                errorMessage = "User denied the request for Geolocation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                errorMessage = "Location information is unavailable.";
+                break;
+            case error.TIMEOUT:
+                errorMessage = "The request to get user location timed out.";
+                break;
+            case error.UNKNOWN_ERROR:
+                errorMessage = "An unknown error occurred.";
+                break;
         }
+        document.getElementById("location").innerHTML = errorMessage;
+        loadAds(currentPage); // Load ads with latitude and longitude as null
+    }
 
-        function showError(error) {
-            let errorMessage = "";
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMessage = "User denied the request for Geolocation.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMessage = "Location information is unavailable.";
-                    break;
-                case error.TIMEOUT:
-                    errorMessage = "The request to get user location timed out.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    errorMessage = "An unknown error occurred.";
-                    break;
-            }
-            document.getElementById("location").innerHTML = errorMessage;
-        }
+    function loadAds(page) {
+    
+        const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+        document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
-        function loadAds(page) {
-            if (latitude === undefined || longitude === undefined) {
-                return;
-            }
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                appendAds(data);
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+            });
+    }
 
-            const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-            document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
+    function appendAds(html) {
+        const container = document.getElementById('adsListsWithDistance');
+        container.insertAdjacentHTML('beforeend', html);
+    }
 
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    appendAds(data);
-                })
-                .catch(error => console.error('Error:', error))
-                .finally(() => {
-                    document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
-                });
-        }
+    document.getElementById('nextButton').addEventListener('click', function() {
+        currentPage++;
+        loadAds(currentPage);
+    });
 
-        function appendAds(html) {
-            const container = document.getElementById('adsListsWithDistance');
-            container.insertAdjacentHTML('beforeend', html);
-        }
+    // Check location and load the first set of ads when the page loads
+    window.onload = function () {
+        getLocation();
+    };
+</script>
 
-        document.getElementById('nextButton').addEventListener('click', function() {
-            currentPage++;
-            loadAds(currentPage);
-        });
-
-        // Check location and load the first set of ads when the page loads
-        window.onload = function () {
-            getLocation();
-        };
-    </script>
     @endslot
     @slot('body')
 
@@ -390,7 +391,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div id="location" class="text-white"></div> -->
+        <div id="location" class="text-white"></div>
     </div>
     @endslot
 

@@ -87,7 +87,7 @@ class ToolController extends Controller
         $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage,$page);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
-        // dd($adsLists);
+        
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
 

@@ -48,10 +48,15 @@
         </div>
        
         <div class="card-link d-flex align-items-center mr-2">
-            @if($content)  
-                <i class="bi bi-geo-alt-fill"></i>
-                <span class="mt-3 mr-3">{{$content}}</span>
-            @endif
-        </div>
+        @if ( is_int($content)  > 0)
+    <div class="card-link d-flex align-items-center mr-2">
+        <i class="bi bi-geo-alt-fill"></i>
+        <span class="mt-3 mr-3">{{ $content }}</span>
+    </div>
+@endif
+
+
+</div>
+
     </div>
 </a>

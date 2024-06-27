@@ -26,7 +26,7 @@ class PropertiBaruSeeder extends Seeder
 
                 $title = $faker->sentence;
                 $ad = Ads::create([
-                    'title' => $title,
+                    'title' => '12345'.$title,
                     'slug' => Str::slug($title, '-'),
                     'description' => $faker->paragraphs(2, true),
                     'type' => 'property',

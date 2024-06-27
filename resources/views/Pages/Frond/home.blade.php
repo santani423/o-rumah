@@ -108,57 +108,49 @@
     @endslot
     @slot('js')
     <script>
+        let currentPage = 1;
+        const perPage = 5;
+        let latitude, longitude;
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
                 document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-
             }
         }
 
         function showPosition(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-
-
-            // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load(`{{ route('tool.getAdsListsWithDistance') }}` + '?latitude=' + lat + '&longitude=' + long+'&perPage=12');
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            loadAds(currentPage);
         }
-
 
         function showError(error) {
+            let errorMessage = "";
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    document.getElementById("location").innerHTML = "User denied the request for Geolocation."
+                    errorMessage = "User denied the request for Geolocation.";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    document.getElementById("location").innerHTML = "Location information is unavailable."
+                    errorMessage = "Location information is unavailable.";
                     break;
                 case error.TIMEOUT:
-                    document.getElementById("location").innerHTML = "The request to get user location timed out."
+                    errorMessage = "The request to get user location timed out.";
                     break;
                 case error.UNKNOWN_ERROR:
-                    document.getElementById("location").innerHTML = "An unknown error occurred."
+                    errorMessage = "An unknown error occurred.";
                     break;
             }
+            document.getElementById("location").innerHTML = errorMessage;
         }
 
-        window.onload = function () {
-            getLocation();
-        };
-
-        
-    </script>
-      <script>
-        let currentPage = 1;
-        const perPage = 5;
-        const latitude = -6.191491;
-        const longitude = 106.617169;
-        const baseUrl = 'http://127.0.0.1:8000/tool/getAdsListsWithDistance';
-
         function loadAds(page) {
-            const url = `${baseUrl}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+            if (latitude === undefined || longitude === undefined) {
+                return;
+            }
+
+            const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
             document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
             fetch(url)
@@ -182,8 +174,10 @@
             loadAds(currentPage);
         });
 
-        // Load the first set of ads when the page loads
-        loadAds(currentPage);
+        // Check location and load the first set of ads when the page loads
+        window.onload = function () {
+            getLocation();
+        };
     </script>
     @endslot
     @slot('body')
@@ -293,9 +287,7 @@
 
         <div class="row mt-5" id="adsListsWithDistance">
 
-            <div class="spinner-border text-light" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+            
         </div>
         <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">

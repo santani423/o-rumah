@@ -116,6 +116,9 @@ function setFomMediaId(id){
                                                 <li class="nav-item">
                                                     <a class="nav-link @if($navLink == 'booster') active @endif" data-toggle="tab" href="#booster" role="tab">Booster</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link @if($navLink == 'depositAds') active @endif" data-toggle="tab" href="#depositAds" role="tab">Titip Absen</a>
+                                                </li>
                                             </ul>
             
                                             <!-- Tab panes -->
@@ -389,6 +392,10 @@ function setFomMediaId(id){
                                                     @endforeach
                                                 </tbody>
                                             </table>
+                                                </div>
+                                                <div class="tab-pane p-3 @if($navLink == 'depositAds') active @endif" id="depositAds" role="tabpanel">
+                                                    
+                                                <p>deposit</p>
                                                 </div>
                                             </div>
             

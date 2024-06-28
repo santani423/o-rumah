@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\AdsProperty;
 use App\Models\Kpr;
 use App\Models\User;
+use App\Models\bosterAdsTYpe;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -109,9 +110,12 @@ class ListingController extends Controller
     ];
     $navLink = $request->navLink;
 
+    $bosterAdsTYpe = bosterAdsTYpe::where('type','property')->get();
+    
+
        
 
-        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media'));
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsTYpe'));
     }
 
     function editPropertiTentangProperti($slug='')  {

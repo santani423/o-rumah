@@ -340,25 +340,26 @@ function setFomMediaId(id){
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         </div>
                                                         <div class="modal-body">
+                                                            <form action=" " method="post">
                                                         <div class="form-group row">
+                                                                @csrf
                                                                 <label
                                                                     class="col-sm-2 col-form-label"
-                                                                    >Select</label
+                                                                    >Posisi Booster</label
                                                                 >
                                                                 <div class="col-sm-10">
                                                                     <select
                                                                         class="form-control"
                                                                     >
-                                                                        <option>Select</option>
-                                                                        <option>
-                                                                            Large select
-                                                                        </option>
-                                                                        <option>
-                                                                            Small select
-                                                                        </option>
+                                                                        <option>Pilih Posisi</option> 
+                                                                        @foreach($bosterAdsTYpe as $bat)
+                                                                            <option value="{{$bat->id}}">{{$bat->title}}</option> 
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <button class="btn btn-primary">Pasang</button>
+                                                        </form>
                                                         </div>
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->

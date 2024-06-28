@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Storage;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
+use App\Services\PropertyRepository;
 
 class ListingController extends Controller
 {
+    use PropertyRepository;
     public function index(Request $request)
     {
         // $properties = AdsProperty::paginate(10)->items();
@@ -119,9 +121,19 @@ class ListingController extends Controller
 
     $bosterAdsTYpe = bosterAdsTYpe::where('type','property')->get();
     
+    $latitude = $request->input('latitude');
+    $longitude = $request->input('longitude');
+    $radius = $request->input('radius');
+    $searchQuery = $request->input('searchQuery');
+    $perPage = $request->input('perPage', 10);
+    $page = $request->input('page', 3);
+    $code = $request->input('code', 'PTYHOME');
+    $slug = $request->input('slug');
+
+    $position = $this->getPropertyPosition($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $code, $slug);
 
        
-
+    // dd($position);
         return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsTYpe','BosterAds'));
     }
 

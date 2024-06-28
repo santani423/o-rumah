@@ -307,6 +307,7 @@ Route::get('/tool/selectKabupatenKota', [ToolController::class, 'selectKabupaten
 Route::get('/tool/kecamatanSelect', [ToolController::class, 'kecamatanSelect'])->name('tool.kecamatanSelect');
 Route::post('/tool/cekJudul', [ToolController::class, 'cekJudul'])->name('tool.cekJudul');
 Route::get('/tool/getAdsListsWithDistance', [ToolController::class, 'adsListsWithDistance'])->name('tool.getAdsListsWithDistance');
+Route::get('/tool/getAdsListsWithDistance/booster/home', [ToolController::class, 'adsListsWithDistanceBoosterHome'])->name('tool.getAdsListsWithDistance.booster.home');
 Route::get('/tool/getFoodListsWithDistance', [ToolController::class, 'getFoodListsWithDistance'])->name('tool.getFoodListsWithDistance');
 Route::get('/tool/getMarchantListsWithDistance', [ToolController::class, 'getMarchantListsWithDistance'])->name('tool.getMarchantListsWithDistance');
 Route::get('/tool/tes', [ToolController::class, 'tes'])->name('tool.tes');

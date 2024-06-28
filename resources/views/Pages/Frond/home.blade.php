@@ -112,6 +112,7 @@
     const perPage = 5;
     let latitude = null;
     let longitude = null;
+    let isFirstLoad = true;
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -147,27 +148,56 @@
         document.getElementById("location").innerHTML = errorMessage;
         loadAds(currentPage); // Load ads with latitude and longitude as null
     }
-
-    function loadAds(page) {
     
-        const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-        document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
+function loadAds(page) {
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    
+    document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
+
+    if (isFirstLoad) {
+        // Fetch urlBooster first only on the first load
+        fetch(urlBooster)
+            .then(response => response.text())
+            .then(data => {
+                appendAdsBooster(data, 'adsListsWithDistance');
+                // Set the flag to false after the first load
+                isFirstLoad = false;
+                // Fetch the main url after urlBooster is done
+                return fetch(url);
+            })
+            .then(response => response.text())
+            .then(data => {
+                appendAds(data, 'adsListsWithDistance');
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+            });
+    } else {
+        // Fetch the main url if it's not the first load
         fetch(url)
             .then(response => response.text())
             .then(data => {
-                appendAds(data);
+                appendAds(data, 'adsListsWithDistance');
             })
             .catch(error => console.error('Error:', error))
             .finally(() => {
                 document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
             });
     }
+}
 
-    function appendAds(html) {
-        const container = document.getElementById('adsListsWithDistance');
-        container.insertAdjacentHTML('beforeend', html);
-    }
+function appendAdsBooster(html, containerId) {
+    const container = document.getElementById(containerId);
+    container.insertAdjacentHTML('beforeend', html);
+}
+
+function appendAds(html, containerId) {
+    const container = document.getElementById(containerId);
+    container.insertAdjacentHTML('beforeend', html);
+}
 
     document.getElementById('nextButton').addEventListener('click', function() {
         currentPage++;
@@ -285,8 +315,12 @@
         </div>
 
         <!-- end wrapper -->
-
+        <div class="row mt-5" id="urlBooster">
         <div class="row mt-5" id="adsListsWithDistance">
+
+            
+        </div>
+      
 
             
         </div>

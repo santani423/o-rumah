@@ -90,6 +90,22 @@ class ToolController extends Controller
         
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
+    function adsListsWithDistanceBoosterHome(Request $request)
+    {
+        // dd($request);
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+        $radius = $request->input('radius', 300); // default radius of 300 if not provided
+        $searchQuery = $request->input('searchQuery', '');
+        $perPage = $request->input('perPage', 10);
+        $page = $request->input('page', 10);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page);
+        // dd($adsLists);
+        // return response()->json(['adsLists' => $adsLists]);
+        // return 'ok';
+        
+        return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
+    }
 
     function tes()
     {

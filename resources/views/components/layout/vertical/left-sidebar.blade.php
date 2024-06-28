@@ -7,7 +7,7 @@
     <div class="topbar-left bg-dark">
         <div class="text-center">
             <a href="/" class="logo">
-                <img src="{{ asset('assets/logo.png') }}" alt="" class="logo-large">
+                <img src="{{ asset('assets/logo.png') }}" alt="" class="logo-orumah img-fluid">
             </a>
         </div>
     </div>

@@ -62,7 +62,7 @@ trait PropertyRepository
 
     return $adsLists;
 }
-private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3)
+private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3,$code='PTYHOME')
 {
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
@@ -70,10 +70,14 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
                 ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
         })
         ->join('users', 'users.id', '=', 'ads.user_id')
-        ->join('boster_ads', function ($join) {
+        ->join('boster_ads', function ($join)  use ($code) {
             $join->on('ads.id', '=', 'boster_ads.ads_id')
-                ->whereRaw('boster_ads.created_at = (SELECT MAX(created_at) FROM boster_ads WHERE ads_id = ads.id)');
+                ->whereRaw('boster_ads.created_at = (SELECT MAX(ba.created_at) FROM boster_ads ba 
+                    JOIN boster_ads_t_ypes bat ON ba.booster_type_id = bat.id 
+                    WHERE ba.ads_id = ads.id AND bat.code = ?)', [$code]);
         })
+        // ->join('boster_ads_t_ypes','boster_ads_t_ypes.id','=','boster_ads.booster_type_id')
+        // ->where('boster_ads_t_ypes.code','PTYHOME')
         ->where('ads.type', 'property')
         ->where('ads.is_active', 1)
         ->select(

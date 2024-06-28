@@ -113,6 +113,9 @@ function setFomMediaId(id){
                                                 <li class="nav-item">
                                                     <a class="nav-link @if($navLink == 'lokasi') active @endif" data-toggle="tab" href="#lokasi" role="tab">Lokasi</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link @if($navLink == 'booster') active @endif" data-toggle="tab" href="#booster" role="tab">Booster</a>
+                                                </li>
                                             </ul>
             
                                             <!-- Tab panes -->
@@ -325,6 +328,41 @@ function setFomMediaId(id){
                                                         
                                           
                                               
+                                                </div>
+                                                <div class="tab-pane p-3 @if($navLink == 'booster') active @endif" id="booster" role="tabpanel">
+                                                    
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-sm">Booster</button>
+                                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="boosterModal" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0" id="boosterModal">Booster</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        <div class="form-group row">
+                                                                <label
+                                                                    class="col-sm-2 col-form-label"
+                                                                    >Select</label
+                                                                >
+                                                                <div class="col-sm-10">
+                                                                    <select
+                                                                        class="form-control"
+                                                                    >
+                                                                        <option>Select</option>
+                                                                        <option>
+                                                                            Large select
+                                                                        </option>
+                                                                        <option>
+                                                                            Small select
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div>
                                                 </div>
                                             </div>
             

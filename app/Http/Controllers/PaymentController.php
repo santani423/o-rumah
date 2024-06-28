@@ -31,7 +31,7 @@ class PaymentController extends Controller
     {
 
         // $request->description = 'Langganan bulanan';
-        $request->amount = 500000; // Rp 500.000
+        // $request->amount = 500000; // Rp 500.000
         // $request->payer_email = 'pelanggan@example.com';
         // $request->slug = 'gold';
 

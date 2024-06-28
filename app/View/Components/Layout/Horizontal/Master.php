@@ -14,10 +14,12 @@ class Master extends Component
     public $title, $body, $css, $js,$ogImage;
     public function __construct($title = '', $body = '', $css = '', $js = '',$ogImage='assets/logo-o-rumah-crop.png')
     {
+        
         $this->title = $title;
         $this->body = $body;
         $this->css = $css;
         $this->js = $js;
+        $this->ogImage = $ogImage;
     }
 
     /**

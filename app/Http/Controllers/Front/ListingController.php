@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Ads;
 use App\Models\Media;
 use App\Models\AdsProperty;
+use App\Models\bosterAds;
 use App\Models\Kpr;
 use App\Models\User;
 use App\Models\bosterAdsTYpe;
@@ -73,6 +74,7 @@ class ListingController extends Controller
         // ]);
     }
     function viewProperty(Request $request,$slug=''){
+        $auth = Auth::user();
         $ads = Ads::where('ads.slug', $slug)
         ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
         ->join('id_districts','id_districts.id','=','ads_properties.district_id')
@@ -90,8 +92,13 @@ class ListingController extends Controller
                 'id' => $item->id
             ];
         });
-    
-    // dd($media);
+        $BosterAds = BosterAds::join('boster_ads_t_ypes','boster_ads_t_ypes.id','=','boster_ads.booster_type_id')
+        ->where('boster_ads.ads_id', $ads->ads_id)
+        ->where('boster_ads.user_id', $auth->id)
+        ->select('boster_ads_t_ypes.title','boster_ads.created_at')
+        ->orderBy('created_at','DESC')
+        ->get();
+    // dd($BosterAds);
     $auth = User::find($ads->user_id);
 
     $agent = [
@@ -115,7 +122,7 @@ class ListingController extends Controller
 
        
 
-        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsTYpe'));
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsTYpe','BosterAds'));
     }
 
     function editPropertiTentangProperti($slug='')  {

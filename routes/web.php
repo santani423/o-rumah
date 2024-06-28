@@ -21,7 +21,7 @@ use App\Http\Controllers\KprFileBankController;
 use App\Http\Controllers\Front\ProfileController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\Auth\PasswordController;
-
+use App\Http\Controllers\BosterAdsController;
 use App\Http\Controllers\Visitor\VisitorKprController;
 
 /*
@@ -189,6 +189,11 @@ Route::middleware('auth')->group(function () {
     });
     Route::controller(ManagementAdsController::class)->group(function () {
         Route::post('/managementAds/set-actifity', 'setActifity')->name('managementAds.setActifity');
+
+    });
+
+    Route::controller(BosterAdsController::class)->group(function () {
+        Route::post('/boosterAds', 'store')->name('boosterAds.store');
 
     });
 

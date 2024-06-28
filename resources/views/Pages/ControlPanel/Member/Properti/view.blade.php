@@ -340,18 +340,20 @@ function setFomMediaId(id){
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action=" " method="post">
-                                                        <div class="form-group row">
+                                                        <form action="{{route('boosterAds.store')}}" method="post">
+                                                            <div class="form-group row">
                                                                 @csrf
+                                                                <input type="hidden" name="ads_id" value="{{$ads->ads_id}}">
                                                                 <label
                                                                     class="col-sm-2 col-form-label"
                                                                     >Posisi Booster</label
                                                                 >
                                                                 <div class="col-sm-10">
                                                                     <select
-                                                                        class="form-control"
+                                                                        class="form-control" name="booster_id"  required
                                                                     >
-                                                                        <option>Pilih Posisi</option> 
+
+                                                                        <option value="">Pilih Posisi</option> 
                                                                         @foreach($bosterAdsTYpe as $bat)
                                                                             <option value="{{$bat->id}}">{{$bat->title}}</option> 
                                                                         @endforeach
@@ -363,7 +365,30 @@ function setFomMediaId(id){
                                                         </div>
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
+                                                
                                             </div>
+
+
+
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Booster</th>
+                                                        <th>Di Terapkan Pada</th>
+                                                         
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($BosterAds as $key => $ba)
+                                                    <tr>
+                                                        <th scope="row">{{++$key}}</th>
+                                                        <td>{{$ba->title}}</td>
+                                                        <td>{{$ba->created_at}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                                 </div>
                                             </div>
             

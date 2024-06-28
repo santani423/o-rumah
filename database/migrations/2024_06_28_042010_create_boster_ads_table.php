@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('ads_id');
+            $table->integer('booster_type_id');
             $table->integer('urutan');
             $table->string('title', 255);
             $table->timestamp('deleted_at')->nullable();

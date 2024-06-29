@@ -57,6 +57,27 @@
             width: auto; /* Lebar gambar otomatis mengikuti tinggi gambar */
         }
     </style>
+    <style>
+    .bg-custom {
+        background-color: #47C8C5;
+        color: white; /* Warna teks putih untuk kontras yang baik */
+        padding: 20px; /* Memberikan padding */
+    }
+
+    .bg-custom h6 {
+        color: white; /* Warna teks header putih */
+    }
+
+    .bg-custom p, .bg-custom a {
+        color: white; /* Warna teks dan link putih */
+    }
+
+    .bg-white {
+        background-color: white;
+        padding: 20px; /* Memberikan padding */
+    }
+</style>
+
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('zenter/horizontal/assets/css/icons.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('zenter/horizontal/assets/css/style.css')}}" rel="stylesheet" type="text/css">
@@ -86,7 +107,7 @@
 
     </div>
 
-    <div class="bg-white">
+    <div class="bg-custom">
         <section class="container-fluid">
             <!--Grid row-->
             <div class="row">
@@ -98,7 +119,7 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3 bg-custom">
                     <h6 class="text-uppercase mb-4 font-weight-bold">Follow us</h6>
 
                     <!-- Social buttons -->
@@ -120,7 +141,7 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-6 col-lg-4 col-xl-4 mx-auto mt-3">
+                <div class="col-md-6 col-lg-4 col-xl-4 mx-auto bg-custom">
                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
                     <p><i class="fas fa-home mr-3"></i> Paragon Village Blog CLG-00L Jl.Raya Binong Kav 9 Karawaci 15810
                         Banten-Indonesia</p>

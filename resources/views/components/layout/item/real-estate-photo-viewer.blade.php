@@ -14,19 +14,13 @@
         object-fit: cover;
     }
 
-    .carousel-item {
-        height: 70vh; /* Tinggi sama dengan 70% dari tinggi layar */
-    }
-
     .carousel-item img {
         width: 100%;
-        height: 100%; /* Memenuhi tinggi pembungkus */
-        object-fit: cover;
+        height: 70vh; /* Tinggi gambar menjadi 70% dari tinggi layar */
+        object-fit: cover; /* Mengisi seluruh kontainer dengan gambar */
     }
 
-    .zoom-gallery {
-        height: 70vh; /* Tinggi sama dengan carousel-item */
-    }
+    
 </style>
 
 <div class="row">

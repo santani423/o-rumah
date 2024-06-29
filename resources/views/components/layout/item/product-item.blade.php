@@ -31,7 +31,7 @@
                 <li class="list-group-item text-truncate d-block">{{$area}}</li>
             </ul>
         @endif
-        
+        @if($type == 'property')
         <div class="card-body d-flex justify-content-start p-2">
             <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2">
                 <img src="{{asset('assets/icons/bed.png')}}" class="mr-1" alt="">{{ $jk ?? 0 }}

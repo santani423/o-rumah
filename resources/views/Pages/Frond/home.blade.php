@@ -320,15 +320,8 @@ function appendAds(html, containerId) {
         </div>
 
         <!-- end wrapper -->
-        <div class="row mt-5" id="urlBooster">
-        <div class="row mt-5" id="adsListsWithDistance">
-
-            
-        </div>
-      
-
-            
-        </div>
+        <div  id="urlBooster"></div>
+        <div  id="adsListsWithDistance"></div>
         <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">
     <button type="button" class="btn   "  
@@ -347,56 +340,6 @@ function appendAds(html, containerId) {
         </div>
 </div>
 
-        <!-- <div class="row mt-5">
-            <div class="col-12 text-center">
-                <h4 class="text-white">Mengapa ORumah</h4>
-            </div>
-
-            <div class="col-md-6 col-lg-6 col-xl-4 mb-4">
-
-                <div class="card">
-                    <img class="card-img-top img-fluid"
-                        src="{{asset('zenter/horizontal/assets/images/small/img-2.jpg')}}" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title font-20 mt-0">Beli Properti Aman & Mudah</h4>
-                        <p class="card-text">ORumah sebagai situs properti terpercaya siap membantu menemukan hunian
-                            idaman Anda</p>
-                    </div>
-
-                </div>
-
-            </div> 
-            <div class="col-md-6 col-lg-6 col-xl-4 mb-4">
-
-                <div class="card">
-                    <img class="card-img-top img-fluid"
-                        src="{{asset('zenter/horizontal/assets/images/small/img-2.jpg')}}" alt="Card image cap">
-                    <div class="card-body">
-                        <h4 class="card-title font-20 mt-0">Kaya Fitur Pintar</h4>
-                        <p class="card-text">Tersedia 900 ribu iklan properti. Semua dapan Anda jelajah dan rencanakan
-                            memakai fitur pintar seperti Kalkulator KPR</p>
-                    </div>
-
-                </div>
-
-            </div> 
-        <div class="col-md-6 col-lg-6 col-xl-4 mb-4">
-
-            <div class="card">
-                <img class="card-img-top img-fluid" src="{{asset('zenter/horizontal/assets/images/small/img-2.jpg')}}"
-                    alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title font-20 mt-0">Mitra Properti Terbaik</h4>
-                    <p class="card-text">Orumah adalah situs properti terbesar dan terpercaya yang telah melayani
-                        jutaan masyarakat Indonesia</p>
-                </div>
-
-            </div>
-
-        </div> 
-
-
-    </div> -->
 
         <div class="card mt-2">
             <div class="card-body" style=" background-color: #f0f0f0;">

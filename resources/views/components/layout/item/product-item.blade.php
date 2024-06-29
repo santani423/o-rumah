@@ -46,7 +46,7 @@
                 LB {{ $lb ?? 0 }}
             </a>
         </div>
-       
+       @endif
         <div class="card-link d-flex align-items-center mr-2">
         @if ( is_int($content)  > 0)
     <div class="card-link d-flex align-items-center mr-2">

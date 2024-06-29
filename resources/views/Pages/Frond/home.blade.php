@@ -268,6 +268,7 @@ function appendAds(html, containerId) {
                     <a class="dropdown-item" href="#">Rumah</a>
                     <a class="dropdown-item" href="#">Apartemen</a>
                     <a class="dropdown-item" href="#">Ruko</a>
+                    <a class="dropdown-item" href="#">Tanah</a>
                 </div>
             </div>
             <div class="location-input flex-grow-1 ml-3">

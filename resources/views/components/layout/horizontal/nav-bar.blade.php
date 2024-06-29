@@ -58,7 +58,7 @@
                 <ul class="navigation-menu text-center">
 
                     <li class="has-submenu ">
-                        <a href="{{route('latest')}}"> Properti Baru</a>
+                        <a href="{{route('latest')}}"> Properti</a>
                     </li>
                     <li class="has-submenu ">
                         <a href="{{route('auction')}}"> Properti Lelang</a>

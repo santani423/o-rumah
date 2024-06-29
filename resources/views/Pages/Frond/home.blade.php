@@ -20,7 +20,7 @@
 
         #beli-tab {
             color: white;
-            background-color: #2ECC71;
+            background-color: #47C8C5;
         }
 
         .tab:not(#beli-tab):hover {
@@ -33,6 +33,9 @@
             border-radius: 25px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 10px;
+        }
+        .btn-success {
+            background-color:  #f0f0f0; 
         }
 
         .dropdown-toggle {
@@ -276,9 +279,10 @@ function appendAds(html, containerId) {
                 <input type="text" class="form-control border-0"
                     placeholder="Lokasi, keyword, area, project, developer">
             </div>
-            <button class="btn btn-success ml-3">
+            <button class="btn btn-success ml-3"  >
                 <i class="fas fa-search"></i>
             </button>
+
         </div>
 
 
@@ -287,7 +291,7 @@ function appendAds(html, containerId) {
                 <div class="nav-container">
                     <div class="nav-links row">
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('latest') }}"><i class="fas fa-home"></i><br>Properti Baru</a>
+                            <a href="{{ route('latest') }}"><i class="fas fa-home"></i><br>Properti</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('auction') }}"><i class="fas fa-gavel"></i><br>Properti Lelang</a>

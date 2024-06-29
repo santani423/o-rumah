@@ -20,6 +20,7 @@ trait AdvertisingPointsManager
             ->where('ad_balance_id', $adBalaces->id)
             ->where('views_count', '<', $controll->klik)
             ->first();
+            
         if ($adBalaces->balance >= $controll->nilai) {
 
             if (!$AdvertisingPoints) {

@@ -832,6 +832,10 @@ class MemberNavController extends Controller
         }
         $AdsProperty->image = $media->disk . '/' . $media->file_name;
         $AdsProperty->save();
+       
+        $this->manageAdvertisingPoints($request, $ads, $user, 'ABC009');
+
+        // return false;
         return redirect(route('listing.index'))->with('success', 'Listing berhasil disimpan.');
         // return response()->json(['message' => 'Data stored successfully', 'data' => $request->all()]);
     }

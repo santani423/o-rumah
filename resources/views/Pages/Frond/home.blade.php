@@ -297,10 +297,10 @@ function appendAds(html, containerId) {
                             <a href="{{ route('auction') }}"><i class="fas fa-gavel"></i><br>Properti Lelang</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('ofoods') }}"><i class="fas fa-utensils"></i><br>OFoods</a>
+                            <a href="{{ route('ofoods') }}"><i class="fas fa-utensils"></i><br>O-Foods</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('omerchant') }}"><i class="fas fa-store"></i><br>OMerchant</a>
+                            <a href="{{ route('omerchant') }}"><i class="fas fa-store"></i><br>O-Merchant</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('law-helper') }}"><i class="fas fa-balance-scale"></i><br>Cari LBH</a>

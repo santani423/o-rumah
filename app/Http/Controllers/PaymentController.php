@@ -67,6 +67,7 @@ class PaymentController extends Controller
         $transaction->description = "Pembayaran untuk layanan  $plan->name";
         $transaction->additional_info = 'Informasi tambahan';
         $transaction->transaction_time = Carbon::now(); // Waktu transaksi saat ini
+        $transaction->plan_id = $plan->id;
         $transaction->save();
         // Simpan data ke tabel plans_transaksis
         $plansTransaksi = new PlansTransaksi();

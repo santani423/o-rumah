@@ -268,10 +268,9 @@ function appendAds(html, containerId) {
                     <i class="fas fa-home mr-2"></i>Tipe Properti
                 </button>
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
-                    <a class="dropdown-item" href="#">Rumah</a>
-                    <a class="dropdown-item" href="#">Apartemen</a>
-                    <a class="dropdown-item" href="#">Ruko</a>
-                    <a class="dropdown-item" href="#">Tanah</a>
+                    @foreach($tipeProperti as $tipe)
+                    <a class="dropdown-item" href="#">{{$tipe->name}}</a>
+                    @endforeach
                 </div>
             </div>
             <div class="location-input flex-grow-1 ml-3">

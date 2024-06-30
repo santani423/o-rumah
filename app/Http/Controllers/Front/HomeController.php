@@ -77,9 +77,9 @@ class HomeController extends Controller
         $radius = 300; // radius in kilometers
 
         $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery);
-
+        $tipeProperti = PropertyType::orderBy('name','asc')->get();
         // dd($adsLists);
-        return view('Pages/Frond/home', compact('bannerLists', 'adsLists'));
+        return view('Pages/Frond/home', compact('bannerLists', 'adsLists','tipeProperti'));
         // return Inertia::render('Front/Pages/HomePage', [
         //     'bannerLists' => $bannerLists,
         //     // 'latestAdsLists' => $latestAdsLists,

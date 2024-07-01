@@ -147,40 +147,32 @@
     @endslot
 
     @slot('body')
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-
-
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        @foreach ($bannerLists as $key => $bnr)
-                            <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0)
-                            class="active" @endif></li>
-                        @endforeach
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        @foreach ($bannerLists as $key => $bnr)
-                            <div class="carousel-item @if($key == 0) active @endif">
-                                <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
-                            </div>
-                        @endforeach 
+    <div id="carouselExampleIndicators" class="carousel slide mt-3" data-ride="carousel" data-interval="3000">
+        <ol class="carousel-indicators">
+            @foreach ($bannerLists as $key => $bnr)
+                <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
+                </li>
+            @endforeach
+        </ol>
+        <div class="carousel-inner">
+            @foreach ($bannerLists as $bnr)
+                <a href="{{$bnr->url}}">
+                    <div class="carousel-item @if($loop->first) active @endif">
+                        <img class="d-block w-100" src="{{asset('storage/' . $bnr->image)}}" alt="{{asset($bnr->image)}}"
+                            style="border-radius: 15px;"> <!-- Menambahkan border-radius -->
                     </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-
-            </div>
-        </div> <!-- end col -->
-
-
-    </div> <!-- end row -->
+                </a>
+            @endforeach
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 
     <div class="container mt-5">
         <!-- Search Bar -->

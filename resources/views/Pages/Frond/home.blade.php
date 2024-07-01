@@ -229,11 +229,14 @@ function appendAds(html, containerId) {
             @endforeach
         </ol>
         <div class="carousel-inner">
-        @foreach ($bannerLists as $bnr)
-            <div class="carousel-item @if($loop->first) active @endif">
-                <img class="d-block w-100 banner-image" src="{{ asset('storage/' . $bnr->image) }}" alt="Banner image">
-            </div>
-        @endforeach
+            @foreach ($bannerLists as $bnr)
+                <a href="{{$bnr->url}}">
+                    <div class="carousel-item @if($loop->first) active @endif">
+                        <img class="d-block w-100" src="{{asset('storage/' . $bnr->image)}}" alt="{{asset($bnr->image)}}"
+                            style="border-radius: 15px;"> <!-- Menambahkan border-radius -->
+                    </div>
+                </a>
+            @endforeach
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -244,6 +247,7 @@ function appendAds(html, containerId) {
             <span class="sr-only">Next</span>
         </a>
     </div>
+
     <!-- end Slider -->
     <!-- end page title end breadcrumb -->
 

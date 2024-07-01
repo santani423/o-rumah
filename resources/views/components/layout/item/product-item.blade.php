@@ -23,7 +23,7 @@
         </div>
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>
-            <h4 class="card-title font-20 mt-0 text-primary">{{$price}}</h4>
+            <h4 class="card-title font-20 mt-0 text-primary">{{$price}} </h4>
             <p class="card-text text-truncate d-block">{{$address}}</p>
         </div>
         @if($area)
@@ -47,16 +47,17 @@
             </a>
         </div>
        @endif
-        <div class="card-link d-flex align-items-center mr-2">
-        @if ( is_int($content)  > 0)
-    <div class="card-link d-flex align-items-center mr-2">
+      
+       @if ($content > 0)
+    <div class="card-link d-flex align-items-center mr-3">
         <i class="bi bi-geo-alt-fill"></i>
-        <span class="mt-3 mr-3">{{ $content }}</span>
+        <span class="ml-2">{{ $content }}</span>
     </div>
 @endif
 
 
-</div>
+
+ 
 
     </div>
 </a>

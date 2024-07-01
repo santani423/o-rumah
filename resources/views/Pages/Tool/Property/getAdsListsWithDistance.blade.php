@@ -5,12 +5,10 @@
 
         <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
             :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
-            :linkTujuan="route('property-detail', $ads->slug)">
-            @slot('content')
-            <p>{{floor($ads->distance)}} KM</p>
-            @endslot
+            :linkTujuan="route('property-detail', $ads->slug)" :content="floor($ads->distance)">
+            
         </x-Layout.Item.ProductItem>
-
+        
     </div> 
     @endforeach
 </div> 

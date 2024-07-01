@@ -199,12 +199,14 @@
             <div class="card-body">
                 <div class="nav-container">
                     <div class="nav-links row">
-                        @foreach ($kategori as $ktg)
-                            <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                                <a href="{{ route('omerchant.by.kategori', $ktg->nama) }}"><i
-                                        class="fas fa-store"></i><br>{{$ktg->nama}}</a>
-                            </div>
-                        @endforeach
+                    @foreach ($kategori as $ktg)
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('omerchant.by.kategori', $ktg->nama) }}" class="text-wrap text-break">
+                                <i class="fas fa-store"></i><br>{{ $ktg->nama }}
+                            </a>
+                        </div>
+                    @endforeach
+
                     </div>
                 </div>
             </div>

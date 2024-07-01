@@ -14,7 +14,7 @@ class ProductItem extends Component
     public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type;
 
     public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property')
-    {
+    { 
         $this->title = $title;
         $this->price = "Rp " . number_format($price, 0, ',', '.');
         $this->area = $area;

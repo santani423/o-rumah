@@ -218,7 +218,7 @@ function appendAds(html, containerId) {
     };
 
     function linkBanner(link){
-        alert(link);
+    
         window.location.href = link;
     }
 </script>

@@ -45,7 +45,7 @@ Route::get('/coming-soon', [Front\HomeController::class, 'comingSoon'])->name('c
 Route::get('/about-as', [Front\HomeController::class, 'aboutAs'])->name('aboutAs');
 
 // Regular routes
-Route::get('/terbaru', [Front\HomeController::class, 'latest'])->name('latest');
+Route::get('/properti', [Front\HomeController::class, 'latest'])->name('latest');
 Route::get('/lelang', [Front\HomeController::class, 'auction'])->name('auction');
 Route::get('/ofoods', [Front\HomeController::class, 'ofoods'])->name('ofoods');
 Route::get('/ofoods/kategori/{kategori}', [Front\HomeController::class, 'ofoodsByKategori'])->name('ofoods.by.kategori');

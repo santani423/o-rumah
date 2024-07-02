@@ -1,4 +1,4 @@
-<div class="row mt-5">
+ 
         
 @foreach($adsLists as $ads)
     <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
@@ -11,4 +11,4 @@
         
     </div> 
     @endforeach
-</div> 
+ 

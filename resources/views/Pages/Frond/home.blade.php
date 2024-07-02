@@ -329,8 +329,7 @@ function appendAds(html, containerId) {
         </div>
 
         <!-- end wrapper -->
-        <div  id="urlBooster"></div>
-        <div  id="adsListsWithDistance"></div>
+        <div  id="adsListsWithDistance" class="row mt-5"></div>
         <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">
     <button type="button" class="btn   "  
@@ -382,7 +381,7 @@ function appendAds(html, containerId) {
                 </div>
             </div>
         </div>
-        <div id="location" class="text-white"></div>
+   
     </div>
     @endslot
 

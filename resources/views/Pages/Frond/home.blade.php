@@ -216,6 +216,11 @@ function appendAds(html, containerId) {
     window.onload = function () {
         getLocation();
     };
+
+    function linkBanner(link){
+        alert(link);
+        window.location.href = link;
+    }
 </script>
 
     @endslot
@@ -233,7 +238,7 @@ function appendAds(html, containerId) {
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     @foreach ($bannerLists as $key => $bnr)
-                        <div class="carousel-item @if($key == 0) active @endif">
+                        <div class="carousel-item @if($key == 0) active @endif" onclick="linkBanner(`{{$bnr->url}}`)">
                             <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
                         </div>
                     @endforeach

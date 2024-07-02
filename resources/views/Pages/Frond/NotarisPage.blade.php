@@ -134,23 +134,18 @@
             flex: 0 0 auto;
             text-align: center;
         }
+        .rounded-circle {
+        border-radius: 50%;
+        width: 64px;
+        height:  64px;
+    }
     </style>
 
     @endslot
     @slot('body')
     <!-- Search Bar -->
     <div class="search-bar d-flex align-items-center mt-3">
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="propertyTypeDropdown" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-home mr-2"></i>Tipe Properti
-            </button>
-            <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
-                <a class="dropdown-item" href="#">Rumah</a>
-                <a class="dropdown-item" href="#">Apartemen</a>
-                <a class="dropdown-item" href="#">Ruko</a>
-            </div>
-        </div>
+         
         <div class="location-input flex-grow-1 ml-3">
             <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
             <input type="text" class="form-control border-0" placeholder="Lokasi, keyword, area, project, developer">
@@ -160,7 +155,7 @@
         </button>
     </div>
     <div class="row mt-3">
-        <h2 class="text-center w-100">Cari Notaris</h2> <!-- Judul baru -->
+        <h2 class="text-center w-100 text-white">Cari Notaris</h2> <!-- Judul baru -->
         @foreach ($userLists as $user)
 
             <div class="col-4" data-toggle="modal" data-target="#userDetailModal" data-name="{{$user['name']}}"
@@ -168,7 +163,7 @@
                 <div class="card rounded-0">
                     <div class="card-body">
                         <div class="media  ">
-                            <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" alt="Generic placeholder image"
+                            <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" alt="Generic placeholder image"   onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
                                 height="64" />
                             <div class="media-body">
                                 <h5 class="mt-0 font-18">
@@ -184,7 +179,7 @@
                                 <div class="card rounded-0">
                                     <div class="card-body">
                                         <div class="media  ">
-                                            <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}"
+                                            <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}"  onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
                                                 alt="Generic placeholder image" height="64" />
                                             <div class="media-body">
                                                 <h5 class="mt-0 font-18 text-center">
@@ -209,7 +204,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userDetailModalLabel">Detail Pengguna</h5>
+                    <h5 class="modal-title" id="userDetailModalLabel">Detail Notaris</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

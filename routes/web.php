@@ -136,6 +136,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/bank/store', 'bankStore')->name('nav.bank.store');
         Route::get('/bank/edit/{id}', 'bankEdit')->name('nav.bank.edit');
         Route::put('/bank/edit/{id}', 'bankUpdate')->name('nav.bank.update');
+        
+        Route::get('/typeProperti', 'typeProperti')->name('nav.typeProperti');
 
         Route::get('/ads/control-panel', 'adsControllPanel')->name('nav.ads.control-panel');
         Route::post('/ads/control-panel', 'adsControllPanelUpdatae')->name('nav.ads.control-panel.update');

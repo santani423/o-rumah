@@ -1071,4 +1071,8 @@ class AdminNavController extends Controller
         }
     }
 
+    function typeProperti()  {
+        
+    }
+
 }

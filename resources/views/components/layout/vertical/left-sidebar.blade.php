@@ -109,7 +109,10 @@
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-table"></i><span> Master
                             </span> <span class="float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('admin.nav.bank')}}">Bank</a></li>
+                            <li><a href="{{route('admin.nav.bank')}}">Bank</a></li> 
+                        </ul>
+                        <ul class="list-unstyled"> 
+                            <li><a href="{{route('admin.nav.typeProperti')}}">Type Properti</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">

@@ -139,6 +139,11 @@
             margin: 0 5px;
             /* Mengurangi margin kiri dan kanan */
         }
+        .rounded-circle {
+        border-radius: 50%;
+        width: 64px;
+        height:  64px;
+    }
     </style>
     <style>
         .small {
@@ -151,17 +156,7 @@
     @slot('body')
     <!-- Search Bar -->
     <div class="search-bar d-flex align-items-center mt-3">
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="propertyTypeDropdown" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-home mr-2"></i>Tipe Properti
-            </button>
-            <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
-                <a class="dropdown-item" href="#">Rumah</a>
-                <a class="dropdown-item" href="#">Apartemen</a>
-                <a class="dropdown-item" href="#">Ruko</a>
-            </div>
-        </div>
+        
         <div class="location-input flex-grow-1 ml-3">
             <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
             <input type="text" class="form-control border-0" placeholder="Lokasi, keyword, area, project, developer">
@@ -171,31 +166,29 @@
         </button>
     </div>
     <div class="row mt-3">
-        <h2 class="text-center w-100">Cari Agen</h2> <!-- Judul baru -->
+        <h2 class="text-center w-100 text-white">Cari Agen</h2> <!-- Judul baru -->
         @foreach ($userLists as $user)
-
             <div class="col-lg-4" data-toggle="modal" data-target="#userDetailModal" data-name="{{$user['name']}}"
                 data-joinedat="{{$user['joined_at']}}" data-companyname="{{$user['company_name']}}">
                 <div class="card rounded-0">
                     <div class="card-body">
-                        <div class="media  ">
-                            <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" alt="Generic placeholder image"
-                                height="64" />
-                            <div class="media-body">
-                                <h5 class="mt-0 font-18">
-                                    {{$user['name']}}
-                                </h5>
-                                <p>{{$user['joined_at']}}</p>
-
-                            </div>
+                    <div class="media">
+                        <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`" alt="Generic placeholder image" height="64" />
+                        <div class="media-body">
+                            <h5 class="mt-0 font-18">
+                                {{$user['name']}}
+                            </h5>
+                            <p>{{$user['joined_at']}}</p>
                         </div>
+                    </div>
+
                         <!-- Jika ingin menambahkan kolom lain di dalam, harus ada row baru -->
                         <div class="row"> <!-- Baris baru untuk struktur grid yang benar -->
                             <div class="col-12"> <!-- Ganti 'col-3' dengan 'col-12' atau sesuai kebutuhan -->
                                 <div class="card rounded-0">
                                     <div class="card-body">
                                         <div class="media  ">
-                                            <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}"
+                                            <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
                                                 alt="Generic placeholder image" height="64" />
                                             <div class="media-body">
                                                 <h5 class="mt-0 font-18 text-center">
@@ -207,38 +200,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="card rouded-0  border border-1">
-                                    <div class="card-body text-center pr-2 pl-2">
-                                        <p class="small">Total Properti</p>
-                                        <h6 class="mt-0 font-18">
-                                            500
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card rouded-0  border border-1">
-                                    <div class="card-body text-center pr-2 pl-2">
-                                        <p class="small">Terjual / Tersewa</p>
-                                        <h6 class="mt-0 font-18">
-                                            500
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card rouded-0  border border-1 pr-0 pl-0 mr-0 ml-0">
-                                    <div class="card-body text-center">
-                                        <p class="small">Harga rata-rata</p>
-                                        <h6 class="mt-0 font-18">
-                                            500
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                         
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card rounded-0 border border-1">
+                <div class="card-body text-center pr-2 pl-2">
+                    <p class="small">Total Properti</p>
+                    <h6 class="mt-0 font-18">500</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0 border border-1">
+                <div class="card-body text-center pr-2 pl-2">
+                    <p class="small">Terjual / Tersewa</p>
+                    <h6 class="mt-0 font-18">500</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card rounded-0 border border-1 pr-0 pl-0 mr-0 ml-0">
+                <div class="card-body text-center">
+                    <p class="small">Harga rata-rata</p>
+                    <h6 class="mt-0 font-18">500</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
                     </div>
                 </div>
             </div>

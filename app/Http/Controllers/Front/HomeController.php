@@ -78,7 +78,7 @@ class HomeController extends Controller
 
         $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery);
         $tipeProperti = PropertyType::orderBy('name','asc')->get();
-        // dd($adsLists);
+        // dd($bannerLists);
         return view('Pages/Frond/home', compact('bannerLists', 'adsLists','tipeProperti'));
         // return Inertia::render('Front/Pages/HomePage', [
         //     'bannerLists' => $bannerLists,

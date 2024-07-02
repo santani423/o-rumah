@@ -34,6 +34,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 10px;
         }
+
         .btn-success {
             background-color:  #f0f0f0; 
         }
@@ -59,23 +60,17 @@
             flex-grow: 1;
         }
 
-
         .card {
             width: calc(100% - 4px);
-            /* Mengurangi total lebar dengan 2px padding di setiap sisi */
             margin: 2px;
-            /* Padding eksternal untuk card */
         }
 
-        /* Styling for the navbar  */
+        /* Styling for the navbar */
         .nav-container {
             display: flex;
             justify-content: center;
-            /* Menengahkan item-item secara horizontal */
             align-items: center;
-            /* Menengahkan item-item secara vertikal */
             height: 100%;
-            /* Mengatur tinggi container agar penuh */
         }
 
         /* Styling for the navbar links */
@@ -89,25 +84,35 @@
             display: flex;
             justify-content: space-between;
             overflow-x: auto;
-            /* Memungkinkan scrolling horizontal */
             white-space: nowrap;
-            /* Mencegah item dari wrapping ke baris baru */
         }
 
         .nav-item {
             flex: 0 0 auto;
-            /* Mencegah item dari stretching */
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 0 0 auto;
             text-align: center;
         }
 
-       
+        /* Carousel */
+        .carousel-item {
+            text-align: center;
+            max-height: 300px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .carousel-inner {
+            border-radius: 15px;
+            overflow: hidden;
+        }
 
     </style>
-
     @endslot
     @slot('js')
     <script>
@@ -216,40 +221,36 @@ function appendAds(html, containerId) {
     @endslot
     @slot('body')
 
-
-
-    <!-- Page-Title -->
-
-    <!-- Slider -->
-    <div id="carouselExampleIndicators" class="carousel slide mt-3" data-ride="carousel" data-interval="3000">
-        <ol class="carousel-indicators">
-            @foreach ($bannerLists as $key => $bnr)
-                <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
-                </li>
-            @endforeach
-        </ol>
-        <div class="carousel-inner">
-            @foreach ($bannerLists as $bnr)
-                <a href="{{$bnr->url}}">
-                    <div class="carousel-item @if($loop->first) active @endif">
-                        <img class="d-block w-100" src="{{asset('storage/' . $bnr->image)}}" alt="{{asset($bnr->image)}}"
-                            style="border-radius: 15px;"> <!-- Menambahkan border-radius -->
-                    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach ($bannerLists as $key => $bnr)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
+                        </li>
+                    @endforeach
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    @foreach ($bannerLists as $key => $bnr)
+                        <div class="carousel-item @if($key == 0) active @endif">
+                            <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
+                        </div>
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
                 </a>
-            @endforeach
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
 
-    <!-- end Slider -->
-    <!-- end page title end breadcrumb -->
+ 
 
     <div class="container mt-5">
         <!-- Tabs -->

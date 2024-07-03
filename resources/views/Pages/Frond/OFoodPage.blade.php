@@ -37,7 +37,7 @@
         }
 
         .btn-success {
-            background-color:  #f0f0f0; 
+            background-color: #f0f0f0;
         }
 
         .dropdown-toggle {
@@ -99,7 +99,6 @@
         /* Carousel */
         .carousel-item {
             text-align: center;
-            max-height: 300px;
         }
 
         .carousel-item img {
@@ -112,7 +111,6 @@
             border-radius: 15px;
             overflow: hidden;
         }
-
     </style>
     @endslot
     @slot('js')

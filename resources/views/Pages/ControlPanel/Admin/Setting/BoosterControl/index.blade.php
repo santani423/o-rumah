@@ -1,6 +1,6 @@
 <x-Layout.Vertical.Master>
     @slot('body')
-        <div class="container">
+         
             <div class="card">
                 <div class="card-body">
                     <table class="table">
@@ -41,6 +41,6 @@
                     </table>
                 </div>
             </div>
-        </div>
+       
     @endslot
 </x-Layout.Vertical.Master>

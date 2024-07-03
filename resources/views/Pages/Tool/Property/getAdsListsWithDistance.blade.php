@@ -5,8 +5,15 @@
 
         <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
             :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
-            :linkTujuan="route('property-detail', $ads->slug)" :content="floor($ads->distance)">
-            
+            :linkTujuan="route('property-detail', $ads->slug)">
+            @slot('content')
+            @if (floor($ads->distance) > 0)
+                <div class="card-link d-flex align-items-center mr-3">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span class="ml-2">{{ floor($ads->distance) }}</span>
+                </div>
+            @endif
+            @endslot
         </x-Layout.Item.ProductItem>
         
     </div> 

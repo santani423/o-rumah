@@ -298,6 +298,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/payments', [PaymentController::class, 'create'])->name('payments');
     Route::get('/payments', [PaymentController::class, 'create'])->name('payments');
+    Route::post('/ads/toggle-status', [ToolController::class, 'toggleStatus'])->name('ads.toggleStatus');
 });
 
 Route::controller(ToolController::class)->group(function () {
@@ -309,7 +310,9 @@ Route::get('/tool/selectKabupatenKota', [ToolController::class, 'selectKabupaten
 Route::get('/tool/kecamatanSelect', [ToolController::class, 'kecamatanSelect'])->name('tool.kecamatanSelect');
 Route::post('/tool/cekJudul', [ToolController::class, 'cekJudul'])->name('tool.cekJudul');
 Route::get('/tool/getAdsListsWithDistance', [ToolController::class, 'adsListsWithDistance'])->name('tool.getAdsListsWithDistance');
+
 Route::get('/tool/getAdsListsWithDistance/booster/home', [ToolController::class, 'adsListsWithDistanceBoosterHome'])->name('tool.getAdsListsWithDistance.booster.home');
+Route::get('/tool/getAdsListsWithDistance/booster/sundul', [ToolController::class, 'adsListsWithDistanceBoosterSundul'])->name('tool.getAdsListsWithDistance.booster.sundul');
 Route::get('/tool/getFoodListsWithDistance', [ToolController::class, 'getFoodListsWithDistance'])->name('tool.getFoodListsWithDistance');
 Route::get('/tool/getMarchantListsWithDistance', [ToolController::class, 'getMarchantListsWithDistance'])->name('tool.getMarchantListsWithDistance');
 Route::get('/tool/tes', [ToolController::class, 'tes'])->name('tool.tes');
@@ -321,6 +324,8 @@ Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])
 Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
 Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update');
+Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update');
+
 
 Route::get('/testing/location', function () {
     return view('testing/location');

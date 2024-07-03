@@ -107,6 +107,22 @@ class ToolController extends Controller
         
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
+    function adsListsWithDistanceBoosterSundul(Request $request)
+    {
+        // dd($request);
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+        $radius = $request->input('radius', 300); // default radius of 300 if not provided
+        $searchQuery = $request->input('searchQuery', '');
+        $perPage = $request->input('perPage', 10);
+        $page = $request->input('page', 10);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYSDL');
+        // dd($adsLists);
+        // return response()->json(['adsLists' => $adsLists]);
+        // return 'ok';
+        
+        return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
+    }
 
     function tes()
     {
@@ -149,5 +165,18 @@ class ToolController extends Controller
 
         return view('Pages/Tool/Marchnet/getAdsMarchentListsWithDistance', compact('adsLists'));
     }
+
+    public function toggleStatus(Request $request)
+{
+    $adsId = $request->input('ads_id');
+    $ad = Ads::whereId($adsId)->first();
+    // dd($ad);
+    if ($ad) {
+        $ad->is_active = $ad->is_active ? 0 : 1;
+        $ad->save();
+    }
+
+    return redirect()->back()->with('status', 'Ad status updated successfully!');
+}
 
 }

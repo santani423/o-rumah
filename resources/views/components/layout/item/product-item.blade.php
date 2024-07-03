@@ -33,27 +33,22 @@
         @endif
         @if($type == 'property')
         <div class="card-body d-flex justify-content-start p-2">
-            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2">
+            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2 text-truncate">
                 <img src="{{asset('assets/icons/bed.png')}}" class="mr-1" alt="">{{ $jk ?? 0 }}
             </a>
-            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2">
+            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2 text-truncate">
                 <img src="{{asset('assets/icons/tub.png')}}" class="mr-1" alt="">{{ $jkm ?? 0 }}
             </a>
-            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2">
+            <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2 text-truncate">
                 LT {{ $lt ?? 0 }}
             </a>
-            <a href="javascript:void(0)" class="card-link d-flex align-items-center">
+            <a href="javascript:void(0)" class="card-link d-flex align-items-center text-truncate">
                 LB {{ $lb ?? 0 }}
             </a>
         </div>
        @endif
-      
-       @if ($content > 0)
-    <div class="card-link d-flex align-items-center mr-3">
-        <i class="bi bi-geo-alt-fill"></i>
-        <span class="ml-2">{{ $content }}</span>
-    </div>
-@endif
+       {{ $content }}
+    
 
 
 

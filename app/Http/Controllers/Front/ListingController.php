@@ -310,11 +310,13 @@ class ListingController extends Controller
         $AdsProperty = AdsProperty::where('ads_id',$adsId)->first();
         $AdsProperty->lat = $request->lat;
         $AdsProperty->lng = $request->lng;
-        $AdsProperty->address = $request->district;
+        $AdsProperty->district_name = $request->district;
         $AdsProperty->district_id = $request->districtId;
         $AdsProperty->area = $request->area;
         $AdsProperty->address = $request->adres;
         $AdsProperty->save(); 
+        // dd($AdsProperty);
+        // dd($request->all());
         $ads = Ads::whereId($AdsProperty->ads_id)->first();
         return redirect()->route('listing.control-panel.view.property', ['slug' => $ads->slug, 'navLink' => 'lokasi'])->with('success', 'Alamat berhasil diperbarui.');
     }

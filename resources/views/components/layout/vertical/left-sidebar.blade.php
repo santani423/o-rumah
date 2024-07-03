@@ -128,6 +128,9 @@
                         <ul class="list-unstyled">
                             <li><a href="{{route('admin.nav.ads.control-panel')}}">Plan Controll</a></li>
                         </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.ads.control-booster')}}">Booster</a></li>
+                        </ul>
                     </li>
                 @endif
 

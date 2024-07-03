@@ -142,6 +142,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/ads/control-panel', 'adsControllPanel')->name('nav.ads.control-panel');
         Route::post('/ads/control-panel', 'adsControllPanelUpdatae')->name('nav.ads.control-panel.update');
 
+        Route::get('/ads/control-booster', 'adsControllBooster')->name('nav.ads.control-booster');
+        Route::put('/ads/control-booster/{id}', 'adsControllBoosterUpdatae')->name('nav.ads.control-booster.update');
+
         Route::get('/pengguna', 'pengguna')->name('nav.pengguna');
         Route::get('/pengguna/{id}', 'penggunaDetail')->name('nav.pengguna.detail');
         Route::get('/tipe-properti', 'tipeProperti')->name('nav.tipe-properti');

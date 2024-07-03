@@ -40,6 +40,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Services\KodeService;
 
 use App\Models\Ads;
+use App\Models\bosterAdsTYpe;
 
 class AdminNavController extends Controller
 {
@@ -601,6 +602,31 @@ class AdminNavController extends Controller
         return back()->with('success', 'Pembaruan berhasil dilakukan.');
         // return response()->json(['message' => 'Update berhasil dilakukan', 'request' => $request->all()]);
     }
+
+
+    function adsControllBooster()
+    {
+        $data = bosterAdsTYpe::get();
+        return view('Pages/ControlPanel/Admin/Setting/BoosterControl/index', compact('data'));
+
+        // return Inertia::render('Admin/Page/AdsControllPanel/Index', compact('data'));
+    }
+
+    function adsControllBoosterUpdatae(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'limit' => 'required|integer',
+        ]);
+
+        $adsType = bosterAdsTYpe::findOrFail($id);
+        $adsType->title = $request->input('title');
+        $adsType->limit = $request->input('limit');
+        $adsType->save();
+
+        return redirect()->back()->with('success', 'Ad Type updated successfully.');
+    }
+
 
     function pengguna()
     {

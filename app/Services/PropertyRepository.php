@@ -10,6 +10,7 @@ use App\Models\AdBalance;
 use App\Models\AdvertisingPoints;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
+use App\Models\bosterAdsTYpe;
 use App\Models\UserClickAdsHistory;
 
 trait PropertyRepository
@@ -64,6 +65,11 @@ trait PropertyRepository
 }
 private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3,$code='PTYHOME')
 {
+    $booster = bosterAdsTYpe::where('code',$code)->first();
+    if ($booster) {
+        $perPage = $booster->limit;
+         
+    }
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
             $join->on('media.model_id', '=', 'ads.id')

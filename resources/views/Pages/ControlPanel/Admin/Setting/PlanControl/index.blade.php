@@ -18,6 +18,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Code</th>
                                 <th>Title</th>
                                 <th>Klik</th>
                                 <th>Nilai</th>
@@ -32,6 +33,7 @@
                                     <input type="hidden" name="id" value="{{$pln->id}}">
                                     <tr>
                                         <td>{{++$key}}</td>
+                                        <td>{{$pln->code}}</td>
                                         <td>{{$pln->title}}</td>
                                         <td>
                                             <input type="number" name="klik" class="form-control" value="{{$pln->klik}}">

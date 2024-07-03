@@ -6,9 +6,11 @@ use App\Models\Ads;
 use App\Models\bosterAds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AdvertisingPointsManager;
 
 class BosterAdsController extends Controller
 {
+    use AdvertisingPointsManager;
     /**
      * Display a listing of the resource.
      */
@@ -45,6 +47,12 @@ class BosterAdsController extends Controller
         $bosterAds->urutan = ++$BosterAds;
         $bosterAds->title = $property->title;
         $bosterAds->save();
+
+        $ads = Ads::where('ads.id',$request->ads_id)
+        ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id')
+        ->first();
+        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC003');
 
         return redirect(route('listing.control-panel.view.property',$property->slug).'?navLink=booster')->with(['success'=>'Booster berhasil di terapkan']);
         

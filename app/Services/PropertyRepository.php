@@ -15,7 +15,7 @@ use App\Models\UserClickAdsHistory;
 
 trait PropertyRepository
 {
-    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3,$adsType = null)
+    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3,$adsType = null,$property_type=null)
 {
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
@@ -52,6 +52,9 @@ trait PropertyRepository
     }
     if ($adsType != null) {
         $query->where('ads_properties.ads_type', $adsType);
+    }
+    if ($property_type != null) {
+        $query->where('ads_properties.property_type', $property_type);
     }
     $adsLists = $query->where(function ($query) use ($searchQuery) {
             $query->where('ads.title', 'like', '%' . $searchQuery . '%')

@@ -160,8 +160,8 @@
     
 
 function loadAds(page) {
-    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}`;
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
@@ -315,7 +315,7 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                 </button>
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
                     @foreach($tipeProperti as $tipe)
-                        <a class="dropdown-item" href="#" onclick="selectPropertyType({{ $tipe->id }})">{{ $tipe->name }}</a>
+                        <a class="dropdown-item" href="#" onclick="selectPropertyType({{ $tipe->name }})">{{ $tipe->name }}</a>
                     @endforeach
                 </div>
             </div>

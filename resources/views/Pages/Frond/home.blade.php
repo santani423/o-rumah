@@ -1,116 +1,117 @@
 <x-Layout.Horizontal.Master>
 @slot('css')
-    <style>
-        /* Tabs */
-        .tab-container {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            overflow: hidden;
-        }
+<style>
+    /* Tabs */
+    .tab-container {
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        overflow: hidden;
+    }
 
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px 20px;
-            cursor: pointer;
-            color: #999;
-            background-color: white;
-        }
+    .tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #999;
+        background-color: white;
+    }
 
-        #beli-tab {
-            color: white;
-            background-color: #47C8C5;
-        }
+    .active {
+        color: white;
+        background-color: #47C8C5;
+    }
 
-        .tab:not(#beli-tab):hover {
-            background-color: #f0f0f0;
-        }
+    /* .tab:not(#beli-tab):hover {
+        background-color: #f0f0f0;
+    } */
 
-        /* Search Bar */
-        .search-bar {
-            background-color: white;
-            border-radius: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-        }
+    /* Search Bar */
+    .search-bar {
+        background-color: white;
+        border-radius: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
 
-        .btn-success {
-            background-color: #f0f0f0;
-        }
+    .btn-success {
+        background-color: #f0f0f0;
+    }
 
-        .dropdown-toggle {
-            border: none;
-            background: none;
-            box-shadow: none;
-        }
+    .dropdown-toggle {
+        border: none;
+        background: none;
+        box-shadow: none;
+    }
 
-        .dropdown-toggle:focus {
-            box-shadow: none;
-        }
+    .dropdown-toggle:focus {
+        box-shadow: none;
+    }
 
-        .location-input {
-            display: flex;
-            align-items: center;
-            border-left: 1px solid #ddd;
-            padding-left: 10px;
-        }
+    .location-input {
+        display: flex;
+        align-items: center;
+        border-left: 1px solid #ddd;
+        padding-left: 10px;
+    }
 
-        .location-input input {
-            flex-grow: 1;
-        }
+    .location-input input {
+        flex-grow: 1;
+    }
 
-        .card {
-            width: calc(100% - 4px);
-            margin: 2px;
-        }
+    .card {
+        width: calc(100% - 4px);
+        margin: 2px;
+    }
 
-        /* Styling for the navbar */
-        .nav-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
+    /* Styling for the navbar */
+    .nav-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
 
-        /* Styling for the navbar links */
-        .nav-links a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #000;
-        }
+    /* Styling for the navbar links */
+    .nav-links a {
+        margin-right: 20px;
+        text-decoration: none;
+        color: #000;
+    }
 
-        .nav-links {
-            display: flex;
-            justify-content: space-between;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 
-        .nav-item {
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
+    .nav-item {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 
-        /* Carousel */
-        .carousel-item {
-            text-align: center;
-        }
+    /* Carousel */
+    .carousel-item {
+        text-align: center;
+    }
 
-        .carousel-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-        }
+    .carousel-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 15px;
+    }
 
-        .carousel-inner {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-    </style>
+    .carousel-inner {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+</style>
+
     @endslot
     @slot('js')
     <script>
@@ -119,7 +120,7 @@
     let latitude = null;
     let longitude = null;
     let isFirstLoad = true;
-
+    
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -219,8 +220,38 @@ function appendAds(html, containerId) {
     
         window.location.href = link;
     }
-</script>
 
+    function searchLocation() {
+    const inputElement = document.querySelector('.location-input input');
+    const locationText = inputElement.value;
+    console.log('Lokasi yang dicari:', locationText);
+}
+
+// Panggil fungsi ini ketika tombol pencarian ditekan
+document.querySelector('.btn-success').addEventListener('click', searchLocation);
+
+</script>
+<script>
+    let beliSewa = 'beli';
+    let typeProperti = null;
+    function showTab(tabId) {
+        // Menghapus kelas 'active' dari semua tab
+        beliSewa = tabId;
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        console.log(beliSewa);
+        console.log(typeProperti);
+        // Menambahkan kelas 'active' ke tab yang dipilih
+        document.getElementById(tabId + '-tab').classList.add('active');
+    }
+    function selectPropertyType(propertyTypeId) {
+        // Lakukan sesuatu dengan ID tipe properti yang dipilih
+        typeProperti = propertyTypeId;
+        console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
+        // Contoh: Kirim ID ke server atau lakukan tindakan lain
+    }
+</script>
     @endslot
     @slot('body')
 
@@ -258,14 +289,14 @@ function appendAds(html, containerId) {
     <div class="container mt-5">
         <!-- Tabs -->
 
-        <div class="row justify-content-center"> <!-- Menambahkan row -->
-            <div class="col-md-4 col-sm-6 col-xs-12"> <!-- Menyesuaikan kolom agar responsif -->
-                <div class="tab-container mb-2">
-                    <div class="tab active" id="beli-tab" onclick="showTab('beli')">Beli</div>
-                    <div class="tab" id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
-                </div>
-            </div>
+        <div class="row justify-content-center">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="tab-container mb-2">
+            <div class="tab " id="beli-tab" onclick="showTab('beli')">Beli</div>
+            <div class="tab active" id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
         </div>
+    </div>
+</div>
 
 
         <!-- Search Bar -->
@@ -277,14 +308,14 @@ function appendAds(html, containerId) {
                 </button>
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
                     @foreach($tipeProperti as $tipe)
-                    <a class="dropdown-item" href="#">{{$tipe->name}}</a>
+                        <a class="dropdown-item" href="#" onclick="selectPropertyType({{ $tipe->id }})">{{ $tipe->name }}</a>
                     @endforeach
                 </div>
             </div>
             <div class="location-input flex-grow-1 ml-3">
                 <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
                 <input type="text" class="form-control border-0"
-                    placeholder="Lokasi, keyword, area, project, developer">
+                    placeholder="Lokasi, keyword, area">
             </div>
             <button class="btn btn-success ml-3"  >
                 <i class="fas fa-search"></i>

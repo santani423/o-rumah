@@ -97,11 +97,12 @@ class ToolController extends Controller
         // dd($request);
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
+        $ads_type = $request->input('ads_type');
         $radius = $request->input('radius', 300); // default radius of 300 if not provided
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,$ads_type);
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';

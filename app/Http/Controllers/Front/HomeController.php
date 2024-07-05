@@ -392,7 +392,7 @@ class HomeController extends Controller
         } else {
             $like = false;
         }
-
+        // dd($ads);
         $typeFood = 'properti';
         return view('Pages/Frond/Properti/detailProperti', compact('ads', 'slug', 'agent', 'like', 'typeFood', 'media'));
 

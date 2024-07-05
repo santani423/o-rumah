@@ -51,12 +51,12 @@ class PropertiBaruSeeder extends Seeder
                     'location' => DB::raw("ST_GeomFromText('POINT(0 0)')"),
                     'area' => 'Area ' . $i,
                     'address' => 'Alamat ' . $i,
-                    'ads_type' => 'Jual',
+                    'ads_type' => rand(0, 1) ? 'Jual' : 'Sewa',
                     'property_type' => 'Rumah',
                     'rent_type' => 'Bulanan',
                     'price' => 1000000 * $i,
                     'certificate' => 'SHM',
-                    'housing_name' => 'Perumahan ' . rand(1, 50), // Contoh nilai random untuk housing_name
+                    'housing_name' => 'Perumaha en ' . rand(1, 50), // Contoh nilai random untuk housing_name
                     'cluster_name' => 'Cluster ' . rand(1, 20), // Contoh nilai random untuk cluster_name
                     'year_built' => rand(1990, 2020), // Contoh nilai random untuk year_built
                     'lt' => rand(50, 200), // Contoh nilai random untuk lt

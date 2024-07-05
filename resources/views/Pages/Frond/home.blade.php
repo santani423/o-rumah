@@ -111,7 +111,39 @@
         overflow: hidden;
     }
 </style>
+<style>
+    .sample-location-item {
+        padding: 5px;
+        cursor: pointer;
+    }
 
+    .sample-location-item:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+<style>
+        .form-group {
+            margin-bottom: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        .location-input {
+            position: relative;
+        }
+        #sampleLocations {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background-color: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
     @endslot
     @slot('js')
     <script>
@@ -228,6 +260,8 @@ function appendAds(html, containerId) {
     const locationText = inputElement.value;
     currentPage = 1;
     console.log('Lokasi yang dicari:', locationText);
+    
+    document.getElementById('adsListsWithDistance').innerHTML = '';
     loadAds(currentPage);
     
 }
@@ -256,9 +290,44 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
         // Lakukan sesuatu dengan ID tipe properti yang dipilih
         typeProperti = propertyTypeId;
         console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
+        document.getElementById('propertyTypeDropdown').innerHTML = '<i class="fas fa-home mr-2"></i>'+propertyTypeId;
         // Contoh: Kirim ID ke server atau lakukan tindakan lain
     }
 </script>
+<script>
+        function showSampleLocations(inputValue) {
+            if (inputValue.length < 2) {
+                document.getElementById('sampleLocations').innerHTML = '';
+                return;
+            }
+
+            const url = `http://localhost:8000/tool/searchDistricts`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // if you are using Laravel with CSRF protection
+                },
+                body: JSON.stringify({ keyword: inputValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const sampleLocationsDiv = document.getElementById('sampleLocations');
+                sampleLocationsDiv.innerHTML = '';
+
+                data.forEach(item => {
+                    const locationItem = document.createElement('div');
+                    locationItem.textContent = item.name;
+                    locationItem.classList.add('sample-location-item');
+                    sampleLocationsDiv.appendChild(locationItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching location data:', error);
+            });
+        }
+    </script>
     @endslot
     @slot('body')
 
@@ -315,19 +384,21 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                 </button>
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
                     @foreach($tipeProperti as $tipe)
-                        <a class="dropdown-item" href="#" onclick="selectPropertyType({{ $tipe->name }})">{{ $tipe->name }}</a>
+                        <p class="dropdown-item"   onclick="selectPropertyType(`{{ $tipe->name }}`)">{{ $tipe->name }}</p>
                     @endforeach
                 </div>
             </div>
+            
             <div class="location-input flex-grow-1 ml-3">
-                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-                <input type="text" class="form-control border-0"
-                    placeholder="Lokasi, keyword, area">
-            </div>
+        <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
+        <input type="text" class="form-control border-0"
+               placeholder="Lokasi, keyword, area" oninput="showSampleLocations(this.value)">
+        <div id="sampleLocations" class="mt-2"></div>
+    </div>
             <button class="btn btn-success ml-3"  >
                 <i class="fas fa-search"></i>
             </button>
-
+            
         </div>
 
 

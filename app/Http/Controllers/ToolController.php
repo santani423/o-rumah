@@ -13,6 +13,7 @@ use App\Services\MarchantService;
 
 use App\Services\PropertyRepository;
 use Illuminate\Support\Facades\DB;
+use Laravolt\Indonesia\Models\District;
 
 class ToolController extends Controller
 {
@@ -180,5 +181,29 @@ class ToolController extends Controller
 
     return redirect()->back()->with('status', 'Ad status updated successfully!');
 }
+public function searchDistricts(Request $request)
+    {
+        $keyword = $request->input('keyword');
 
+        // Query untuk mencari distrik berdasarkan keyword
+        $districts = District::with('city.province')
+                            ->where('name', 'LIKE', '%' . $keyword . '%')
+                            ->orWhereHas('city', function($query) use ($keyword) {
+                                $query->where('name', 'LIKE', '%' . $keyword . '%');
+                            })
+                            ->orWhereHas('city.province', function($query) use ($keyword) {
+                                $query->where('name', 'LIKE', '%' . $keyword . '%');
+                            })
+                            ->get();
+
+        // Mengubah hasil menjadi format Provinsi-Kota-Distrik
+        $result = $districts->map(function($district) {
+            return [
+                'id' => $district->id,
+                'name' => $district->city->province->name . '-' . $district->city->name . '-' . $district->name
+            ];
+        });
+
+        return response()->json($result);
+    }
 }

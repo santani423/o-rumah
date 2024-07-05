@@ -40,6 +40,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Services\KodeService;
 
 use App\Models\Ads;
+use App\Models\BalachBoosterAds;
 use App\Models\bosterAdsTYpe;
 
 class AdminNavController extends Controller
@@ -606,8 +607,12 @@ class AdminNavController extends Controller
 
     function adsControllBooster()
     {
-        $data = bosterAdsTYpe::get();
-        return view('Pages/ControlPanel/Admin/Setting/BoosterControl/index', compact('data'));
+        $data = bosterAdsType::leftJoin('balach_booster_ads', 'balach_booster_ads.booster_ads_id', '=', 'boster_ads_t_ypes.id')
+        ->select('boster_ads_t_ypes.*', 'balach_booster_ads.ad_balace_control_id')
+        ->orderBy('boster_ads_t_ypes.id','desc')->get();
+// dd($data);
+        $AdBalanch = AdBalaceControl::get();
+        return view('Pages/ControlPanel/Admin/Setting/BoosterControl/index', compact('data','AdBalanch'));
 
         // return Inertia::render('Admin/Page/AdsControllPanel/Index', compact('data'));
     }
@@ -623,6 +628,16 @@ class AdminNavController extends Controller
         $adsType->title = $request->input('title');
         $adsType->limit = $request->input('limit');
         $adsType->save();
+
+        $add = BalachBoosterAds::where('booster_ads_id',$id)->first();
+
+        if (!$add) {
+            $add = new BalachBoosterAds();
+            $add->booster_ads_id = $id;
+        }
+
+        $add->ad_balace_control_id = $request->balach_booster_ads;
+        $add->save();
 
         return redirect()->back()->with('success', 'Ad Type updated successfully.');
     }

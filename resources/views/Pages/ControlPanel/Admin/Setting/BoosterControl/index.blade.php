@@ -20,7 +20,7 @@
                                 <tr>
                                     <td>{{ ++$key}}</td>
                                     <td>{{ $adsType->code }}</td>
-                                    <td>{{ $adsType->slug }}</td>
+                                    <td>{{ $adsType->slug }}</td> 
                                     <td>{{ $adsType->type }}</td>
                                     <td>
                                         <form action="{{ route('admin.nav.ads.control-booster.update', $adsType->id) }}" method="POST">
@@ -30,6 +30,18 @@
                                     </td>
                                     <td>
                                             <input type="text" name="limit" value="{{ $adsType->limit }}" class="form-control">
+                                    </td>
+                                    
+                                    <td>
+                                    <select name="balach_booster_ads" class="form-control">
+                                        
+                                        @foreach($AdBalanch as $ab)
+                                          
+                                                <option value="{{$ab->id}}"  @if($ab->id == $adsType->ad_balace_control_id) selected @endif>{{$ab->code}}</option>
+                                           
+                                        @endforeach
+                                    </select>
+
                                     </td>
                                     <td>
                                             <button type="submit" class="btn btn-sm btn-success">Edit</button>

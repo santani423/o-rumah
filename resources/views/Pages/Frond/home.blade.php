@@ -119,7 +119,9 @@
     const perPage = 5;
     let latitude = null;
     let longitude = null;
-    let isFirstLoad = true;
+    let isFirstLoad = true; 
+    let beliSewa = 'Jual';
+    let typeProperti = null;
     
     function getLocation() {
         if (navigator.geolocation) {
@@ -159,7 +161,7 @@
 
 function loadAds(page) {
     const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
@@ -224,7 +226,10 @@ function appendAds(html, containerId) {
     function searchLocation() {
     const inputElement = document.querySelector('.location-input input');
     const locationText = inputElement.value;
+    currentPage = 1;
     console.log('Lokasi yang dicari:', locationText);
+    loadAds(currentPage);
+    
 }
 
 // Panggil fungsi ini ketika tombol pencarian ditekan
@@ -232,18 +237,20 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
 
 </script>
 <script>
-    let beliSewa = 'beli';
-    let typeProperti = null;
+   
     function showTab(tabId) {
         // Menghapus kelas 'active' dari semua tab
         beliSewa = tabId;
         document.querySelectorAll('.tab').forEach(tab => {
             tab.classList.remove('active');
         });
-        console.log(beliSewa);
-        console.log(typeProperti);
+         
         // Menambahkan kelas 'active' ke tab yang dipilih
         document.getElementById(tabId + '-tab').classList.add('active');
+        document.getElementById('adsListsWithDistance').innerHTML = '';
+
+        currentPage = 1;
+        loadAds(currentPage);
     }
     function selectPropertyType(propertyTypeId) {
         // Lakukan sesuatu dengan ID tipe properti yang dipilih
@@ -292,8 +299,8 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
         <div class="row justify-content-center">
     <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="tab-container mb-2">
-            <div class="tab " id="beli-tab" onclick="showTab('beli')">Beli</div>
-            <div class="tab active" id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
+            <div class="tab active" id="jual-tab" onclick="showTab('jual')">Beli</div>
+            <div class="tab " id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
         </div>
     </div>
 </div>

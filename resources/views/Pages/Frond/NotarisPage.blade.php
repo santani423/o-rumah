@@ -156,44 +156,9 @@
     </div>
     <div class="row mt-3">
         <h2 class="text-center w-100 text-white">Cari Notaris</h2> <!-- Judul baru -->
-        @foreach ($userLists as $user)
-
-            <div class="col-4" data-toggle="modal" data-target="#userDetailModal" data-name="{{$user['name']}}"
-                data-joinedat="{{$user['joined_at']}}" data-companyname="{{$user['company_name']}}">
-                <div class="card rounded-0">
-                    <div class="card-body">
-                        <div class="media  ">
-                            <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" alt="Generic placeholder image"   onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
-                                height="64" />
-                            <div class="media-body">
-                                <h5 class="mt-0 font-18">
-                                    {{$user['name']}}
-                                </h5>
-                                <p>{{$user['joined_at']}}</p>
-
-                            </div>
-                        </div>
-                        <!-- Jika ingin menambahkan kolom lain di dalam, harus ada row baru -->
-                        <div class="row"> <!-- Baris baru untuk struktur grid yang benar -->
-                            <div class="col-12"> <!-- Ganti 'col-3' dengan 'col-12' atau sesuai kebutuhan -->
-                                <div class="card rounded-0">
-                                    <div class="card-body">
-                                        <div class="media  ">
-                                            <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}"  onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
-                                                alt="Generic placeholder image" height="64" />
-                                            <div class="media-body">
-                                                <h5 class="mt-0 font-18 text-center">
-                                                    {{$user['company_name']}}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        @foreach ($userLists as $user) 
+            <x-Layout.Item.UserProfileCard :user="$user" dataTarget="userDetailModal">
+            </x-Layout.Item.UserProfileCard >
         @endforeach
         <!--end col-->
     </div>

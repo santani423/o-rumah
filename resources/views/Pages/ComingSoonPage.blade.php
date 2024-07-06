@@ -30,7 +30,7 @@
                     <div class="ex-page-content text-center">
                         <h2 class="">Coming Soon!</h2> 
 
-                        <a class="btn btn-danger mb-5 waves-effect waves-light" href="/">Back</a>
+                        <a class="btn btn-success mb-5 waves-effect waves-light" href="/">Back</a>
                     </div>
 
                 </div>

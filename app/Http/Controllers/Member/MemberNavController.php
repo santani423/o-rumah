@@ -685,7 +685,7 @@ class MemberNavController extends Controller
 
     function propertiStoreListing(Request $request)
     {
-        dd($request);
+        // dd($request);
         $request->validate([
             'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
             'fileInput' => 'required', // Pastikan setidaknya satu file diunggah

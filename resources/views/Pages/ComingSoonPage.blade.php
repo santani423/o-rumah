@@ -28,7 +28,7 @@
                 <div class="card-body">
 
                     <div class="ex-page-content text-center">
-                        <h1 class="">Coming Soon!</h1> 
+                        <h3 class="">Coming Soon!</h3> 
 
                         <a class="btn btn-danger mb-5 waves-effect waves-light" href="/">Back</a>
                     </div>

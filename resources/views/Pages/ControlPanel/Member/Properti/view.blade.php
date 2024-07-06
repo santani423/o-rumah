@@ -188,16 +188,24 @@ function setFomMediaId(id){
                                                                             <th scope="row" style="width: 200px">Fasilitas</th>
                                                                             <td>
                                                                                 @if (!empty($ads['house_facility']))
-                                                                                    <ul>
-                                                                                        @foreach (json_decode($ads['house_facility']) as $facility)
-                                                                                            <li>{{ $facility }}</li>
-                                                                                        @endforeach
-                                                                                    </ul>
+                                                                                    @php
+                                                                                        $house_facility = json_decode($ads['house_facility']);
+                                                                                    @endphp
+                                                                                    @if (is_array($house_facility) && !empty($house_facility))
+                                                                                        <ul>
+                                                                                            @foreach ($house_facility as $facility)
+                                                                                                <li>{{ $facility }}</li>
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    @else
+                                                                                        Tidak tersedia
+                                                                                    @endif
                                                                                 @else
                                                                                     Tidak tersedia
                                                                                 @endif
                                                                             </td>
                                                                         </tr>
+
 
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Kondisi Prabotan</th>

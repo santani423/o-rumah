@@ -15,7 +15,7 @@ trait AdvertisingPointsManager
     {
         $controll = AdBalaceControl::where("code", $code)->first();
         $adBalaces = AdBalance::where('user_id', $auth->id)->first();
-        // dd($controll);
+        dd($controll);
         $AdvertisingPoints = AdvertisingPoints::where('ad_balance_control_id', $controll->id)
             ->where('ad_balance_id', $adBalaces->id)
             ->where('views_count', '<', $controll->klik)

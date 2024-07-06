@@ -685,7 +685,7 @@ class MemberNavController extends Controller
 
     function propertiStoreListing(Request $request)
     {
-        // dd($request);
+        dd($request);
         $request->validate([
             'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
             'fileInput' => 'required', // Pastikan setidaknya satu file diunggah
@@ -711,8 +711,7 @@ class MemberNavController extends Controller
             'jkm' => 'nullable|integer',
             'furniture_condition' => 'nullable|string|max:255',
             'house_facility' => 'nullable',
-            'other_facility' => 'nullable',
-            'video' => 'nullable|string|max:255',
+            'other_facility' => 'nullable', 
         ], [
             'fileInput.*.file' => 'File harus berupa file.',
             'fileInput.*.mimes' => 'File harus berformat: pdf, doc, docx, jpg, jpeg, png.',

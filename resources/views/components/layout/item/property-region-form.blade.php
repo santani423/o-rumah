@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <form action="{{$url}}" method="post">
+            <form action="{{$url}}" method="get">
                 @csrf
                 @method($method)
                 <div class="card-body">

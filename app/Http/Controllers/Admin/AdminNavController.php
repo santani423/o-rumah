@@ -143,6 +143,7 @@ class AdminNavController extends Controller
     }
     function lelangCreateListing(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'district' => 'required',
             'area' => 'required',
@@ -193,12 +194,12 @@ class AdminNavController extends Controller
 
     function lelangStore(Request $request)
     {
-        // dd($request->all());
+       
         $request->validate([
-            'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
+            'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png', // Validasi untuk setiap file
             'fileInput' => 'required', // Pastikan setidaknya satu file diunggah
             'bank_id' => 'required', // Pastikan bank diisi
-            'title' => 'required|string|max:255|unique:ads,title',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
             'district_id' => 'nullable|exists:id_districts,id',
@@ -210,7 +211,7 @@ class AdminNavController extends Controller
             'ads_type' => 'nullable|string|max:255',
             'property_type' => 'nullable|string|max:255',
             'price' => 'nullable',
-            'certificate' => 'nullable|string|max:255',
+            'certificate' => 'nullable',
             'year_built' => 'nullable|date_format:Y',
             'lt' => 'nullable|integer',
             'lb' => 'nullable|integer',
@@ -262,10 +263,10 @@ class AdminNavController extends Controller
             'video.string' => 'Link video harus berupa string.',
             'video.max' => 'Link video tidak boleh lebih dari 255 karakter.',
         ]);
-
+     
         $user = Auth::user();
         $ads = new Ads();
-        $ads->title = $request->title;
+        $ads->title = $request->title. '-' . uniqid();
         $ads->slug = Str::slug($request->title) . '-' . uniqid();
         $ads->description = $request->description;
         $ads->type = 'lelang';
@@ -281,36 +282,35 @@ class AdminNavController extends Controller
 
 
         $AdsProperty = new AdsProperty();
-        $AdsProperty->ads_id = $ads->id;
-        $AdsProperty->district_id = $request->district_id;
-        $AdsProperty->district_name = $request->district_name;
-        $AdsProperty->lat = $request->lat;
-        $AdsProperty->lng = $request->lng;
-        // $AdsProperty->location = $request->adds;
-        $AdsProperty->area = $request->area;
-        $AdsProperty->address = $request->adres;
-        $AdsProperty->ads_type = $request->ads_type;
-        $AdsProperty->property_type = $request->property_type;
-        
-        $AdsProperty->price = $hargaInt;
-        $AdsProperty->certificate = $request->certificate;
-        
-        $AdsProperty->year_built = date('Y', strtotime($request->year_built));
-
-        $AdsProperty->lt = $request->lt;
-        $AdsProperty->lb = $request->lb;
-        $AdsProperty->dl = $request->dl;
-        $AdsProperty->jl = $request->jl;
-        $AdsProperty->jk = $request->jk;
-        $AdsProperty->jkm = $request->jkm;
-        
-        $AdsProperty->furniture_condition = $request->furniture_condition;
-        $AdsProperty->house_facility = json_encode($request->house_facility);
-        $AdsProperty->other_facility = json_encode($request->other_facility);
-        $AdsProperty->video = $request->youtubeLink;
-        // $AdsProperty->property_type_id = $request->adds;
+        $AdsProperty->ads_id = (string) $ads->id;
+        $AdsProperty->district_id = (string) $request->district_id;
+        $AdsProperty->district_name = (string) $request->district_name;
+        $AdsProperty->lat = (string) $request->lat;
+        $AdsProperty->lng = (string) $request->lng;
+        // $AdsProperty->location = (string) $request->adds;
+        $AdsProperty->area = (string) $request->area;
+        $AdsProperty->address = (string) $request->adres;
+        $AdsProperty->ads_type = (string) $request->ads_type;
+        $AdsProperty->property_type = (string) $request->property_type;
+        $AdsProperty->price = (string) $hargaInt;
+        $AdsProperty->certificate = is_array($request->certificate) ? json_encode($request->certificate) : (string) $request->certificate;
+        $AdsProperty->year_built = (string) date('Y', strtotime($request->year_built));
+        $AdsProperty->lt = (string) $request->lt;
+        $AdsProperty->lb = (string) $request->lb;
+        $AdsProperty->dl = (string) $request->dl;
+        $AdsProperty->jl = (string) $request->jl;
+        $AdsProperty->jk = (string) $request->jk;
+        $AdsProperty->jkm = (string) $request->jkm;
+        $AdsProperty->furniture_condition = (string) $request->furniture_condition;
+        $AdsProperty->house_facility = is_array($request->house_facility) ? json_encode($request->house_facility) : (string) $request->house_facility;
+        $AdsProperty->other_facility = is_array($request->other_facility) ? json_encode($request->other_facility) : (string) $request->other_facility;
+        $AdsProperty->video = (string) $request->youtubeLink;
+        // $AdsProperty->property_type_id = (string) $request->adds;
         $AdsProperty->save();
-
+        
+        
+        
+        // dd(json_encode($request->furniture_condition));
         if ($request->hasFile('fileInput')) {
             foreach ($request->file('fileInput') as $image) {
                 $path = $image->store('/images/properti/lelang/' . $ads->id, 'public');

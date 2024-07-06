@@ -253,12 +253,13 @@
         <div class="col-sm-12">
             <div class="page-title-box">
 
-                <h4 class="page-title">Tambah Property Lelang</h4>
+                <h4 class="page-title">Tambah    Lelang</h4>
             </div>
         </div>
         <div class="clearfix"></div>
     </div>
     <form action="{{route('admin.nav.lelang.store')}}" method="post" enctype="multipart/form-data">
+        @csrf
         <div class="row">
             <div class="col-12">
 

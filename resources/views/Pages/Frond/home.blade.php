@@ -428,7 +428,7 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                             <a href="{{ route('agent') }}"><i class="fas fa-user-tie"></i><br>Cari Agen</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('omerchant') }}"><i class="fas fa-ellipsis-h"></i><br>Lainnya</a>
+                            <a href="{{ route('coming-soon') }}"><i class="fas fa-home"></i><br>Estate</a>
                         </div>
                     </div>
                 </div>

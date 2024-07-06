@@ -97,7 +97,8 @@ class HomeController extends Controller
      */
     public function comingSoon()
     {
-        return Inertia::render('Front/Shared/ComingSoonPage');
+        return view('Pages.ComingSoonPage');
+        // return Inertia::render('Front/Shared/ComingSoonPage');
     }
 
     /**

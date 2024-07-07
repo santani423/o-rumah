@@ -6,18 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\Ads;
+use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Services\FoodService;
 use App\Services\MarchantService;
 
 use App\Services\PropertyRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravolt\Indonesia\Models\District;
 
 class ToolController extends Controller
 {
-
+    use AdvertisingPointsManager;
     use FoodService;
     use PropertyRepository;
     use MarchantService;
@@ -177,6 +179,25 @@ class ToolController extends Controller
     if ($ad) {
         $ad->is_active = $ad->is_active ? 0 : 1;
         $ad->save();
+        if($ad->is_active){
+            $auth = Auth::user();
+            $agent = [
+                "id" => $auth->id,
+                "name" => $auth->name,
+                "joined_at" => $auth->created_at->format('Y-m-d'),
+                "username" => $auth->username,
+                "company_name" => $auth->company_name,
+                "company_image" => $auth->company_image,
+                "phone" => $auth->phone,
+                "wa_phone" => $auth->wa_phone,
+                "total_ads" => 100,
+                "total_sold" => 50,
+                "average_price" => "$500,000",
+                "image" => $auth->image,
+            ];
+    
+            $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
+        }
     }
 
     return redirect()->back()->with('status', 'Ad status updated successfully!');

@@ -19,7 +19,7 @@
 
                     <div class="form-group row">
                         <div class="col-12">
-                            <input class="form-control" type="text" required="" placeholder="Username" name="email">
+                            <input class="form-control" type="text" required="" placeholder="Email" name="email">
                             <!-- Ubah placeholder jika perlu -->
                         </div>
                     </div>

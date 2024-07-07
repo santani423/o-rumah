@@ -29,6 +29,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="nama" class="col-12">Username</label>
+                        <div class="col-12">
+                            <input class="form-control" type="text" required="" placeholder="Username" name="username"
+                                id="username">
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="email" class="col-12">Alamat Email</label>
                         <div class="col-12">
                             <input class="form-control" type="email" required="" placeholder="Alamat Email" name="email"

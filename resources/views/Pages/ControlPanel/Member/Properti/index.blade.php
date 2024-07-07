@@ -21,11 +21,11 @@
                     :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
                     :linkTujuan="route('listing.control-panel.view.property', ['slug' => $ads->slug])">
                 </x-Layout.Item.ProductItem>
-                @if(!$ads->is_active)
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Non Aktifkan</button>
+                @if($ads->is_active)
+                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Aktifkan</button>
                 @else
-                    <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Aktifkan</button>
-                @endif
+                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Non Aktifkan</button>
+                @endif 
             </div><!-- end col -->
         @endforeach
     </div>

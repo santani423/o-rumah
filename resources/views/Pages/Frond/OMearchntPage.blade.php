@@ -208,7 +208,7 @@
                     @foreach ($kategori as $ktg)
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('omerchant.by.kategori', $ktg->nama) }}" class="text-wrap text-break">
-                                <i class="fas fa-store"></i><br>{{ $ktg->nama }}
+                            <img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>{{ $ktg->nama }}
                             </a>
                         </div>
                     @endforeach

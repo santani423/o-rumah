@@ -64,39 +64,41 @@ class AuthController extends Controller
 
 
     public function inRegistrasi(Request $request)
-    {
-        // dd($request->all());
-        try {
-            $validatedData = $request->validate([
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:6',
-                'pilihanType' => 'required',
-                'nama' => 'required|string|max:255',
-                'noWa' => 'required|max:15'
-            ]);
+{
+    try {
+        $validatedData = $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users,username',
+                // aturan validasi kustom untuk username
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/^[a-zA-Z0-9-_]+$/', $value)) {
+                        $fail('The '.$attribute.' format is invalid.');
+                    }
+                },
+            ],
+            'password' => 'required|min:6',
+            'pilihanType' => 'required',
+            'nama' => 'required|string|max:255',
+            'noWa' => 'required|max:15'
+        ]);
 
-            $user = User::create([
-                'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),
-                'name' => $validatedData['nama'],
-                'username' => $validatedData['nama'],
-                'wa_phone' => $validatedData['noWa'],
-                'type' => $validatedData['pilihanType'],
-            ]);
-            // dd($request->all());
-            // auth()->login($user);
-            return redirect(route('home'))->with('success', 'Password berhasil diubah silahkan login');
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'Registrasi berhasil, dialihkan ke dashboard.'
-            // ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->with('error', 'Terjadi kesalahan pada validasi data.');
-            // return response()->json([
-            //     'success' => false,
-            //     'message' => 'Terjadi kesalahan pada validasi data.',
-            //     'errors' => $e->errors()
-            // ]);
-        }
+        $user = User::create([
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'name' => $validatedData['nama'],
+            'username' => $validatedData['username'],
+            'wa_phone' => $validatedData['noWa'],
+            'type' => $validatedData['pilihanType'],
+        ]);
+
+        return redirect(route('home'))->with('success', 'Registrasi berhasil. Silahkan login.');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return back()->withErrors($e->validator)->withInput()->with('error', 'Terjadi kesalahan pada validasi data.');
     }
+}
+
 }

@@ -68,27 +68,27 @@ trait PropertyRepository
 
     return $adsLists;
 }
-private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3,$code='PTYHOME')
+private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME')
 {
-    $booster = bosterAdsTYpe::where('code',$code)->first();
+    $booster = bosterAdsTYpe::where('code', $code)->first();
     if ($booster) {
         $perPage = $booster->limit;
-         
     }
+
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
             $join->on('media.model_id', '=', 'ads.id')
                 ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
         })
         ->join('users', 'users.id', '=', 'ads.user_id')
-        ->join('boster_ads', function ($join)  use ($code) {
+        ->join('boster_ads', function ($join) use ($code) {
             $join->on('ads.id', '=', 'boster_ads.ads_id')
                 ->whereRaw('boster_ads.created_at = (SELECT MAX(ba.created_at) FROM boster_ads ba 
                     JOIN boster_ads_t_ypes bat ON ba.booster_type_id = bat.id 
                     WHERE ba.ads_id = ads.id AND bat.code = ?)', [$code]);
         })
-        // ->join('boster_ads_t_ypes','boster_ads_t_ypes.id','=','boster_ads.booster_type_id')
-        // ->where('boster_ads_t_ypes.code','PTYHOME')
+        ->join('boster_ads_t_ypes', 'boster_ads_t_ypes.id', '=', 'boster_ads.booster_type_id')
+        ->where('boster_ads_t_ypes.code', $code)
         ->where('ads.type', 'property')
         ->where('ads.is_active', 1)
         ->select(
@@ -102,7 +102,8 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
             'media.id as media_id',
             'media.file_name as file_name',
             "ads.is_active",
-            'boster_ads.created_at as booster_created_at'
+            'boster_ads.created_at as booster_created_at',
+            'boster_ads_t_ypes.slug as booster_slug' // Menambahkan slug dari bosterAdsTYpe
         );
 
     if ($latitude != null && $longitude != null && $latitude != 'null' && $longitude != 'null') {
@@ -128,9 +129,10 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
         ->orderBy('boster_ads.created_at', 'desc')
         ->orderBy('ads.id', 'desc')
         ->paginate($perPage, ['*'], 'page', $page);
-// dd($adsLists);
+
     return $adsLists;
 }
+
 
 
 private function getPropertyPosition($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME', $slug)

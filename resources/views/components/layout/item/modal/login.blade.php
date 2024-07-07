@@ -28,16 +28,16 @@
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Password"
                                 name="password" id="password">
-                            <label class="mt-2 text-black ">
-                                <input type="checkbox" onclick="togglePasswordVisibility()"> Lihat Password
-                            </label>
-                            <a href="{{route('forget.passwrod')}}" class="text-black float-right mt-2">
-                                <label>Lupa Password?</label>
-                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <label class="text-black mb-0">
+                                    <input type="checkbox" onclick="togglePasswordVisibility()"> Lihat Password
+                                </label>
+                                <a href="{{ route('forget.passwrod') }}" class="text-black">
+                                    <label class="mb-0">Lupa Password?</label>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
-
 
                     <!-- <div class="form-group row">
                         <div class="col-12">
@@ -50,10 +50,7 @@
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn   btn-block waves-effect waves-light" style="background-color: #47C8C5;
-            border-color: #47C8C5;
-            color: white" type="submit">Log
-                                In</button>
+                            <button class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white;" type="submit">Log In</button>
                         </div>
                     </div>
                     <div class="form-group m-t-10 mb-0 row">

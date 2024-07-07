@@ -5,12 +5,12 @@
 
         <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
             :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
-            :linkTujuan="route('property-detail', $ads->slug)">
+            :linkTujuan="route('property-detail', $ads->slug)" :label="$ads->booster_slug">
             @slot('content')
             @if (floor($ads->distance) > 0)
                 <div class="card-link d-flex align-items-center mr-3">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span class="ml-2">{{ floor($ads->distance) }}</span>
+                    <span class="ml-2">{{ floor($ads->distance) }}---{{$ads->booster_slug}}</span>
                 </div>
             @endif
             @endslot

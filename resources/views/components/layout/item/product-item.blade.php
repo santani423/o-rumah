@@ -18,7 +18,7 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        background-color: red;
+        background-color: green;
         color: white;
         padding: 5px 10px;
         font-size: 12px;
@@ -32,7 +32,9 @@
         <div class="square-container">
             <img class="card-img-top img-fluid" src="{{$image}}" alt="Card image cap" 
                  onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`">
-            <!-- <div class="label-top-right">Label</div> -->
+                 @if($label)
+                     <div class="label-top-right">{{$label}}</div>
+                @endif
         </div>
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>

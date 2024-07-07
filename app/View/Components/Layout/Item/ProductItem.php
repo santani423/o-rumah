@@ -11,9 +11,9 @@ class ProductItem extends Component
     /**
      * Create a new component instance.
      */
-    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type;
+    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label;
 
-    public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property')
+    public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property',$label="")
     { 
         $this->title = $title;
         $this->price = "Rp " . number_format($price, 0, ',', '.');
@@ -27,6 +27,7 @@ class ProductItem extends Component
         $this->content = $content;
         $this->type = $type;
         $this->lt = $lt;
+        $this->label = $label;
     }
 
     /**

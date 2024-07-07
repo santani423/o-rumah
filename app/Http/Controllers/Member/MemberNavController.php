@@ -761,8 +761,8 @@ class MemberNavController extends Controller
         $ads->type = 'property';
         $ads->published_at = Carbon::now();
         $ads->user_id = $user->id;
-        $ads->is_active = $request->isActive ? 1 : 0;
-        $ads->is_archived = $request->isrchived ? 1 : 0;
+        $ads->is_active = 1;
+        $ads->is_archived = 1;
         $ads->status = 'available';
         $ads->save();
         $ads->uuid = $this->KodeIklan('property',$request->ads_type,$ads->created_at,Ads::whereMonth('created_at', Carbon::now()->month)->count());

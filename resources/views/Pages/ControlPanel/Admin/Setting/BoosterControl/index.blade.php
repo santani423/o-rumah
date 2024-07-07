@@ -12,6 +12,7 @@
                                 <th>Type</th>
                                 <th>Title</th>
                                 <th>Limit</th>
+                                <th>Blanch</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -33,7 +34,7 @@
                                     </td>
                                     
                                     <td>
-                                    <select name="balach_booster_ads" class="form-control">
+                                     <select name="balach_booster_ads" class="form-control">
                                         
                                         @foreach($AdBalanch as $ab)
                                           

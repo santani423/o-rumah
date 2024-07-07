@@ -12,6 +12,7 @@ use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
 use App\Models\bosterAdsTYpe;
 use App\Models\UserClickAdsHistory;
+use Carbon\Carbon;
 
 trait PropertyRepository
 {
@@ -68,12 +69,16 @@ trait PropertyRepository
 
     return $adsLists;
 }
+
+
 private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME')
 {
     $booster = bosterAdsTYpe::where('code', $code)->first();
     if ($booster) {
         $perPage = $booster->limit;
     }
+
+    $oneMonthAgo = Carbon::now()->subMonth(); 
 
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
@@ -91,6 +96,7 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
         ->where('boster_ads_t_ypes.code', $code)
         ->where('ads.type', 'property')
         ->where('ads.is_active', 1)
+        ->where('boster_ads.created_at', '>=', $oneMonthAgo) // Menambahkan kondisi untuk menampilkan data satu bulan terakhir
         ->select(
             "ads_properties.id as ads_property_id",
             DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
@@ -132,6 +138,7 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
 
     return $adsLists;
 }
+
 
 
 

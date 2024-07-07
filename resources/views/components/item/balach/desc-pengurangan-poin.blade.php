@@ -1,0 +1,1 @@
+@if($abc)<p>Pengurangan Ads {{$abc->nilai}}</p>@endif

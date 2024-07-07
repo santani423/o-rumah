@@ -22,9 +22,9 @@
                     :linkTujuan="route('listing.control-panel.view.property', ['slug' => $ads->slug])">
                 </x-Layout.Item.ProductItem>
                 @if($ads->is_active)
-                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Aktifkan</button>
+                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}">Non Aktifkan</button>
                 @else
-                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}">Non Aktifkan</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}">Aktifkan</button>
                 @endif 
             </div><!-- end col -->
         @endforeach
@@ -45,6 +45,9 @@
                     <div class="modal-body">
                         <input type="hidden" name="ads_id" id="ads_id" value="">
                         <p>Apakah Anda yakin ingin mengubah status item ini?</p>
+                        <div id="descPenguranganPoin" style="display: none;">
+                            <x-Item.Balach.DescPenguranganPoin code='ABC010'/>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -61,8 +64,17 @@
         $('#confirmModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var adsId = button.data('ads-id');
+            var isActive = button.data('is-active'); // Get is_active value
             var modal = $(this);
             modal.find('.modal-body #ads_id').val(adsId);
+
+            
+
+            if (isActive === 0) {
+                modal.find('.modal-body #descPenguranganPoin').show();
+            } else {
+                modal.find('.modal-body #descPenguranganPoin').hide();
+            }
         });
     </script>
     @endslot

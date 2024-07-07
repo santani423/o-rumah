@@ -12,6 +12,7 @@
                                 <th>Type</th>
                                 <th>Title</th>
                                 <th>Limit</th>
+                                <th>Durasi / Bulan</th>
                                 <th>Blanch</th>
                                 <th>Actions</th>
                             </tr>
@@ -31,6 +32,9 @@
                                     </td>
                                     <td>
                                             <input type="text" name="limit" value="{{ $adsType->limit }}" class="form-control">
+                                    </td>
+                                    <td>
+                                            <input type="text" name="durasi" value="{{ $adsType->durasi }}" class="form-control">
                                     </td>
                                     
                                     <td>

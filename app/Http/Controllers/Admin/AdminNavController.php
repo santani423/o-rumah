@@ -627,6 +627,7 @@ class AdminNavController extends Controller
         $adsType = bosterAdsTYpe::findOrFail($id);
         $adsType->title = $request->input('title');
         $adsType->limit = $request->input('limit');
+        $adsType->durasi = $request->input('durasi');
         $adsType->save();
 
         $add = BalachBoosterAds::where('booster_ads_id',$id)->first();

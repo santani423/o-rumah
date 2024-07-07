@@ -74,11 +74,14 @@ trait PropertyRepository
 private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME')
 {
     $booster = bosterAdsTYpe::where('code', $code)->first();
+    $perPage = 1;
+    $durasi = 1;
     if ($booster) {
         $perPage = $booster->limit;
+        $durasi = $booster->durasi;
     }
+    $oneMonthAgo = Carbon::now()->subMonth($durasi); 
 
-    $oneMonthAgo = Carbon::now()->subMonth(); 
 
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {

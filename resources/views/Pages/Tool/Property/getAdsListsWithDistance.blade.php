@@ -10,7 +10,7 @@
             @if (floor($ads->distance) > 0)
                 <div class="card-link d-flex align-items-center mr-3">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span class="ml-2">{{ floor($ads->distance) }}---{{$ads->booster_slug}}</span>
+                    <span class="ml-2">{{ floor($ads->distance) }} Km</span>
                 </div>
             @endif
             @endslot

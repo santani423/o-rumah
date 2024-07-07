@@ -117,7 +117,7 @@ function setFomMediaId(id){
                                                     <a class="nav-link @if($navLink == 'booster') active @endif" data-toggle="tab" href="#booster" role="tab">Booster</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link @if($navLink == 'depositAds') active @endif" data-toggle="tab" href="#depositAds" role="tab">Titip Absen</a>
+                                                    <a class="nav-link @if($navLink == 'depositAds') active @endif" data-toggle="tab" href="#depositAds" role="tab">Titip Ads</a>
                                                 </li>
                                             </ul>
             

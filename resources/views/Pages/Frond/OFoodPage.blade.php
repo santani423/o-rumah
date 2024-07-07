@@ -228,7 +228,7 @@
                 <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
 
                     <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
-                        :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
+                        :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :type="$ads->type" :lt="$ads->lt" :address="$ads->address"
                         :linkTujuan="route('ofood-detail', $ads->slug)">
                     </x-Layout.Item.ProductItem>
 

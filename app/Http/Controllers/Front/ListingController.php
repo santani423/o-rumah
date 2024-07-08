@@ -11,6 +11,7 @@ use App\Models\bosterAds;
 use App\Models\Kpr;
 use App\Models\User;
 use App\Models\bosterAdsTYpe;
+use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ use App\Services\PropertyRepository;
 class ListingController extends Controller
 {
     use PropertyRepository;
+    use AdvertisingPointsManager;
     public function index(Request $request)
     {
         // $properties = AdsProperty::paginate(10)->items();
@@ -171,6 +173,7 @@ class ListingController extends Controller
 
     function updatePropertiTentangProperti(Request $request,$id) {
 
+    //    dd($request->all);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
@@ -208,9 +211,9 @@ class ListingController extends Controller
         $AdsProperty->price = $hargaInt;
         $certificate = $request->certificate;
         $AdsProperty->certificate = json_encode($certificate);
-        // $AdsProperty->housing_name = $request->adds;
-        // $AdsProperty->cluster_name = $request->adds;
-        $AdsProperty->year_built = date('Y', strtotime($request->year_built));
+        $AdsProperty->housing_name = $request->housing_name;
+        $AdsProperty->cluster_name = $request->cluster_name;
+        $AdsProperty->year_built = $request->year_built;
 
         $AdsProperty->lt = $request->lt;
         $AdsProperty->lb = $request->lb;
@@ -420,9 +423,9 @@ class ListingController extends Controller
             }
             $prop->price = $request->harga;
             $prop->certificate = $request->sertifikat;
-            $prop->housing_name = $request->namaKomplek;
-            $prop->cluster_name = $request->namaCluster;
-            $prop->year_built = Carbon::parse($request->tahunDibangun)->format('Y');
+            $prop->housing_name = $request->housing_name;
+            $prop->cluster_name = $request->cluster_name;
+            $prop->year_built = $request->tahunDibangun;
             $prop->lt = $request->luasTanah;
             $prop->lb = $request->luasBangunan;
             $prop->dl = $request->dayaListrik;
@@ -529,9 +532,9 @@ class ListingController extends Controller
         // $AdsProperty->rent_type = $request->adds;
         $AdsProperty->price = $hargaInt;
         $AdsProperty->certificate = $request->jenisSertifikat;
-        // $AdsProperty->housing_name = $request->adds;
-        // $AdsProperty->cluster_name = $request->adds;
-        $AdsProperty->year_built = date('Y', strtotime($request->tahunDiBangun));
+        $AdsProperty->housing_name = $request->housing_name;
+        $AdsProperty->cluster_name = $request->cluster_name;
+        $AdsProperty->year_built = $request->tahunDiBangun;
 
         $AdsProperty->lt = $request->luasTanah;
         $AdsProperty->lb = $request->luasBangunan;
@@ -608,7 +611,7 @@ class ListingController extends Controller
         return response()->json($districts);
     }
 
-    public function toggle(Request $request, $id)
+    public function toggle(Request $request)
     {
         $user = Auth::user();
 
@@ -618,9 +621,32 @@ class ListingController extends Controller
 
         // $action = $request->get('action');
         // $ads = Ads::whereId($id)->first();
-        $ads = Ads::whereId($id)->first();
-        $ads->is_active = $ads->is_active ? 0 : 1;
-        $ads->save();
+        $ads = Ads::whereId($request->ads_id)->first();
+       
+    
+        if ($ads) {
+            $ads->is_active = $ads->is_active ? 0 : 1;
+            $ads->save(); 
+            if($ads->is_active){
+                $auth = Auth::user();
+                $agent = [
+                    "id" => $auth->id,
+                    "name" => $auth->name,
+                    "joined_at" => $auth->created_at->format('Y-m-d'),
+                    "username" => $auth->username,
+                    "company_name" => $auth->company_name,
+                    "company_image" => $auth->company_image,
+                    "phone" => $auth->phone,
+                    "wa_phone" => $auth->wa_phone,
+                    "total_ads" => 100,
+                    "total_sold" => 50,
+                    "average_price" => "$500,000",
+                    "image" => $auth->image,
+                ];
+        
+                $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC010');
+            }
+        }
         // if ($action == 'activate') {
         //     $ads->update([
         //         'is_active' => true

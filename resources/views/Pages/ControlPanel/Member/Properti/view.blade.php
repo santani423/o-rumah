@@ -170,7 +170,25 @@ function setFomMediaId(id){
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Tipe Sertifikat</th>
-                                                                            <td>{{ $ads['certificate'] }}</td>
+                                                                             
+                                                                            <td>
+                                                                                @if (!empty($ads['certificate']))
+                                                                                    @php
+                                                                                        $certificate = json_decode($ads['certificate']);
+                                                                                    @endphp
+                                                                                    @if (is_array($certificate) && !empty($certificate))
+                                                                                        <ul>
+                                                                                            @foreach ($certificate as $facility)
+                                                                                                <li>{{ $facility }}</li>
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    @else
+                                                                                        Tidak tersedia
+                                                                                    @endif
+                                                                                @else
+                                                                                    Tidak tersedia
+                                                                                @endif
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row" style="width: 200px">Kamar Tidur</th>

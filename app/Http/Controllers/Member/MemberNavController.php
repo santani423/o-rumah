@@ -785,8 +785,8 @@ class MemberNavController extends Controller
         // $AdsProperty->rent_type = $request->adds;
         $AdsProperty->price = $hargaInt;
         $AdsProperty->certificate = json_encode($request->certificate);
-        // $AdsProperty->housing_name = $request->adds;
-        // $AdsProperty->cluster_name = $request->adds;
+        $AdsProperty->housing_name = $request->housing_name;
+        $AdsProperty->cluster_name = $request->cluster_name;
         $AdsProperty->year_built = date('Y', strtotime($request->year_built));
 
         $AdsProperty->lt = $request->lt;

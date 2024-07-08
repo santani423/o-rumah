@@ -55,7 +55,7 @@
 
                 <div class="form-group" id="formTahunDibangun">
                     <label for="year_built">Tahun Dibangun</label>
-                    <input type="number" class="form-control" id="year_built" name="year_built"
+                    <input type="year" class="form-control" id="year_built" name="year_built"
                         placeholder="Masukkan Tahun Dibangun" value="{{ old('year_built', $ads['year_built'] ?? '') }}" max="{{ date('Y') }}">
                     @error('year_built')
                         <div class="alert alert-danger">{{ $message }}</div>

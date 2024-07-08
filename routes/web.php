@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
         Route::get('{id}/edit-location', [Front\ListingController::class, 'editLocation'])->name('editLocation');
         Route::post('{id}/update-ads', [Front\ListingController::class, 'update'])->name('update');
 
-        Route::put('{id}/toggle', [Front\ListingController::class, 'toggle'])->name('toggle');
+        Route::put('/toggle', [Front\ListingController::class, 'toggle'])->name('toggle');
 
         Route::prefix('auction')->name('auction.')->group(function () {
             Route::get('', [Front\AuctionListingController::class, 'index'])->name('index');

@@ -22,9 +22,9 @@
                     :linkTujuan="route('listing.control-panel.view.property', ['slug' => $ads->slug])">
                 </x-Layout.Item.ProductItem>
                 @if($ads->is_active)
-                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}">Non Aktifkan</button>
+                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}"> Aktifkan</button>
                 @else
-                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}">Aktifkan</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}">Non Aktifkan</button>
                 @endif 
             </div><!-- end col -->
         @endforeach

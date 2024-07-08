@@ -160,10 +160,10 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
-                <div class="btn-group float-right">
+                <!-- <div class="btn-group float-right">
                     <a href="{{route('member.properti.create')}}" class="btn btn-turquoise">Pasang Iklan</a>
-                </div>
-                <h4 class="page-title">Dashboard</h4>
+                </div> -->
+                <h4 class="page-title">Tambah Food</h4>
             </div>
         </div>
         <div class="clearfix"></div>

@@ -267,8 +267,8 @@ class MemberNavController extends Controller
         $ads->type = 'merchant';
         $ads->published_at = Carbon::now();
         $ads->user_id = $user->id;
-        $ads->is_active = $request->isActive ? 1 : 0;
-        $ads->is_archived = $request->isrchived ? 1 : 0;
+        $ads->is_active = 1;
+        $ads->is_archived = 1;
         $ads->status = 'available';
         $ads->save();
         $hargaInt = (int) preg_replace('/\D/', '', $request->price);
@@ -308,13 +308,16 @@ class MemberNavController extends Controller
         }
         $merchnt->image = $media->disk . '/' . $media->file_name;
         $merchnt->save();
-        foreach ($request->subkategori as $key => $subkategori) {
+        if($request->subkategori){
+            foreach ($request->subkategori as $key => $subkategori) {
 
-            $KategoriMarchent = new KategoriMarchent();
-            $KategoriMarchent->kategori_id = $subkategori;
-            $KategoriMarchent->marchent_id = $merchnt->id;
-            $KategoriMarchent->save();
+                $KategoriMarchent = new KategoriMarchent();
+                $KategoriMarchent->kategori_id = $subkategori;
+                $KategoriMarchent->marchent_id = $merchnt->id;
+                $KategoriMarchent->save();
+            } 
         }
+        $this->manageAdvertisingPoints($request, $ads, $user, 'ABC012');
         return redirect(route('member.merchants'))->with('success', 'Food berhasil disimpan.');
     }
     function FoodStoreListing(Request $request)
@@ -389,8 +392,8 @@ class MemberNavController extends Controller
         $ads->type = 'food';
         $ads->published_at = Carbon::now();
         $ads->user_id = $user->id;
-        $ads->is_active = $request->isActive ? 1 : 0;
-        $ads->is_archived = $request->isrchived ? 1 : 0;
+        $ads->is_active = 1;
+        $ads->is_archived = 1;
         $ads->status = 'available';
         $ads->save();
         $hargaInt = (int) preg_replace('/\D/', '', $request->price);
@@ -429,15 +432,17 @@ class MemberNavController extends Controller
         }
         $food->image = $media->disk . '/' . $media->file_name;
         $food->save();
+        if($request->subkategori){
 
-        foreach ($request->subkategori as $key => $subkategori) {
+            foreach ($request->subkategori as $key => $subkategori) {
 
-            $KategoriFood = new KategoriFood();
-            $KategoriFood->kategori_id = $subkategori;
-            $KategoriFood->oFood_id = $food->id;
-            $KategoriFood->save();
+                $KategoriFood = new KategoriFood();
+                $KategoriFood->kategori_id = $subkategori;
+                $KategoriFood->oFood_id = $food->id;
+                $KategoriFood->save();
+            }
         }
-
+        $this->manageAdvertisingPoints($request, $ads, $user, 'ABC011');
         return redirect(route('member.food'))->with('success', 'Food berhasil disimpan.');
     }
 

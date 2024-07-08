@@ -591,7 +591,7 @@ class AdminNavController extends Controller
 
     function adsControllPanel()
     {
-        $data = AdBalaceControl::paginate(10)->items();
+        $data = AdBalaceControl::get();
         return view('Pages/ControlPanel/Admin/Setting/PlanControl/index', compact('data'));
 
         // return Inertia::render('Admin/Page/AdsControllPanel/Index', compact('data'));

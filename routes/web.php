@@ -316,6 +316,7 @@ Route::get('/tool/getAdsListsWithDistance', [ToolController::class, 'adsListsWit
 
 Route::get('/tool/getAdsListsWithDistance/booster/home', [ToolController::class, 'adsListsWithDistanceBoosterHome'])->name('tool.getAdsListsWithDistance.booster.home');
 Route::get('/tool/getAdsListsWithDistance/booster/sundul', [ToolController::class, 'adsListsWithDistanceBoosterSundul'])->name('tool.getAdsListsWithDistance.booster.sundul');
+Route::get('/tool/getAdsListsWithDistance/booster/eksklusif', [ToolController::class, 'adsListsWithDistanceBoosterEksklusif'])->name('tool.getAdsListsWithDistance.booster.eksklusif');
 Route::get('/tool/getFoodListsWithDistance', [ToolController::class, 'getFoodListsWithDistance'])->name('tool.getFoodListsWithDistance');
 Route::get('/tool/getMarchantListsWithDistance', [ToolController::class, 'getMarchantListsWithDistance'])->name('tool.getMarchantListsWithDistance');
 Route::get('/tool/tes', [ToolController::class, 'tes'])->name('tool.tes');

@@ -105,7 +105,7 @@ class ToolController extends Controller
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,$ads_type);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYHOME');
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
@@ -122,6 +122,22 @@ class ToolController extends Controller
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
         $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYSDL');
+        // dd($adsLists);
+        // return response()->json(['adsLists' => $adsLists]);
+        // return 'ok';
+        
+        return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
+    }
+    function adsListsWithDistanceBoosterEksklusif(Request $request)
+    {
+        // dd($request);
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+        $radius = $request->input('radius', 300); // default radius of 300 if not provided
+        $searchQuery = $request->input('searchQuery', '');
+        $perPage = $request->input('perPage', 10);
+        $page = $request->input('page', 10);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYESKL');
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';

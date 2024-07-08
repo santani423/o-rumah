@@ -74,6 +74,7 @@ trait PropertyRepository
 private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME')
 {
     $booster = bosterAdsTYpe::where('code', $code)->first();
+    // dd($code);
     $perPage = 1;
     $durasi = 1;
     if ($booster) {
@@ -135,7 +136,7 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
                 ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
                 ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
         })
-        ->orderBy('boster_ads.created_at', 'desc')
+        ->orderBy('boster_ads.id', 'desc')
         ->orderBy('ads.id', 'desc')
         ->paginate($perPage, ['*'], 'page', $page);
 

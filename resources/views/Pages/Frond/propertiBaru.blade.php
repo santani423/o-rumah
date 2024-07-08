@@ -159,13 +159,39 @@
     
 
 function loadAds(page) {
+    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
     const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
     const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
     if (isFirstLoad) {
-        // Fetch urlBooster first only on the first load
+        // Fetch urlEsklisif first only on the first load
+        // Fetch urlEsklisif first only on the first load
+fetch(urlEsklisif)
+    .then(response => response.text())
+    .then(data => {
+        appendAdsBooster(data, 'adsListsWithDistance');
+        // Fetch the main url after urlEsklisif is done
+        return fetch(urlBooster);
+    })
+    .then(response => response.text())
+    .then(data => {
+        appendAdsBooster(data, 'adsListsWithDistance');
+        // Set the flag to false after the first load
+        isFirstLoad = false;
+        // Fetch the main url after urlBooster is done
+        return fetch(url);
+    })
+    .then(response => response.text())
+    .then(data => {
+        appendAds(data, 'adsListsWithDistance');
+    })
+    .catch(error => console.error('Error:', error))
+    .finally(() => {
+        document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+    });
+
         fetch(urlBooster)
             .then(response => response.text())
             .then(data => {

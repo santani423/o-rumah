@@ -209,13 +209,16 @@ class ToolController extends Controller
             }
             $userLelang->is_active = !$userLelang->is_active;
             $userLelang->save();
+            if ( $userLelang->is_active) {
+                $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
+            }
         } else {
             $ad->is_active = !$ad->is_active;
             $ad->save();
         }
-    
         // Memproses logika poin iklan jika iklan diaktifkan
-        if ($ad->is_active or $userLelang->is_active) {
+      
+        if ($ad->is_active) {
             $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
         }
     

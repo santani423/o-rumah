@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\Ads;
+use App\Models\UserLelangPropertie;
 use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -188,36 +189,39 @@ class ToolController extends Controller
     }
 
     public function toggleStatus(Request $request)
-{
-    $adsId = $request->input('ads_id');
-    $ad = Ads::whereId($adsId)->first();
-    // dd($ad);
-    if ($ad) {
-        $ad->is_active = $ad->is_active ? 0 : 1;
-        $ad->save();
-        if($ad->is_active){
-            $auth = Auth::user();
-            $agent = [
-                "id" => $auth->id,
-                "name" => $auth->name,
-                "joined_at" => $auth->created_at->format('Y-m-d'),
-                "username" => $auth->username,
-                "company_name" => $auth->company_name,
-                "company_image" => $auth->company_image,
-                "phone" => $auth->phone,
-                "wa_phone" => $auth->wa_phone,
-                "total_ads" => 100,
-                "total_sold" => 50,
-                "average_price" => "$500,000",
-                "image" => $auth->image,
-            ];
+    {
+        $adsId = $request->input('ads_id');
+        $lelangId = $request->input('user_lelang_properties_id');
+        $auth = Auth::user();
     
+        // Menggunakan Eloquent untuk mencari iklan berdasarkan ID
+        $ad = Ads::find($adsId);
+        $userLelang = UserLelangPropertie::find($lelangId);
+    
+        if (!$ad) {
+            return redirect()->back()->with('error', 'Ad not found!');
+        }
+    
+        // Mengubah status iklan dan menyimpan perubahan
+        if ($lelangId) {
+            if (!$userLelang) {
+                return redirect()->back()->with('error', 'Lelang Property not found!');
+            }
+            $userLelang->is_active = !$userLelang->is_active;
+            $userLelang->save();
+        } else {
+            $ad->is_active = !$ad->is_active;
+            $ad->save();
+        }
+    
+        // Memproses logika poin iklan jika iklan diaktifkan
+        if ($ad->is_active or $userLelang->is_active) {
             $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
         }
+    
+        return redirect()->back()->with('status', 'Ad status updated successfully!');
     }
-
-    return redirect()->back()->with('status', 'Ad status updated successfully!');
-}
+    
 public function searchDistricts(Request $request)
     {
         $keyword = $request->input('keyword');

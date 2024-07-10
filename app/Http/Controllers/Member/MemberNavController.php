@@ -491,6 +491,7 @@ class MemberNavController extends Controller
             })
             ->orderBy('ads.id', 'desc')
             ->paginate(10);
+            // dd($properties);
         $adControll = AdBalaceControl::where('code', 'ABC008')->first();
 
         // dd($properties->items());

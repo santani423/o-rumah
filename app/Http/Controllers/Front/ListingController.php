@@ -36,38 +36,59 @@ class ListingController extends Controller
         $searchQuery = request()->input('search');
         // $searchQuery = "Ads 1";
 
+        $auth = Auth::user();
         $user = Auth::user();
-        $properties = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
+        
+            $properties = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
             ->join('media', function ($join) {
-                $join->on('media.model_id', '=', 'ads.id')
-                    ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
+            $join->on('media.model_id', '=', 'ads.id')
+                ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
+            })
+            ->leftJoin('user_lelang_properties', function ($join) use ($user) {
+                $join->on('user_lelang_properties.ads_id', '=', 'ads.id')
+                    ->where('user_lelang_properties.user_id', '=', $user->id);
             })
             ->join('users', 'users.id', '=', 'ads.user_id')
-            ->where('ads.type', 'property')
-            ->where('users.id', $user->id)
+            ->where(function ($query) use ($user, $searchQuery) {
+            $query->where('users.id', $user->id)
+                    ->orWhere('ads.type', 'lelang');
+            })
+            ->where(function ($query) use ($auth)  {
+            $query->where(function ($subQuery) use ($auth)  {
+                $subQuery->whereNull('user_lelang_properties.id')
+                            ->where('ads.user_id', $auth->id);
+            })
+            ->orWhere(function ($subQuery) use ($auth)  {
+                $subQuery->whereNotNull('user_lelang_properties.id')
+                            ->where('user_lelang_properties.user_id', $auth->id);
+            });
+            })
             ->select(
-                "ads_properties.id",
-                DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
-                "ads.title",
-                "ads.slug",
-                "users.name as name_user",
-                "ads_properties.*",
-                "ads.status",
-                "ads.id as ads_id",
-                'media.id as media_id',
-                'media.file_name as file_name',
-                "ads.is_active"
+            "ads_properties.id",
+            DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
+            "ads.title",
+            "ads.slug",
+            "users.name as name_user",
+            "ads_properties.*",
+            "ads.status",
+            "ads.id as ads_id",
+            'media.id as media_id',
+            'media.file_name as file_name',
+            'user_lelang_properties.id as user_lelang_properties_id',
+            DB::raw("IFNULL(user_lelang_properties.is_active, ads.is_active) as is_active")
             )
-
             ->where(function ($query) use ($searchQuery) {
-                $query->where('ads.title', 'like', '%' . $searchQuery . '%')
+            $query->where('ads.title', 'like', '%' . $searchQuery . '%')
                     ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
                     ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
                     ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
                     ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
             })
             ->orderBy('ads.id', 'desc')
-            ->paginate(10);
+            ->get();
+
+
+
         // dd($properties);
 
         return view('Pages/ControlPanel/Member/Properti/index', compact('properties'));

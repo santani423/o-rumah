@@ -52,6 +52,7 @@ class ToolController extends Controller
     {
         $Cities = Cities::where('province_code', $request->code)->orderBy('name', 'asc')->get();
         $html = '';
+        $html .= '<option value="">Pilih Kabupaten / Kota</option>';
         foreach ($Cities as $key => $cts) {
             $html .= '<option value="' . $cts->code . '">' . $cts->name . '</option>';
         }
@@ -62,6 +63,7 @@ class ToolController extends Controller
     {
         $Districts = Districts::where('city_code', $request->code)->orderBy('name', 'asc')->get();
         $html = '';
+        $html .= '<option value="">Pilih Kecamatan</option>';
         foreach ($Districts as $key => $data) {
             $html .= '<option value="' . $data->code . '">' . $data->name . '</option>';
         }

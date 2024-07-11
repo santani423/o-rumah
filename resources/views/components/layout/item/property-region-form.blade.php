@@ -13,6 +13,7 @@
                     <h6 class="sub-title mb-3">Provinsi</h6>
                     <!-- Form Search Select Input -->
                     <select id="provinceSelect" class="form-control" style="width: 100%">
+                            <option value="">Pilih Provinsi</option>
                         @foreach ($provinces as $prv)
                             <option value="{{ $prv->code }}">{{ $prv->name }}</option>
                         @endforeach

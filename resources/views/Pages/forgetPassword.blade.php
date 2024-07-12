@@ -16,7 +16,7 @@
                 spinner.style.display = 'inline-block'; // Tampilkan spinner saat form disubmit
                 alertBox.style.display = 'none'; // Sembunyikan alert box setiap kali form disubmit
 
-                fetch('{{ route('forget.passwrod.email') }}', {
+                fetch("{{ route('forget.passwrod.email') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

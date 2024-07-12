@@ -20,7 +20,6 @@
         <span class="badge badge-danger noti-icon-badge">5</span>
     </a> -->
 </li>
---{{asset(Auth::user()->image)}}
 <!-- notification-->
 
 <!-- User-->

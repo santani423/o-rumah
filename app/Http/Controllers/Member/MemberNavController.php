@@ -693,7 +693,8 @@ class MemberNavController extends Controller
     {
         // dd($request);
         $request->validate([
-            'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
+            // 'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
+            'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png', // Validasi untuk setiap file nantinya di pasang 500mb
             'fileInput' => 'required', // Pastikan setidaknya satu file diunggah
             'title' => 'required|string|max:255|unique:ads,title',
             'description' => 'nullable|string',

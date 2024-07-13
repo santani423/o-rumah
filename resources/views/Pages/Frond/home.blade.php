@@ -330,6 +330,7 @@ loadAds(currentPage);
                     // Tambahkan event listener untuk menangani klik
                     locationItem.addEventListener('click', () => {
                         document.getElementById('searchLok').value = item.name;
+                        document.getElementById('sampleLocations').innerHTML = '';
                         document.getElementById('adsListsWithDistance').innerHTML = '';
                         latitude = item.meta.lat;
                         longitude = item.meta.long;

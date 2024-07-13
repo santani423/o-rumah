@@ -190,16 +190,40 @@
         loadAds(currentPage); // Load ads with latitude and longitude as null
     }
     
-
-function loadAds(page) {
-    document.getElementById('sampleLocations').innerHTML = '';
-    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
+    function loadAds(page) {
+    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
     if (isFirstLoad) {
-        // Fetch urlBooster first only on the first load
+        // Fetch urlEsklisif first only on the first load
+        // Fetch urlEsklisif first only on the first load
+fetch(urlEsklisif)
+    .then(response => response.text())
+    .then(data => {
+        appendAdsBooster(data, 'adsListsWithDistance');
+        // Fetch the main url after urlEsklisif is done
+        return fetch(urlBooster);
+    })
+    .then(response => response.text())
+    .then(data => {
+        appendAdsBooster(data, 'adsListsWithDistance');
+        // Set the flag to false after the first load
+        isFirstLoad = false;
+        // Fetch the main url after urlBooster is done
+        return fetch(url);
+    })
+    .then(response => response.text())
+    .then(data => {
+        appendAds(data, 'adsListsWithDistance');
+    })
+    .catch(error => console.error('Error:', error))
+    .finally(() => {
+        document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+    });
+
         fetch(urlBooster)
             .then(response => response.text())
             .then(data => {
@@ -293,6 +317,10 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
         console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
         document.getElementById('propertyTypeDropdown').innerHTML = '<i class="fas fa-home mr-2"></i>'+propertyTypeId;
         // Contoh: Kirim ID ke server atau lakukan tindakan lain
+        document.getElementById('adsListsWithDistance').innerHTML = '';
+
+currentPage = 1;
+loadAds(currentPage);
       
     }
 </script>
@@ -326,6 +354,7 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                     // Tambahkan event listener untuk menangani klik
                     locationItem.addEventListener('click', () => {
                         document.getElementById('searchLok').value = item.name;
+                        document.getElementById('sampleLocations').innerHTML = '';
                         document.getElementById('adsListsWithDistance').innerHTML = '';
                         latitude = item.meta.lat;
                         longitude = item.meta.long;
@@ -346,114 +375,21 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
     @slot('body')
 
     
-    <div class="row">
-        <div class="col-md-12">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    @foreach ($bannerLists as $key => $bnr)
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
-                        </li>
-                    @endforeach
-                </ol>
-                <div class="carousel-inner" role="listbox">
-                    @foreach ($bannerLists as $key => $bnr)
-                        <div class="carousel-item @if($key == 0) active @endif" onclick="linkBanner(`{{$bnr->url}}`)">
-                            <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
-                        </div>
-                    @endforeach
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
+ 
  
 
     <div class="container mt-5">
         <!-- Tabs -->
-
-        <div class="row justify-content-center">
-    <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="tab-container mb-2">
-            <div class="tab active" id="jual-tab" onclick="showTab('jual')">Beli</div>
-            <div class="tab " id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
-        </div>
-    </div>
-</div>
+        <x-Item.PropertySearchBar>
+        </x-Item.PropertySearchBar>
 
 
-        <!-- Search Bar -->
-        <div class="search-bar d-flex align-items-center">
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="propertyTypeDropdown"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-home mr-2"></i>Tipe Properti
-                </button>
-                <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
-                    @foreach($tipeProperti as $tipe)
-                        <p class="dropdown-item"   onclick="selectPropertyType(`{{ $tipe->name }}`)">{{ $tipe->name }}</p>
-                    @endforeach
-                </div>
-            </div>
-            
-            <div class="location-input flex-grow-1 ml-3">
-        <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-        <input type="text" class="form-control border-0"
-               placeholder="Lokasi, keyword, area" oninput="showSampleLocations(this.value)" id="searchLok">
-        <div id="sampleLocations" class="mt-2"></div>
-        </div>
-            <button class="btn btn-success ml-3"  onclick="searchLocation()">
-                <i class="fas fa-search"></i>
-            </button>
-            
-        </div>
-
-
-        <div class="card mt-2">
-            <div class="card-body">
-                <div class="nav-container">
-                    <div class="nav-links row">
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('latest') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('auction') }}"><img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti Lelang</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('ofoods') }}"><img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt=""><br>O-Foods</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari LBH</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('notaris') }}"><img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Notaris</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('agent') }}"><img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Agen</a>
-                        </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
-                            <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
 
         <!-- end wrapper -->
         <div  id="adsListsWithDistance" class="row mt-5"></div>
         <div class="row mt-2">
-    <div class="col-12 d-flex justify-content-center">
+    <div class="col-12 d-flex justify-content-center mb-3">
     <button type="button" class="btn   "  
         style="background-color: #47C8C5;
             border-color: #47C8C5;
@@ -471,38 +407,7 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
 </div>
 
 
-        <div class="card mt-2">
-            <div class="card-body" style=" background-color: #f0f0f0;">
-                <div class="nav-container">
-                    <div class="nav-links d-flex justify-content-between">
-                     
-                        <div class="nav-item ml-2">
-                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
-                                <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
-                                </div>
-                            </a>
-                        </div>
-                        <div class="nav-item ml-2">
-                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
-                                <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
-                                </div>
-                            </a>
-                        </div>
-                        <div class="nav-item ml-2">
-                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
-                                <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
-                                </div>
-                            </a>
-                        </div>
-                       
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        
    
     </div>
     @endslot

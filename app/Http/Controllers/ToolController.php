@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\Ads;
+use App\Models\User;
 use App\Models\UserLelangPropertie;
 use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
@@ -251,5 +252,36 @@ public function searchDistricts(Request $request)
         });
 
         return response()->json($result);
+    }
+
+    public function cekUsername(Request $request)
+    {
+        $username = $request->input('username');
+        
+        // Cek jika username mengandung spasi
+        if (strpos($username, ' ') !== false) {
+            $username = str_replace(' ', '', $username); // Hapus semua spasi dari username
+        }
+        
+        $user = User::where('username', $username)->first();
+        if ($user) {
+            $references = $this->generateUsernameReferences($username);
+            return response()->json(['exists' => true, 'references' => $references]);
+        } else {
+            return response()->json(['exists' => false, 'user' => $user, 'username' => $username]);
+        }
+    }
+
+    private function generateUsernameReferences($username)
+    {
+        $references = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $newUsername = $username . Str::random(3); // Menggabungkan username asli dengan 3 karakter acak
+            while (User::where('username', $newUsername)->exists()) {
+                $newUsername = $username . Str::random(3); // Pastikan username baru unik
+            }
+            $references[] = $newUsername;
+        }
+        return $references;
     }
 }

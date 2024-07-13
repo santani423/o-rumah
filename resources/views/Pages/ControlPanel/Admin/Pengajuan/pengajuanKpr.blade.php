@@ -144,22 +144,23 @@
                     <thead>
                         <tr>
                             <th class="pr-1">Select</th>
+                            <th >Tanggal</th>
                             <th class="pr-1">Code</th>
-                            <th class="pr-1">Ads ID</th>
+                            <!-- <th class="pr-1">Ads ID</th>
                             <th class="pr-1">User ID</th>
                             <th class="pr-1">Bank ID</th>
                             <th class="pr-1">Bank BPR ID</th>
-                            <th class="pr-1">Job ID</th>
+                            <th class="pr-1">Job ID</th> -->
+                            <th class="pr-2">Nama Agen</th> 
                             <th class="pr-2">Nama</th>
                             <th class="pr-2">Email</th>
                             <th class="pr-1">Telepon</th>
-                            <th class="pr-2">Pekerjaan</th>
-                            <th class="pr-1">Status</th>
-                            <th class="pr-2">Nama Agen</th>
                             <th class="pr-2">Nama Bank Umum</th>
                             <th class="pr-2">Email Bank Umum</th>
                             <th class="pr-2">Nama Bank BPR</th>
                             <th class="pr-2">Email Bank BPR</th>
+                            <th class="pr-2">Pekerjaan</th>
+                            <th class="pr-1">Status</th>
                             <th class="pr-2">Dibuat Pada</th>
                             <th class="pr-2">Diperbarui Pada</th>
                             <th class="pr-2">Aksi</th>
@@ -169,22 +170,23 @@
                         @foreach ($kpr as $item)
                             <tr>
                                 <td><input type="checkbox" name="selectRow" class="selectRow"></td>
+                                <td>{{date('d-m-Y', strtotime($item->created_at))}}</td>
                                 <td>{{ $item->uuid }}</td>
-                                <td>{{ $item->ads_id }}</td>
+                                <!-- <td>{{ $item->ads_id }}</td>
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->bank_id }}</td>
                                 <td>{{ $item->bank_bpr_id }}</td>
-                                <td>{{ $item->job_id }}</td>
+                                <td>{{ $item->job_id }}</td> -->
+                                <td>{{ $item->namaAgen }}</td>
                                 <td>{{ $item->kpr_name }}</td>
                                 <td>{{ $item->kpr_email }}</td>
                                 <td>{{ $item->kpr_phone }}</td>
-                                <td>{{ $item->kpr_occupation }}</td>
-                                <td>{{ $item->status }}</td>
-                                <td>{{ $item->namaAgen }}</td>
                                 <td>{{ $item->bank_umum_name }}</td>
                                 <td>{{ $item->bank_umum_email }}</td>
                                 <td>{{ $item->bank_bpr_name }}</td>
                                 <td>{{ $item->bank_bpr_email }}</td>
+                                <td>{{ $item->kpr_occupation }}</td>
+                                <td>{{ $item->status }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                                 <td><a href="{{route('admin.pengajuan.kpr.detail', ['id' => $item->id])}}"

@@ -16,7 +16,7 @@ class AuthController extends Controller
             // Validasi input
             $credentials = $request->validate([
                 'email' => 'required|email',
-                'password' => 'required|min:8'
+                'password' => 'required'
             ]);
 
             // Cek rate limiting

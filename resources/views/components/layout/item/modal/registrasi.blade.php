@@ -31,8 +31,8 @@
                     <div class="form-group row">
                         <label for="nama" class="col-12">Username</label>
                         <div class="col-12">
-                            <input class="form-control" type="text" required="" placeholder="Username" name="username"
-                                id="username">
+                            <input class="form-control" type="text" required="" placeholder="Username" onkeyup="cekUsername()" name="username" id="username">
+                            <span id="username-error" style="color: red;"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -195,3 +195,46 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </form>
+<script type="text/javascript">
+        function cekUsername() {
+            console.log('sdfsdf');
+            var username = $('#username').val();
+
+            if (username.includes(' ')) {
+                $('#username-error').text('Username tidak boleh mengandung spasi.');
+                $('#username-status').text('');
+                $('#username-references').empty();
+                return;
+            } else {
+                $('#username-error').text('');
+            }
+
+            if (username) {
+                console.log('sdfsdf',username);
+                $.ajax({
+                    url: "{{ route('cek-username') }}",
+                    method: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        username: username
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        $('#username-references').empty(); // Kosongkan daftar referensi username
+                        if (response.exists) {
+                            $('#username-status').text('Username already exists').css('color', 'red');
+                            var references = response.references;
+                            references.forEach(function(ref) {
+                                $('#username-references').append('<li>' + ref + '</li>');
+                            });
+                        } else {
+                            $('#username-status').text('Username available').css('color', 'green');
+                        }
+                    }
+                });
+            } else {
+                $('#username-status').text('');
+                $('#username-references').empty(); // Kosongkan daftar referensi username jika input kosong
+            }
+        }
+    </script>

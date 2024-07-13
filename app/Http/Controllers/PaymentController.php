@@ -24,10 +24,10 @@ class PaymentController extends Controller
     public function __construct()
     {
         // simulasi transaksi
-        Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
+        // Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
 
         // public transaksi
-        // Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
+        Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
         $this->apiInstance = new InvoiceApi();
     }
     function create(Request $request)

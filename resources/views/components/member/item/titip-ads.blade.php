@@ -8,10 +8,10 @@
     </div>
 
     <div class="mt-5">
-        <table id="titipAdsTable" class="display">
+        <table id="titipAdsTable" class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Owner</th>
                     <th>Receiver</th>
                     <th>Status</th>
@@ -44,7 +44,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     let selectedAgent = null;
@@ -139,17 +138,55 @@
             const titipAdsListDiv = document.getElementById('titipAdsList');
             titipAdsListDiv.innerHTML = '';
 
-            data.forEach(item => {
-                const titipAdItem = document.createElement('div');
-                titipAdItem.textContent = `Owner: ${item.owner.name}, Receiver: ${item.receiver.name}, Status: ${item.status}`;
-                titipAdItem.classList.add('titip-ad-item');
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                const idCell = document.createElement('td');
+                idCell.textContent = index + 1;
+                row.appendChild(idCell);
+                
+                const ownerCell = document.createElement('td');
+                ownerCell.textContent = item.owner.name;
+                row.appendChild(ownerCell);
+                
+                const receiverCell = document.createElement('td');
+                receiverCell.textContent = item.receiver.name;
+                row.appendChild(receiverCell);
+                
+                const statusCell = document.createElement('td');
+                statusCell.textContent = item.status;
+                row.appendChild(statusCell);
 
-                titipAdsListDiv.appendChild(titipAdItem);
+                titipAdsListDiv.appendChild(row);
             });
         })
         .catch(error => {
             console.error('Error fetching TitipAd data:', error);
         });
+    }
+
+    function addTitipAdToTable(titipAd) {
+        const titipAdsListDiv = document.getElementById('titipAdsList');
+        
+        const row = document.createElement('tr');
+        
+        const idCell = document.createElement('td');
+        idCell.textContent = titipAd.id;
+        row.appendChild(idCell);
+        
+        const ownerCell = document.createElement('td');
+        ownerCell.textContent = titipAd.owner.name;
+        row.appendChild(ownerCell);
+        
+        const receiverCell = document.createElement('td');
+        receiverCell.textContent = titipAd.receiver.name;
+        row.appendChild(receiverCell);
+        
+        const statusCell = document.createElement('td');
+        statusCell.textContent = titipAd.status;
+        row.appendChild(statusCell);
+
+        titipAdsListDiv.appendChild(row);
     }
 
     // Panggil fungsi loadTitipAds saat halaman dimuat

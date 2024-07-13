@@ -45,27 +45,27 @@
                         <label for="noWa" class="col-12">Nomor WhatsApp</label>
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Nomor WhatsApp" name="noWa" id="noWa">
-                            <span id="noWa-error" class="text-danger"></span>
+                            <!-- <span id="noWa-error" class="text-danger"></span> -->
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-12">Password</label>
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
-                            <span id="password-error" class="text-danger"></span>
+                            <!-- <span id="password-error" class="text-danger"></span> -->
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="ulang_password" class="col-12">Ulang Password</label>
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Ulang Password" name="ulang_password" id="ulang_password">
-                            <span id="ulang_password-error" class="text-danger"></span>
+                            <!-- <span id="ulang_password-error" class="text-danger"></span> -->
                         </div>
                     </div>
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" data-toggle="modal" data-target=".pilihType">Daftar</button>
+                            <button id="submit-button"  class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" data-toggle="modal" data-target=".pilihType">Daftar</button>
                         </div>
                     </div>
                     <div class="col-sm-5 m-t-20">
@@ -214,58 +214,68 @@
     }
 
     function validateForm() {
-        var isValid = true;
+    var isValid = true;
 
-        var nama = $('#nama').val().trim();
-        var username = $('#username').val().trim();
-        var email = $('#email').val().trim();
-        var noWa = $('#noWa').val().trim();
-        var password = $('#password').val().trim();
-        var ulang_password = $('#ulang_password').val().trim();
+    var nama = $('#nama').val().trim();
+    var username = $('#username').val().trim();
+    var email = $('#email').val().trim();
+    var noWa = $('#noWa').val().trim();
+    var password = $('#password').val().trim();
+    var ulang_password = $('#ulang_password').val().trim();
 
-        if (!nama) {
-            $('#nama-error').text('Nama Lengkap harus diisi.');
-            isValid = false;
-        } else {
-            $('#nama-error').text('');
-        }
-        if (!username) {
-            $('#username-error').text('Username harus diisi.');
-            isValid = false;
-        } else if ($('#username-status').text() !== 'Username tersedia') {
-            $('#username-error').text('Username tidak valid.');
-            isValid = false;
-        } else {
-            $('#username-error').text('');
-        }
-        if (!email) {
-            $('#email-error').text('Alamat Email harus diisi.');
-            isValid = false;
-        } else {
-            $('#email-error').text('');
-        }
-        if (!noWa) {
-            $('#noWa-error').text('Nomor WhatsApp harus diisi.');
-            isValid = false;
-        } else {
-            $('#noWa-error').text('');
-        }
-        if (!password) {
-            $('#password-error').text('Password harus diisi.');
-            isValid = false;
-        } else {
-            $('#password-error').text('');
-        }
-        if (!ulang_password) {
-            $('#ulang_password-error').text('Ulang Password harus diisi.');
-            isValid = false;
-        } else if (password !== ulang_password) {
-            $('#ulang_password-error').text('Password dan Ulang Password tidak sesuai.');
-            isValid = false;
-        } else {
-            $('#ulang_password-error').text('');
-        }
-
-        return isValid;
+    if (!nama) {
+        $('#nama-error').text('Nama Lengkap harus diisi.');
+        isValid = false;
+    } else {
+        $('#nama-error').text('');
     }
+    if (!username) {
+        $('#username-error').text('Username harus diisi.');
+        isValid = false;
+    } else if ($('#username-status').text() !== 'Username tersedia') {
+        $('#username-error').text('Username tidak valid.');
+        isValid = false;
+    } else {
+        $('#username-error').text('');
+    }
+    if (!email) {
+        $('#email-error').text('Alamat Email harus diisi.');
+        isValid = false;
+    } else {
+        $('#email-error').text('');
+    }
+    if (!noWa) {
+        $('#noWa-error').text('Nomor WhatsApp harus diisi.');
+        isValid = false;
+    } else {
+        $('#noWa-error').text('');
+    }
+    if (!password) {
+        $('#password-error').text('Password harus diisi.');
+        isValid = false;
+    } else {
+        $('#password-error').text('');
+    }
+    if (!ulang_password) {
+        $('#ulang_password-error').text('Ulang Password harus diisi.');
+        isValid = false;
+    } else if (password !== ulang_password) {
+        $('#ulang_password-error').text('Password dan Ulang Password tidak sesuai.');
+        isValid = false;
+    } else {
+        $('#ulang_password-error').text('');
+    }
+
+    // Update tombol berdasarkan hasil validasi
+    if (isValid) {
+        $('#submit-button').attr('data-toggle', 'modal');
+        $('#submit-button').attr('data-target', '.pilihType');
+    } else {
+        $('#submit-button').removeAttr('data-toggle');
+        $('#submit-button').removeAttr('data-target');
+    }
+
+    return isValid;
+}
+
 </script>

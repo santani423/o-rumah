@@ -273,15 +273,16 @@ public function searchDistricts(Request $request)
     }
 
     private function generateUsernameReferences($username)
-    {
-        $references = [];
-        for ($i = 1; $i <= 4; $i++) {
-            $newUsername = $username . Str::random(3); // Menggabungkan username asli dengan 3 karakter acak
-            while (User::where('username', $newUsername)->exists()) {
-                $newUsername = $username . Str::random(3); // Pastikan username baru unik
-            }
-            $references[] = $newUsername;
+{
+    $references = [];
+    for ($i = 1; $i <= 4; $i++) {
+        $newUsername = $username . mt_rand(11, 9999); // Menggabungkan username asli dengan angka acak antara 11 dan 9999
+        while (User::where('username', $newUsername)->exists()) {
+            $newUsername = $username . mt_rand(11, 999); // Pastikan username baru unik
         }
-        return $references;
+        $references[] = $newUsername;
     }
+    return $references;
+}
+
 }

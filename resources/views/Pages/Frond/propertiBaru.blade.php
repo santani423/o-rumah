@@ -1,117 +1,148 @@
 <x-Layout.Horizontal.Master>
-    @slot('css')
-    <style>
-        /* Tabs */
-        .tab-container {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            overflow: hidden;
-        }
+@slot('css')
+<style>
+    /* Tabs */
+    .tab-container {
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        overflow: hidden;
+    }
 
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px 20px;
-            cursor: pointer;
-            color: #999;
-            background-color: white;
-        }
+    .tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #999;
+        background-color: white;
+    }
 
-        #beli-tab {
-            color: white;
-            background-color: #47C8C5;
-        }
+    .active {
+        color: white;
+        background-color: #47C8C5;
+    }
 
-        .tab:not(#beli-tab):hover {
-            background-color: #f0f0f0;
-        }
+    /* .tab:not(#beli-tab):hover {
+        background-color: #f0f0f0;
+    } */
 
-        /* Search Bar */
-        .search-bar {
-            background-color: white;
-            border-radius: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-        }
+    /* Search Bar */
+    .search-bar {
+        background-color: white;
+        border-radius: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
 
-        .btn-success {
-            background-color:  #f0f0f0; 
-        }
+    .btn-success {
+        background-color: #f0f0f0;
+    }
 
-        .dropdown-toggle {
-            border: none;
-            background: none;
-            box-shadow: none;
-        }
+    .dropdown-toggle {
+        border: none;
+        background: none;
+        box-shadow: none;
+    }
 
-        .dropdown-toggle:focus {
-            box-shadow: none;
-        }
+    .dropdown-toggle:focus {
+        box-shadow: none;
+    }
 
+    .location-input {
+        display: flex;
+        align-items: center;
+        border-left: 1px solid #ddd;
+        padding-left: 10px;
+    }
+
+    .location-input input {
+        flex-grow: 1;
+    }
+
+    .card {
+        width: calc(100% - 4px);
+        margin: 2px;
+    }
+
+    /* Styling for the navbar */
+    .nav-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* Styling for the navbar links */
+    .nav-links a {
+        margin-right: 20px;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .nav-item {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Carousel */
+    .carousel-item {
+        text-align: center;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 15px;
+    }
+
+    .carousel-inner {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+</style>
+<style>
+    .sample-location-item {
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .sample-location-item:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+<style>
+        .form-group {
+            margin-bottom: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
         .location-input {
-            display: flex;
-            align-items: center;
-            border-left: 1px solid #ddd;
-            padding-left: 10px;
+            position: relative;
         }
-
-        .location-input input {
-            flex-grow: 1;
+        #sampleLocations {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background-color: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
         }
-
-        .card {
-            width: calc(100% - 4px);
-            margin: 2px;
-        }
-
-        /* Styling for the navbar */
-        .nav-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        /* Styling for the navbar links */
-        .nav-links a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: space-between;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .nav-item {
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* Carousel */
-        .carousel-item {
-            text-align: center;
-            max-height: 300px;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-        }
-
-        .carousel-inner {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
     </style>
     @endslot
     @slot('js')
@@ -120,8 +151,10 @@
     const perPage = 5;
     let latitude = null;
     let longitude = null;
-    let isFirstLoad = true;
-
+    let isFirstLoad = true; 
+    let beliSewa = 'Jual';
+    let typeProperti = null;
+    
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -159,39 +192,14 @@
     
 
 function loadAds(page) {
-    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    document.getElementById('sampleLocations').innerHTML = '';
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
     if (isFirstLoad) {
-        // Fetch urlEsklisif first only on the first load
-        // Fetch urlEsklisif first only on the first load
-fetch(urlEsklisif)
-    .then(response => response.text())
-    .then(data => {
-        appendAdsBooster(data, 'adsListsWithDistance');
-        // Fetch the main url after urlEsklisif is done
-        return fetch(urlBooster);
-    })
-    .then(response => response.text())
-    .then(data => {
-        appendAdsBooster(data, 'adsListsWithDistance');
-        // Set the flag to false after the first load
-        isFirstLoad = false;
-        // Fetch the main url after urlBooster is done
-        return fetch(url);
-    })
-    .then(response => response.text())
-    .then(data => {
-        appendAds(data, 'adsListsWithDistance');
-    })
-    .catch(error => console.error('Error:', error))
-    .finally(() => {
-        document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
-    });
-
+        // Fetch urlBooster first only on the first load
         fetch(urlBooster)
             .then(response => response.text())
             .then(data => {
@@ -247,18 +255,138 @@ function appendAds(html, containerId) {
     
         window.location.href = link;
     }
-</script>
 
+    function searchLocation() {
+    // const inputElement = document.querySelector('.location-input input');
+    // const locationText = inputElement.value;
+    // currentPage = 1;
+    // console.log('Lokasi yang dicari:', locationText);
+    
+    document.getElementById('adsListsWithDistance').innerHTML = '';
+    loadAds(currentPage);
+    
+}
+
+// Panggil fungsi ini ketika tombol pencarian ditekan
+document.querySelector('.btn-success').addEventListener('click', searchLocation);
+
+</script>
+<script>
+   
+    function showTab(tabId) {
+        // Menghapus kelas 'active' dari semua tab
+        beliSewa = tabId;
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+         
+        // Menambahkan kelas 'active' ke tab yang dipilih
+        document.getElementById(tabId + '-tab').classList.add('active');
+        document.getElementById('adsListsWithDistance').innerHTML = '';
+
+        currentPage = 1;
+        loadAds(currentPage);
+    }
+    function selectPropertyType(propertyTypeId) {
+        // Lakukan sesuatu dengan ID tipe properti yang dipilih
+        typeProperti = propertyTypeId;
+        console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
+        document.getElementById('propertyTypeDropdown').innerHTML = '<i class="fas fa-home mr-2"></i>'+propertyTypeId;
+        // Contoh: Kirim ID ke server atau lakukan tindakan lain
+      
+    }
+</script>
+<script>
+        function showSampleLocations(inputValue) {
+            if (inputValue.length < 2) {
+                document.getElementById('sampleLocations').innerHTML = '';
+                return;
+            }
+
+            const url = `{{route('tool.searchDistricts')}}`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // if you are using Laravel with CSRF protection
+                },
+                body: JSON.stringify({ keyword: inputValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const sampleLocationsDiv = document.getElementById('sampleLocations');
+                sampleLocationsDiv.innerHTML = '';
+
+                data.forEach(item => {
+                    const locationItem = document.createElement('div');
+                    locationItem.textContent = item.name;
+                    locationItem.classList.add('sample-location-item');
+                    
+                    // Tambahkan event listener untuk menangani klik
+                    locationItem.addEventListener('click', () => {
+                        document.getElementById('searchLok').value = item.name;
+                        document.getElementById('adsListsWithDistance').innerHTML = '';
+                        latitude = item.meta.lat;
+                        longitude = item.meta.long;
+                        loadAds(currentPage)
+                        console.log(item.meta); // Menampilkan item.meta di console saat diklik
+                    });
+                    
+                    sampleLocationsDiv.appendChild(locationItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching location data:', error);
+            });
+
+        }
+    </script>
     @endslot
     @slot('body')
 
     
-    
+    <div class="row">
+        <div class="col-md-12">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach ($bannerLists as $key => $bnr)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
+                        </li>
+                    @endforeach
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    @foreach ($bannerLists as $key => $bnr)
+                        <div class="carousel-item @if($key == 0) active @endif" onclick="linkBanner(`{{$bnr->url}}`)">
+                            <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
+                        </div>
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
  
 
-    <div class="container mt-2">
-        
+    <div class="container mt-5">
+        <!-- Tabs -->
+
+        <div class="row justify-content-center">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="tab-container mb-2">
+            <div class="tab active" id="jual-tab" onclick="showTab('jual')">Beli</div>
+            <div class="tab " id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
+        </div>
+    </div>
+</div>
 
 
         <!-- Search Bar -->
@@ -269,28 +397,62 @@ function appendAds(html, containerId) {
                     <i class="fas fa-home mr-2"></i>Tipe Properti
                 </button>
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
-                     
+                    @foreach($tipeProperti as $tipe)
+                        <p class="dropdown-item"   onclick="selectPropertyType(`{{ $tipe->name }}`)">{{ $tipe->name }}</p>
+                    @endforeach
                 </div>
             </div>
+            
             <div class="location-input flex-grow-1 ml-3">
-                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-                <input type="text" class="form-control border-0"
-                    placeholder="Lokasi, keyword, area, project, developer">
-            </div>
-            <button class="btn btn-success ml-3"  >
+        <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
+        <input type="text" class="form-control border-0"
+               placeholder="Lokasi, keyword, area" oninput="showSampleLocations(this.value)" id="searchLok">
+        <div id="sampleLocations" class="mt-2"></div>
+        </div>
+            <button class="btn btn-success ml-3"  onclick="searchLocation()">
                 <i class="fas fa-search"></i>
             </button>
-
+            
         </div>
 
 
-        
+        <div class="card mt-2">
+            <div class="card-body">
+                <div class="nav-container">
+                    <div class="nav-links row">
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('latest') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('auction') }}"><img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti Lelang</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('ofoods') }}"><img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt=""><br>O-Foods</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari LBH</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('notaris') }}"><img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Notaris</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <a href="{{ route('agent') }}"><img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Agen</a>
+                        </div>
+                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                            <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
+                            <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- end wrapper -->
-         
         <div  id="adsListsWithDistance" class="row mt-5"></div>
-  
-        <div class="row mt-2 mb-2">
+        <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">
     <button type="button" class="btn   "  
         style="background-color: #47C8C5;
@@ -309,7 +471,39 @@ function appendAds(html, containerId) {
 </div>
 
 
-         
+        <div class="card mt-2">
+            <div class="card-body" style=" background-color: #f0f0f0;">
+                <div class="nav-container">
+                    <div class="nav-links d-flex justify-content-between">
+                     
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
+                            <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center"> 
+                                    <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                </div>
+                            </a>
+                        </div>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+   
     </div>
     @endslot
 

@@ -248,7 +248,8 @@ public function searchDistricts(Request $request)
         $result = $districts->map(function($district) {
             return [
                 'id' => $district->id,
-                'name' => $district->city->province->name . '-' . $district->city->name . '-' . $district->name
+                'name' => $district->city->province->name . '-' . $district->city->name . '-' . $district->name,
+                'meta'=>$district->meta
             ];
         });
 

@@ -320,12 +320,19 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                     const locationItem = document.createElement('div');
                     locationItem.textContent = item.name;
                     locationItem.classList.add('sample-location-item');
+                    
+                    // Tambahkan event listener untuk menangani klik
+                    locationItem.addEventListener('click', () => {
+                        console.log(item.meta); // Menampilkan item.meta di console saat diklik
+                    });
+                    
                     sampleLocationsDiv.appendChild(locationItem);
                 });
             })
             .catch(error => {
                 console.error('Error fetching location data:', error);
             });
+
         }
     </script>
     @endslot

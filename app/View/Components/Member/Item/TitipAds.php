@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Member\Item;
 
+use App\Models\Ads;
 use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
@@ -11,9 +12,11 @@ class TitipAds extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public $ads;
+    public function __construct($ads='')
     {
-        //
+      
+        $this->ads = $ads;
     }
 
     /**

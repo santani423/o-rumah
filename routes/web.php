@@ -22,6 +22,7 @@ use App\Http\Controllers\Front\ProfileController;
 use App\Http\Controllers\WhatsAppController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\BosterAdsController;
+use App\Http\Controllers\TitipAdsController;
 use App\Http\Controllers\Visitor\VisitorKprController;
 
 /*
@@ -328,6 +329,9 @@ Route::post('/cek-username', [ToolController::class, 'cekUsername'])->name('cek-
 
 
 Route::post('/search-agent', [ToolController::class, 'searchAgnet'])->name('agent.search');
+
+Route::post('/save-titip-ads', [TitipAdsController::class, 'store'])->name('titip-ads.store');
+
 
 
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');

@@ -29,7 +29,14 @@ class TitipAdsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $titipAd = new TitipAds();
+        $titipAd->ads_id = $request->input('ads_id');
+        $titipAd->user_owner_id = $request->input('user_owner_id');
+        $titipAd->user_receiver_id = $request->input('user_receiver_id');
+        $titipAd->status = 'pending';
+        $titipAd->save();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
 
     /**

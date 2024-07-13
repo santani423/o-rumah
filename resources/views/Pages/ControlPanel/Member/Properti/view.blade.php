@@ -420,8 +420,8 @@ function setFomMediaId(id){
                                             </table>
                                                 </div>
                                                 <div class="tab-pane p-3 @if($navLink == 'depositAds') active @endif" id="depositAds" role="tabpanel">
-                                                    
-                                                    <x-Member.Item.TitipAds>
+                                                     
+                                                    <x-Member.Item.TitipAds :ads="$ads">
                                                     </x-Member.Item.TitipAds>
                                                 </div>
                                             </div>

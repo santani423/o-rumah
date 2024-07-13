@@ -1,4 +1,3 @@
-<!-- HTML -->
 <div class="container">
     <div class="form-group row">
         <label for="search-agent-input" class="col-sm-2 col-form-label">Cari Agent</label>
@@ -77,9 +76,34 @@
     }
 
     document.getElementById('confirmAgentButton').addEventListener('click', () => {
+        console.log(selectedAgent);
         if (selectedAgent) {
-            console.log('Agen yang dipilih:', selectedAgent);
-            $('#confirmAgentModal').modal('hide');  
+            const url = "{{ route('titip-ads.store') }}"; // Route untuk menyimpan data titip ads
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    ads_id: '{{$ads->ads_id}}',
+                    user_owner_id: `{{Auth::user()->id}}`,
+                    user_receiver_id: selectedAgent.id // Menggunakan ID agen yang dipilih
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Terjadi kesalahan saat menyimpan data');
+                }
+                $('#confirmAgentModal').modal('hide'); // Sembunyikan modal setelah konfirmasi
+            })
+            .catch(error => {
+                console.error('Error saving agent data:', error);
+            });
         }
     });
 </script>

@@ -6,6 +6,22 @@
             <div id="agentResults" class="mt-3"></div>
         </div>
     </div>
+
+    <div class="mt-5">
+        <table id="titipAdsTable" class="display">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Owner</th>
+                    <th>Receiver</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="titipAdsList">
+                <!-- List TitipAds akan dimuat di sini -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -28,6 +44,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     let selectedAgent = null;
@@ -76,7 +93,6 @@
     }
 
     document.getElementById('confirmAgentButton').addEventListener('click', () => {
-        console.log(selectedAgent);
         if (selectedAgent) {
             const url = "{{ route('titip-ads.store') }}"; // Route untuk menyimpan data titip ads
 
@@ -96,6 +112,7 @@
             .then(data => {
                 if (data.success) {
                     alert(data.message);
+                    loadTitipAds(); // Muat ulang daftar TitipAd setelah berhasil menyimpan
                 } else {
                     alert('Terjadi kesalahan saat menyimpan data');
                 }
@@ -106,4 +123,36 @@
             });
         }
     });
+
+    function loadTitipAds() {
+        const url = "{{ route('titip-ads.list') }}"; // Route untuk mengambil daftar TitipAd
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const titipAdsListDiv = document.getElementById('titipAdsList');
+            titipAdsListDiv.innerHTML = '';
+
+            data.forEach(item => {
+                const titipAdItem = document.createElement('div');
+                titipAdItem.textContent = `Owner: ${item.owner.name}, Receiver: ${item.receiver.name}, Status: ${item.status}`;
+                titipAdItem.classList.add('titip-ad-item');
+
+                titipAdsListDiv.appendChild(titipAdItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching TitipAd data:', error);
+        });
+    }
+
+    // Panggil fungsi loadTitipAds saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', loadTitipAds);
 </script>
+

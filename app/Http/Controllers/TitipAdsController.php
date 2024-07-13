@@ -13,7 +13,9 @@ class TitipAdsController extends Controller
      */
     public function index()
     {
-        //
+        $titipAds = TitipAds::with(['owner', 'receiver'])->get(); // Pastikan Anda telah mendefinisikan relasi `owner` dan `receiver` di model TitipAd
+
+        return response()->json($titipAds);
     }
 
     /**

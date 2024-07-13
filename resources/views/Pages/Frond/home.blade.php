@@ -192,6 +192,7 @@
     
 
 function loadAds(page) {
+    document.getElementById('sampleLocations').innerHTML = '';
     const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
     const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}`;
     
@@ -256,10 +257,10 @@ function appendAds(html, containerId) {
     }
 
     function searchLocation() {
-    const inputElement = document.querySelector('.location-input input');
-    const locationText = inputElement.value;
-    currentPage = 1;
-    console.log('Lokasi yang dicari:', locationText);
+    // const inputElement = document.querySelector('.location-input input');
+    // const locationText = inputElement.value;
+    // currentPage = 1;
+    // console.log('Lokasi yang dicari:', locationText);
     
     document.getElementById('adsListsWithDistance').innerHTML = '';
     loadAds(currentPage);
@@ -292,6 +293,7 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
         console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
         document.getElementById('propertyTypeDropdown').innerHTML = '<i class="fas fa-home mr-2"></i>'+propertyTypeId;
         // Contoh: Kirim ID ke server atau lakukan tindakan lain
+      
     }
 </script>
 <script>
@@ -323,6 +325,11 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                     
                     // Tambahkan event listener untuk menangani klik
                     locationItem.addEventListener('click', () => {
+                        document.getElementById('searchLok').value = item.name;
+                        document.getElementById('adsListsWithDistance').innerHTML = '';
+                        latitude = item.meta.lat;
+                        longitude = item.meta.long;
+                        loadAds(currentPage)
                         console.log(item.meta); // Menampilkan item.meta di console saat diklik
                     });
                     
@@ -399,10 +406,10 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
             <div class="location-input flex-grow-1 ml-3">
         <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
         <input type="text" class="form-control border-0"
-               placeholder="Lokasi, keyword, area" oninput="showSampleLocations(this.value)">
+               placeholder="Lokasi, keyword, area" oninput="showSampleLocations(this.value)" id="searchLok">
         <div id="sampleLocations" class="mt-2"></div>
     </div>
-            <button class="btn btn-success ml-3"  >
+            <button class="btn btn-success ml-3"  onclick="searchLocation()">
                 <i class="fas fa-search"></i>
             </button>
             

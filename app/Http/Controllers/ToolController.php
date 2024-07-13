@@ -231,17 +231,18 @@ class ToolController extends Controller
 public function searchDistricts(Request $request)
     {
         $keyword = $request->input('keyword');
-
+        // return response()->json($keyword);
         // Query untuk mencari distrik berdasarkan keyword
         $districts = District::with('city.province')
-                            ->where('name', 'LIKE', '%' . $keyword . '%')
-                            ->orWhereHas('city', function($query) use ($keyword) {
-                                $query->where('name', 'LIKE', '%' . $keyword . '%');
-                            })
-                            ->orWhereHas('city.province', function($query) use ($keyword) {
-                                $query->where('name', 'LIKE', '%' . $keyword . '%');
-                            })
-                            ->get();
+        ->where('name', 'LIKE', '%' . $keyword . '%')
+        ->orWhereHas('city', function($query) use ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%');
+        })
+        ->orWhereHas('city.province', function($query) use ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%');
+        })
+        ->get();
+        // dd($districts);
 
         // Mengubah hasil menjadi format Provinsi-Kota-Distrik
         $result = $districts->map(function($district) {

@@ -322,7 +322,7 @@ Route::get('/tool/getMarchantListsWithDistance', [ToolController::class, 'getMar
 Route::get('/tool/tes', [ToolController::class, 'tes'])->name('tool.tes');
 Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
 
-Route::get('/tool/searchDistricts', [ToolController::class, 'searchDistricts'])->name('tool.searchDistricts');
+Route::post('/tool/searchDistricts', [ToolController::class, 'searchDistricts'])->name('tool.searchDistricts');
 Route::post('/cek-username', [ToolController::class, 'cekUsername'])->name('cek-username');
 
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');

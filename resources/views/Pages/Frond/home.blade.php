@@ -301,8 +301,8 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
                 return;
             }
 
-            const url = `http://localhost:8000/tool/searchDistricts`;
-
+            const url = `{{route('tool.searchDistricts')}}`;
+            
             fetch(url, {
                 method: 'POST',
                 headers: {

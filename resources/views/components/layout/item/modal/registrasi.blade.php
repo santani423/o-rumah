@@ -5,7 +5,7 @@
     }
 </style>
 
-<form class="form-horizontal m-t-20" action="{{ route('auth.in.registrasi') }}" method="post">
+<form class="form-horizontal m-t-20" action="{{ route('auth.in.registrasi') }}" method="post" onsubmit="return validateForm()">
     <div class="modal fade Registrasi" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -22,13 +22,14 @@
                         <label for="nama" class="col-12">Nama Lengkap</label>
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Nama Lengkap" name="nama" id="nama">
+                            <span id="nama-error" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="username" class="col-12">Username</label>
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Username" onkeyup="cekUsername()" name="username" id="username">
-                            <span id="username-error" style="color: red;"></span>
+                            <span id="username-error" class="text-danger"></span>
                             <span id="username-status"></span>
                             <ul id="username-references"></ul>
                         </div>
@@ -37,30 +38,34 @@
                         <label for="email" class="col-12">Alamat Email</label>
                         <div class="col-12">
                             <input class="form-control" type="email" required="" placeholder="Alamat Email" name="email" id="email">
+                            <span id="email-error" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="noWa" class="col-12">Nomor WhatsApp</label>
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Nomor WhatsApp" name="noWa" id="noWa">
+                            <span id="noWa-error" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-12">Password</label>
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
+                            <span id="password-error" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="ulang_password" class="col-12">Ulang Password</label>
                         <div class="col-12">
                             <input class="form-control" type="password" required="" placeholder="Ulang Password" name="ulang_password" id="ulang_password">
+                            <span id="ulang_password-error" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light btn-succsess" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" data-toggle="modal" data-target=".pilihType">Daftar</button>
+                            <button class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" data-toggle="modal" data-target=".pilihType">Daftar</button>
                         </div>
                     </div>
                     <div class="col-sm-5 m-t-20">
@@ -186,13 +191,13 @@
                 success: function (response) {
                     $('#username-references').empty(); 
                     if (response.exists) {
-                        $('#username-status').text('Username already exists').css('color', 'red');
+                        $('#username-status').text('Username sudah ada').css('color', 'red');
                         var references = response.references;
                         references.forEach(function(ref) {
                             $('#username-references').append('<li onclick="pilihUsername(\'' + ref + '\')">' + ref + '</li>');
                         });
                     } else {
-                        $('#username-status').text('Username available').css('color', 'green');
+                        $('#username-status').text('Username tersedia').css('color', 'green');
                     }
                 }
             });
@@ -204,7 +209,63 @@
 
     function pilihUsername(username) {
         $('#username').val(username);
-        $('#username-status').text('Username available').css('color', 'green');
+        $('#username-status').text('Username tersedia').css('color', 'green');
         $('#username-references').empty();
+    }
+
+    function validateForm() {
+        var isValid = true;
+
+        var nama = $('#nama').val().trim();
+        var username = $('#username').val().trim();
+        var email = $('#email').val().trim();
+        var noWa = $('#noWa').val().trim();
+        var password = $('#password').val().trim();
+        var ulang_password = $('#ulang_password').val().trim();
+
+        if (!nama) {
+            $('#nama-error').text('Nama Lengkap harus diisi.');
+            isValid = false;
+        } else {
+            $('#nama-error').text('');
+        }
+        if (!username) {
+            $('#username-error').text('Username harus diisi.');
+            isValid = false;
+        } else if ($('#username-status').text() !== 'Username tersedia') {
+            $('#username-error').text('Username tidak valid.');
+            isValid = false;
+        } else {
+            $('#username-error').text('');
+        }
+        if (!email) {
+            $('#email-error').text('Alamat Email harus diisi.');
+            isValid = false;
+        } else {
+            $('#email-error').text('');
+        }
+        if (!noWa) {
+            $('#noWa-error').text('Nomor WhatsApp harus diisi.');
+            isValid = false;
+        } else {
+            $('#noWa-error').text('');
+        }
+        if (!password) {
+            $('#password-error').text('Password harus diisi.');
+            isValid = false;
+        } else {
+            $('#password-error').text('');
+        }
+        if (!ulang_password) {
+            $('#ulang_password-error').text('Ulang Password harus diisi.');
+            isValid = false;
+        } else if (password !== ulang_password) {
+            $('#ulang_password-error').text('Password dan Ulang Password tidak sesuai.');
+            isValid = false;
+        } else {
+            $('#ulang_password-error').text('');
+        }
+
+        return isValid;
     }
 </script>

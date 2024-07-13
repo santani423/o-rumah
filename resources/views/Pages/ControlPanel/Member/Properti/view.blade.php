@@ -421,7 +421,8 @@ function setFomMediaId(id){
                                                 </div>
                                                 <div class="tab-pane p-3 @if($navLink == 'depositAds') active @endif" id="depositAds" role="tabpanel">
                                                     
-                                                <p>deposit</p>
+                                                    <x-Member.Item.TitipAds>
+                                                    </x-Member.Item.TitipAds>
                                                 </div>
                                             </div>
             
@@ -431,5 +432,9 @@ function setFomMediaId(id){
             
                                 
                             </div>
+    @endslot
+
+    @slot('js')
+    
     @endslot
 </x-Layout.Vertical.Master>

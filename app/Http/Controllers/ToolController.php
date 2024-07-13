@@ -287,4 +287,12 @@ public function searchDistricts(Request $request)
     return $references;
 }
 
+function searchAgnet(Request $request) {
+    $keyword = $request->input('keyword');
+
+        $agents = User::where('username', 'LIKE', '%' . $keyword . '%')->get();
+
+        return response()->json($agents);
+}
+
 }

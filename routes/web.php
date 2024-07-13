@@ -325,6 +325,11 @@ Route::post('/send-whatsapp', [WhatsAppController::class, 'send']);
 Route::post('/tool/searchDistricts', [ToolController::class, 'searchDistricts'])->name('tool.searchDistricts');
 Route::post('/cek-username', [ToolController::class, 'cekUsername'])->name('cek-username');
 
+
+
+Route::post('/search-agent', [ToolController::class, 'searchAgnet'])->name('agent.search');
+
+
 Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
 Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');

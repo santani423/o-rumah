@@ -504,7 +504,7 @@ class HomeController extends Controller
             "average_price" => "$500,000",
             "image" => $auth->image,
         ];
-        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
+        // $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
         if (Auth::user()) {
             $like = LinkeAds::where('user_id', Auth::user()->id)
                 ->where('ads_id', $ads->ads_id)
@@ -564,7 +564,7 @@ class HomeController extends Controller
             "average_price" => "$500,000",
             "image" => $auth->image,
         ];
-        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
+        // $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
         if (Auth::user()) {
             $like = LinkeAds::where('user_id', Auth::user()->id)
                 ->where('ads_id', $ads->ads_id)

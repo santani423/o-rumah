@@ -331,6 +331,7 @@ Route::post('/cek-username', [ToolController::class, 'cekUsername'])->name('cek-
 Route::post('/search-agent', [ToolController::class, 'searchAgnet'])->name('agent.search');
 
 Route::post('/save-titip-ads', [TitipAdsController::class, 'store'])->name('titip-ads.store');
+Route::put('/update-titip-ads/{id}', [TitipAdsController::class, 'update'])->name('titip-ads.put');
 Route::get('/titip-ads/list', [TitipAdsController::class, 'index'])->name('titip-ads.list');
 
 

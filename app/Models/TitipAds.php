@@ -18,4 +18,9 @@ class TitipAds extends Model
     {
         return $this->belongsTo(User::class, 'user_receiver_id');
     }
+
+    public function ads()
+    {
+        return $this->belongsTo(Ads::class, 'ads_id');
+    }
 }

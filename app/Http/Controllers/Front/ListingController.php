@@ -11,6 +11,7 @@ use App\Models\bosterAds;
 use App\Models\Kpr;
 use App\Models\User;
 use App\Models\bosterAdsTYpe;
+use App\Models\TitipAds;
 use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
 use Exception;
@@ -88,10 +89,10 @@ class ListingController extends Controller
             ->get();
 
 
+            $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
+        // dd($titipAds);
 
-        // dd($properties);
-
-        return view('Pages/ControlPanel/Member/Properti/index', compact('properties'));
+        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds'));
         // return Inertia::render('Listing/ListingPage', [
         //     'properties' => $properties->items(),
         //     'pagination' => $properties,

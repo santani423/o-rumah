@@ -8,6 +8,7 @@
     </div>
 
     <div class="mt-5">
+        <div class="table-responsive-sm">
         <table id="titipAdsTable" class="table table-striped">
             <thead>
                 <tr>
@@ -21,6 +22,8 @@
                 <!-- List TitipAds akan dimuat di sini -->
             </tbody>
         </table>
+        </div>
+        
     </div>
 </div>
 
@@ -124,12 +127,12 @@
     });
 
     function loadTitipAds() {
-        const url = "{{ route('titip-ads.list') }}"; // Route untuk mengambil daftar TitipAd
+        const url = "{{ route('titip-ads.list') }}?adsId={{$ads->ads_id}}"; // Route untuk mengambil daftar TitipAd
 
         fetch(url, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })

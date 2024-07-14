@@ -13,7 +13,62 @@
         </div>
         <div class="clearfix"></div>
     </div>
+    @if (session('status'))
+            <div class="alert {{ session('alert-class') }}">
+                {{ session('status') }}
+            </div>
+        @endif
+    @if($titipAds->isNotEmpty())
+    <div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <h6 class="card-header mt-0">Permintaan Titip Iklan</h6>
+            <div class="card-body">
+                <!-- <h4 class="card-title font-20 mt-0">Special title treatment</h4> -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Owner</th>
+                            <th>Ads</th>
+                            <th>Status</th>
+                            <th>Actions</th> <!-- Added this header for the buttons -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($titipAds as $key => $row) { ?>
+                            <tr>
+                                <td>{{ ++$key }}</td>
+                                <td><?php echo $row['owner']['name']; ?></td>
+                                <td><?php echo $row['ads']['title']; ?></td>
+                                <td><?php echo $row['status']; ?></td>
+                                <td>
+    <div class="d-inline-block">
+        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="status" value="approval">
+            <button class="btn btn-turquoise btn-sm">Terima</button>
+        </form>
+        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="status" value="reject">
+            <button class="btn btn-danger btn-sm">Tolak</button>
+        </form>
+    </div>
+</td>
 
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endif
     <div class="row">
         @foreach($properties as $ads)
             <div class="col-6 col-md-6 col-lg-6 col-xl-3 mb-3">

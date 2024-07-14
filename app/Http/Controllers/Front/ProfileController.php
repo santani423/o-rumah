@@ -73,4 +73,8 @@ class ProfileController extends Controller
 
         return Redirect::route('home'); // atau Redirect::route('login') jika Anda menggunakan named routes
     }
+
+    function teslogin(){
+        return view('teslogin');
+    }
 }

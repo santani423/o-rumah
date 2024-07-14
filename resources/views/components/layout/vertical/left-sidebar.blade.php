@@ -29,8 +29,8 @@
                     <h3 class="mt-0 mb-1 ml-2 font-14">Poin</h3>
 
                     <p class="card-text mb-2 ml-2 p-0">{{ number_format($poin->balance, 0, '.', '') }}</p>
-                    
-                        <button class="btn btn-turquoise " style="width: 105%;">   <i class="fas fa-sitemap"></i> Keanggotaan MLM</button>
+                   
+                        <a href="https://member.o-rumah.com" class="btn btn-turquoise " style="width: 105%;">   <i class="fas fa-sitemap"></i> Keanggotaan MLM</a>
                     
                 </div>
             </div>

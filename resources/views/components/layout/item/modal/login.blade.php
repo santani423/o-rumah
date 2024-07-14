@@ -14,13 +14,12 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                <form class="form-horizontal m-t-20" action="{{ route('auth.in.login') }}" method="POST">
+                <form class="form-horizontal m-t-20" action="#" method="POST">
                     @csrf <!-- CSRF Token -->
 
                     <div class="form-group row">
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Email" name="email">
-                            <!-- Ubah placeholder jika perlu -->
                         </div>
                     </div>
 
@@ -39,25 +38,12 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group row">
-                        <div class="col-12">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Remember me</label>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white;" type="submit">Log In</button>
+                            <button class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white;" type="button" id="loginButton" onclick="loginFun()">Log In</button>
                         </div>
                     </div>
                     <div class="form-group m-t-10 mb-0 row">
-                        <!-- <div class="col-sm-7 m-t-20">
-                            <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i>
-                                <small>Forgot your password ?</small></a>
-                        </div> -->
                         <div class="col-sm-5 m-t-20" style="cursor: pointer;">
                             <a data-toggle="modal" data-animation="bounce" data-target=".Registrasi" class="text-black"
                                 data-dismiss="modal" aria-label="Close"><i class="mdi mdi-account-circle"></i>
@@ -70,6 +56,53 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script>
+    $(document).ready(function() {
+        $('#loginButton').on('click', function(event) {
+            event.preventDefault(); // Mencegah pengiriman form secara default
+            loginFun();
+        });
+    });
+
+    function loginFun() {
+        var email = $('input[name="email"]').val();
+        var password = $('input[name="password"]').val();
+
+        // Validasi form
+        if (email === "" || password === "") {
+            alert('Email dan password harus diisi.');
+            return;
+        }
+
+        var formData = {
+            email: email,
+            password: password,
+            _token: $('input[name="_token"]').val() // CSRF token
+        };
+
+        $.ajax({
+            url: `{{ route('auth.in.login') }}`,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                // Handle response dari server
+                if (response.success) {
+                    // Login pertama berhasil, lanjut ke login kedua
+                    
+                    
+                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+email+"&Auth_Pass="+password; // Redirect ke halaman listing
+                   
+                } else {
+                    alert('Login pertama gagal: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle error login pertama
+                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText;
+                alert('Login pertama gagal: ' + errorMessage);
+            }
+        });
+    }
+
     function togglePasswordVisibility() {
         var passwordInput = document.getElementById('password');
         if (passwordInput.type === 'password') {

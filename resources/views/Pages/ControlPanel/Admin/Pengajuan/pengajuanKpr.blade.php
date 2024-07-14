@@ -23,13 +23,19 @@
                     <div class="table-responsive-sm">
                       <table class="table">
                         <thead>
-                          <tr> 
-                            <th scope="col">Kode KPR</th>
-                            <th scope="col">Nama Pengajuan</th>
-                            <th scope="col">No HP Visitor</th>
-                            <th scope="col">Nama File KTP</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Proses</th>
+                          <tr>  
+                            <th >Tanggal</th>
+                            <th class="pr-1">Kode KPR</th> 
+                            <th class="pr-2">Nama Agen</th> 
+                            <th class="pr-2">Nama</th>
+                            <th class="pr-2">Email</th>
+                            <th class="pr-1">Telepon</th>
+                            <th class="pr-2">Nama Bank Umum</th>
+                            <th class="pr-2">Email Bank Umum</th>
+                            <th class="pr-2">Nama Bank BPR</th>
+                            <th class="pr-2">Email Bank BPR</th>  
+                            <th class="pr-2">Status</th>
+                            <th class="pr-2">Proses</th>
                           </tr>
                         </thead> 
                         <tbody id="bodyResponse"></tbody>
@@ -45,9 +51,13 @@
                         data: {
                             tanggal: obj.Tanggal,
                             kodeKpr: obj["Kode KPR"],
-                            namaPengajuan: obj["Nama Pengajuan"],
-                            noVisitor: obj["No HP Visitor"],
-                            fileKtp: obj["Nama File KTP"],
+                            namaPengajuan: obj["Nama"],
+                            namaPengajuan: obj["Email"],
+                            namaPengajuan: obj["Telepon"],
+                            namaPengajuan: obj["Nama Bank Umum"],
+                            namaPengajuan: obj["Email Bank Umum"],
+                            namaPengajuan: obj["Nama Bank BPR"],
+                            namaPengajuan: obj["Email Bank BPR"], 
                             status: obj.Status,
                             proses: obj.Proses,
                         },
@@ -55,29 +65,35 @@
                             var statusClass = response.error ? 'warning' : 'success';
                             const dataTable = `
                                 <tr class="table-${statusClass}"> 
-                                    <td>${obj["Kode KPR"]}</td>
-                                    <td>${obj["Nama Pengajuan"]}</td>
-                                    <td>${obj["No HP Visitor"]}</td>
-                                    <td>${obj["Nama File KTP"]}</td>
+                                    <td>${obj["Tanggal"]}</td>
+                                    <th class="pr-1">${obj["Kode KPR"]}</th> 
+                                    <th class="pr-2">${obj["Nama Agen"]}</th> 
+                                    <th class="pr-2">${obj["Nama"]}</th>
+                                    <th class="pr-2">${obj["Email"]}</th>
+                                    <th class="pr-1">${obj["No HP Visitor"]}</th>
+                                    <th class="pr-2">${obj["Nama Bank"]}</th>
+                                    <th class="pr-2">${obj["Email PIC Bank"]}</th>
+                                    <th class="pr-2">${obj["Bank BPR"]}</th>
+                                    <th class="pr-2">${obj["Email PIC Bank BPR"]}</th> 
                                     <td>${obj.Status}</td>
                                     <td>${obj.Proses}</td>
                                 </tr>`;
                             $('#bodyResponse').append(dataTable);
-                            if (!response.error) {
-                                $.ajax({
-                                    url: `{{route('admin.email.responseBackPengajuanKpr')}}`,
-                                    type: 'GET',
-                                    data: {
-                                        kpr_id: response.kpr_id,
-                                    },
-                                    success: function (rsp) {
-                                        console.log('tes fun email', rsp);
-                                    },
-                                    error: function () {
-                                        $('#results').html('Error: Tidak dapat mengambil data');
-                                    }
-                                });
-                            }
+                            // if (!response.error) {
+                            //     $.ajax({
+                            //         url: `{{route('admin.email.responseBackPengajuanKpr')}}`,
+                            //         type: 'GET',
+                            //         data: {
+                            //             kpr_id: response.kpr_id,
+                            //         },
+                            //         success: function (rsp) {
+                            //             console.log('tes fun email', rsp);
+                            //         },
+                            //         error: function () {
+                            //             $('#results').html('Error: Tidak dapat mengambil data');
+                            //         }
+                            //     });
+                            // }
                         },
                         error: function () {
                             $('#results').html('Error: Tidak dapat mengambil data');
@@ -125,7 +141,7 @@
                         "No HP Visitor": row.find('td').eq(6).text(),  
                         "Nama Bank": row.find('td').eq(7).text(),  
                         "Email PIC Bank": row.find('td').eq(8).text(),  
-                        "Email Bank BPR": row.find('td').eq(9).text(),  
+                        "Bank BPR": row.find('td').eq(9).text(),  
                         "Email PIC Bank BPR": row.find('td').eq(10).text(),  
                     });
                 });
@@ -149,7 +165,7 @@
                         <tr>
                             <th class="pr-1">Select</th>
                             <th >Tanggal</th>
-                            <th class="pr-1">Code</th>
+                            <th class="pr-1">Kode KPR</th>
                             <!-- <th class="pr-1">Ads ID</th>
                             <th class="pr-1">User ID</th>
                             <th class="pr-1">Bank ID</th>

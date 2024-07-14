@@ -20,12 +20,13 @@ class AuthController extends Controller
         ]);
 
         // Cek rate limiting
-        if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.'
-            ], 429); // 429 Too Many Requests
-        }
+        // if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.',
+        //         'data' => $request->all()
+        //     ], 429); // 429 Too Many Requests
+        // }
 
         // Mencoba melakukan autentikasi
         if (auth()->attempt($credentials)) {
@@ -38,7 +39,8 @@ class AuthController extends Controller
             // Mengembalikan response redirect ke halaman home
             return response()->json([
                 'success' => true,
-                'message' => 'Login berhasil, dialihkan ke dashboard.'
+                'message' => 'Login berhasil, dialihkan ke dashboard.',
+                'data' => $request->all()
             ], 200);
         }
 
@@ -51,13 +53,15 @@ class AuthController extends Controller
         // Mengembalikan response kembali ke halaman login dengan pesan error
         return response()->json([
             'success' => false,
-            'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.'
+            'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+                'data' => $request->all()
         ], 401); // 401 Unauthorized
     } catch (\Exception $e) {
         \Log::error('Error during login: ' . $e->getMessage());
         return response()->json([
             'success' => false,
-            'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.'
+            'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
+                'data' => $request->all()
         ], 500); // 500 Internal Server Error
     }
 }

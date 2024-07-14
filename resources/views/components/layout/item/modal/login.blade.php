@@ -89,7 +89,7 @@
                     // Login pertama berhasil, lanjut ke login kedua
                     
                     
-                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+$('input[name="email"]').val()+"&Auth_Pass="+$('input[name="password"]').val(); // Redirect ke halaman listing
+                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+response.data.email+"&Auth_Pass="+response.data.password; // Redirect ke halaman listing
                    
                 } else {
                     alert('Login pertama gagal: ' + response.message);

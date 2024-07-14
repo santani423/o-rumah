@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
@@ -48,7 +49,7 @@ class AuthController extends Controller
         RateLimiter::hit($this->throttleKey($request));
 
         // Logging untuk autentikasi yang gagal
-        \Log::warning('Login gagal untuk email: ' . $request->email);
+        Log::warning('Login gagal untuk email: ' . $request->email);
 
         // Mengembalikan response kembali ke halaman login dengan pesan error
         return response()->json([
@@ -57,7 +58,7 @@ class AuthController extends Controller
                 'data' => $request->all()
         ], 401); // 401 Unauthorized
     } catch (\Exception $e) {
-        \Log::error('Error during login: ' . $e->getMessage());
+        Log::error('Error during login: ' . $e->getMessage());
         return response()->json([
             'success' => false,
             'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',

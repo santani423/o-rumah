@@ -21,7 +21,7 @@ class AdBalanceControlsTableSeeder extends Seeder
             ['code' => 'ABC006', 'title' => 'Ads Project Developer', 'klik' => 350, 'nilai' => 175, 'description' => 'Description for Ad Campaign 6'],
             ['code' => 'ABC007', 'title' => 'Ads Klik', 'klik' => 10, 'nilai' => 1, 'description' => 'Description for Ad Campaign 7'],
             ['code' => 'ABC008', 'title' => 'Ambil Lelang', 'klik' => 10, 'nilai' => 1, 'description' => 'Description for Ad Campaign 8'],
-            ['code' => 'ABC009', 'title' => 'Titip Ads', 'klik' => 1, 'nilai' => 1, 'description' => 'Titip Ads'],
+            ['code' => 'ABC014', 'title' => 'Titip Ads', 'klik' => 1, 'nilai' => 1, 'description' => 'Titip Ads'],
         ];
 
         foreach ($adBalanceControls as $control) {

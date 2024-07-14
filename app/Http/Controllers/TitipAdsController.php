@@ -7,11 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Ads;
 use App\Models\AdsProperty;
 use App\Models\Media;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AdvertisingPointsManager;
 
 class TitipAdsController extends Controller
 {
+    use AdvertisingPointsManager;
     /**
      * Display a listing of the resource.
      */
@@ -74,10 +77,11 @@ class TitipAdsController extends Controller
             $ads = Ads::whereId($titpAds->ads_id)->first();
             $newAd = $ads->replicate();
             $newAd->user_id = Auth::user()->id;
-    
+            $titpAds->new_ads_id = $newAd->id;
+            $titpAds->save();
             // Generate unique title and slug
-            $baseTitle = $ads->title . ' (Copy)';
-            $baseSlug = $ads->slug . '-copy';
+            $baseTitle = $ads->title . 'cpy'.rand(99, 9999);
+            $baseSlug = $ads->slug . 'cpy'.rand(99, 9999);
     
             $newAd->title = $baseTitle;
             $newAd->slug = $baseSlug;
@@ -106,7 +110,23 @@ class TitipAdsController extends Controller
                 $newMedia->model_id = $newAd->id;
                 $newMedia->save();
             }
+            $auth = User::find($ads->user_id);
+            $agent = [
+                "id" => $auth->id,
+                "name" => $auth->name,
+                "joined_at" => $auth->created_at->format('Y-m-d'),
+                "username" => $auth->username,
+                "company_name" => $auth->company_name,
+                "company_image" => $auth->company_image,
+                "phone" => $auth->phone,
+                "wa_phone" => $auth->wa_phone,
+                "total_ads" => 100,
+                "total_sold" => 50,
+                "average_price" => "$500,000",
+                "image" => $auth->image,
+            ];
     
+            $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC014');
             session()->flash('status', 'Iklan berhasil di pasang');
             session()->flash('alert-class', 'alert-success');
         } else if ($request->status == 'reject') {

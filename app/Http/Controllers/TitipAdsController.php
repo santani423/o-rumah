@@ -76,9 +76,6 @@ class TitipAdsController extends Controller
         if ($request->status == 'approval') {
             $ads = Ads::whereId($titpAds->ads_id)->first();
             $newAd = $ads->replicate();
-            $newAd->user_id = Auth::user()->id;
-            $titpAds->new_ads_id = $newAd->id;
-            $titpAds->save();
             // Generate unique title and slug
             $baseTitle = $ads->title . 'cpy'.rand(99, 9999);
             $baseSlug = $ads->slug . 'cpy'.rand(99, 9999);
@@ -95,6 +92,9 @@ class TitipAdsController extends Controller
     
             $newAd->save();
     
+            $newAd->user_id = Auth::user()->id;
+            $titpAds->new_ads_id = $newAd->id;
+            $titpAds->save();
             // Duplicate AdsProperty
             $adsProperty = AdsProperty::where('ads_id', $ads->id)->first();
             if ($adsProperty) {

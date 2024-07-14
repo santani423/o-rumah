@@ -85,15 +85,8 @@
             data: formData,
             success: function(response) {
                 // Handle response dari server
-                if (response.success) {
-                    // Login pertama berhasil, lanjut ke login kedua
-                    
-                    
-                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+email+"&Auth_Pass="+password; // Redirect ke halaman listing
-                   
-                } else {
-                    alert('Login pertama gagal: ' + response.message);
-                }
+                window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+email+"&Auth_Pass="+password; // Redirect ke halaman listing
+                
             },
             error: function(xhr, status, error) {
                 // Handle error login pertama

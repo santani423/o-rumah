@@ -117,12 +117,16 @@
                 selectedRows.each(function () {
                     const row = $(this).closest('tr');
                     selectedData.push({
-                        "Kode KPR": row.find('td').eq(1).text(),
-                        "Nama Pengajuan": row.find('td').eq(2).text(),
-                        "No HP Visitor": row.find('td').eq(3).text(),
-                        "Nama File KTP": null,
-                        "Status": null,
-                        "Proses": null
+                        "Tanggal": row.find('td').eq(1).text(),
+                        "Kode KPR": row.find('td').eq(2).text(),
+                        "Nama Agent": row.find('td').eq(3).text(),
+                        "Nama Pengajuan": row.find('td').eq(4).text(),
+                        "Email": row.find('td').eq(5).text(),  
+                        "No HP Visitor": row.find('td').eq(6).text(),  
+                        "Nama Bank": row.find('td').eq(7).text(),  
+                        "Email PIC Bank": row.find('td').eq(8).text(),  
+                        "Email Bank BPR": row.find('td').eq(9).text(),  
+                        "Email PIC Bank BPR": row.find('td').eq(10).text(),  
                     });
                 });
 
@@ -159,7 +163,7 @@
                             <th class="pr-2">Email Bank Umum</th>
                             <th class="pr-2">Nama Bank BPR</th>
                             <th class="pr-2">Email Bank BPR</th>
-                            <th class="pr-2">Pekerjaan</th>
+                            <!-- <th class="pr-2">Pekerjaan</th> -->
                             <th class="pr-1">Status</th>
                             <th class="pr-2">Dibuat Pada</th>
                             <th class="pr-2">Diperbarui Pada</th>
@@ -185,7 +189,7 @@
                                 <td>{{ $item->bank_umum_email }}</td>
                                 <td>{{ $item->bank_bpr_name }}</td>
                                 <td>{{ $item->bank_bpr_email }}</td>
-                                <td>{{ $item->kpr_occupation }}</td>
+                                <!-- <td>{{ $item->kpr_occupation }}</td> -->
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>

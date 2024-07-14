@@ -295,4 +295,16 @@ function searchAgnet(Request $request) {
         return response()->json($agents);
 }
 
+function order(Request $request){
+   
+    $ads = Ads::whereId($request->adsId)->first();
+    $auth = User::whereId($ads->user_id)->first();
+    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC015');
+    return response()->json([
+        'success' => true,                  // Indicates the request was successful
+        'message' => 'Order has been processed successfully!',
+        'data' => $request->all()              // Include the data received from the request
+    ]);
+}
+
 }

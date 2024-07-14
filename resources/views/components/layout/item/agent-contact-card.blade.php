@@ -28,13 +28,12 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <!-- Tombol Telepon -->
                     @if($agent['phone'])
                         <div class="col-lg-6 mb-3">
-                            <a href="tel:{{$agent['phone']}}" class="btn btn-info btn-block">
-                                <i class="mdi mdi-phone"></i> Telepon
-                            </a>
+                            <button class="btn btn-info btn-block" onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                                <i class="mdi mdi-phone"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'Telepon' }}
+                            </button>
                         </div>
                     @endif
                     <!-- Tombol WhatsApp -->
@@ -45,16 +44,50 @@
                                         : $agent['wa_phone'];
                         @endphp
                         <div class="col-lg-6 mb-3">
-                            <a href="https://wa.me/{{$wa_phone}}" class="btn btn-success btn-block">
-                                <i class="mdi mdi-whatsapp"></i> WhatsApp
-                            </a>
+                            <button class="btn btn-success btn-block" onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                                <i class="mdi mdi-whatsapp"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'WhatsApp' }}
+                            </button>
                         </div>
                     @endif
-
                 </div>
-
-
             </div>
         </div>
     </div><!--end col-->
 </div><!--end row-->
+
+<script>
+    function navigateTo(url, isOrder = false) {
+        if (isOrder) {
+            $.ajax({
+                url: '{{ route("order") }}', // Endpoint untuk order, pastikan route nama sesuai
+                type: 'POST',
+                data: JSON.stringify({
+                    // Tambahkan data yang diperlukan untuk permintaan order
+                    adsId : {{$ads->ads_id}}
+                }),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                success: function(data) {
+                    // console.log(data);
+                    // alert('Order placed successfully! croot');
+                    window.location.href = url;
+                    // Uncomment if you need conditional alerts based on response data
+                    // if (data.success) {
+                    //     alert('Order placed successfully!');
+                    // } else {
+                    //     alert('Order failed. Please try again.');
+                    // }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        } else {
+            window.location.href = url;
+        }
+    }
+</script>
+

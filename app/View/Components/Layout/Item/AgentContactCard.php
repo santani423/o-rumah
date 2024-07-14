@@ -14,7 +14,7 @@ class AgentContactCard extends Component
     public $agent, $btnKpr, $btnLelang, $ads;
     public function __construct($agent = [], $btnKpr = false, $btnLelang = false, $ads = null)
     {
-        // dd($agent);
+        // dd($ads);
         $this->agent = $agent;
         $this->ads = $ads;
         $this->btnKpr = $btnKpr;

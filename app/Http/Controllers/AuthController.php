@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function inLogin(Request $request)
 {
-    try {
+    // try {
         // Validasi input
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -57,14 +57,14 @@ class AuthController extends Controller
             'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
                 'data' => $request->all()
         ], 401); // 401 Unauthorized
-    } catch (\Exception $e) {
-        Log::error('Error during login: ' . $e->getMessage());
-        return response()->json([
-            'success' => false,
-            'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
-                'data' => $request->all()
-        ], 500); // 500 Internal Server Error
-    }
+    // } catch (\Exception $e) {
+    //     Log::error('Error during login: ' . $e->getMessage());
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
+    //             'data' => $request->all()
+    //     ], 500); // 500 Internal Server Error
+    // }
 }
 
 

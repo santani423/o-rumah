@@ -39,18 +39,17 @@
                     @endif
                     <!-- Tombol WhatsApp -->
                     @if($agent['wa_phone'])
-    @php
-        // Check if the WhatsApp number starts with 08 and transform it
-        $wa_phone = (strpos($agent['wa_phone'], '08') === 0) 
-                    ? '+62' . substr($agent['wa_phone'], 1) 
-                    : $agent['wa_phone'];
-    @endphp
-    <div class="col-lg-6 mb-3">
-        <a href="https://wa.me/{{$wa_phone}}" class="btn btn-success btn-block">
-            <i class="mdi mdi-whatsapp"></i> WhatsApp
-        </a>
-    </div>
-@endif
+                        @php 
+                            $wa_phone = (strpos($agent['wa_phone'], '08') === 0) 
+                                        ? '+62' . substr($agent['wa_phone'], 1) 
+                                        : $agent['wa_phone'];
+                        @endphp
+                        <div class="col-lg-6 mb-3">
+                            <a href="https://wa.me/{{$wa_phone}}" class="btn btn-success btn-block">
+                                <i class="mdi mdi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    @endif
 
                 </div>
 

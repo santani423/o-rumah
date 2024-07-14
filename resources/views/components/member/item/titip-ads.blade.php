@@ -113,10 +113,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(data.message);
+                    // alert(data.message);
                     loadTitipAds(); // Muat ulang daftar TitipAd setelah berhasil menyimpan
                 } else {
-                    alert('Terjadi kesalahan saat menyimpan data');
+                    // alert('Terjadi kesalahan saat menyimpan data');
                 }
                 $('#confirmAgentModal').modal('hide'); // Sembunyikan modal setelah konfirmasi
             })

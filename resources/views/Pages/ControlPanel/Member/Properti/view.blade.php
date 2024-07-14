@@ -101,9 +101,9 @@ function setFomMediaId(id){
             
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs" role="tablist">
-                                                <li class="nav-item">
+                                                <!-- <li class="nav-item">
                                                     <a class="nav-link @if(!$navLink) active @endif" data-toggle="tab" href="#home" role="tab">Home</a>
-                                                </li>
+                                                </li> -->
                                                 <li class="nav-item">
                                                     <a class="nav-link  @if($navLink == 'properti') active @endif" data-toggle="tab" href="#properti" role="tab">Tentang Properti</a>
                                                 </li>
@@ -123,12 +123,12 @@ function setFomMediaId(id){
             
                                             <!-- Tab panes -->
                                             <div class="tab-content">
-                                                <div class="tab-pane @if(!$navLink) active @endif p-3" id="home" role="tabpanel">
+                                                <div class="tab-pane @if(!$navLink == 'home') active @endif p-3" id="home" role="tabpanel">
                                                     <p class="font-14 mb-0">
                                                         Home
                                                     </p>
                                                 </div>
-                                                <div class="tab-pane  @if($navLink == 'properti') active @endif p-3" id="properti" role="tabpanel">
+                                                <div class="tab-pane  @if(!$navLink) active @endif p-3" id="properti" role="tabpanel">
                                                 <table class="table">
                                                                 
                                                                  <tbody> 
@@ -243,7 +243,7 @@ function setFomMediaId(id){
                                                                         </tr>
                                                                  </tbody>
                                                                  </table>
-                                                                 <a href="{{route('listing.control-panel.properti.edit.tentang-properti',$ads['slug'])}}"><button class="btn btn-primary">Edit</button></a>
+                                                                 <a href="{{route('listing.control-panel.properti.edit.tentang-properti',$ads['slug'])}}"><button class="btn btn-turquoise">Edit</button></a>
                                                          </div>
                                            
                                                 <div class="tab-pane @if($navLink == 'galeri') active @endif  p-3" id="galeri" role="tabpanel">
@@ -264,12 +264,12 @@ function setFomMediaId(id){
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <input type="hidden" name="url" value="{{ $md['url'] }}">
-                                                                    <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#confirmModal" data-url="{{ $md['url'] }}">Jadikan Utama</button>
+                                                                    <button type="button" class="btn btn-turquoise mt-2" data-toggle="modal" data-target="#confirmModal" data-url="{{ $md['url'] }}">Jadikan Utama</button>
                                                                 </form>
                                                                 @else
                                                                 <button class="btn btn-success mt-2">Utama</button>
                                                                 @endif
-                                                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#imageModal" onclick="setFomMediaId(`{{ $md['id'] }}`)" data-url="{{ $md['url'] }}">Edit</button>
+                                                                <button type="button" class="btn btn-turquoise mt-2" data-toggle="modal" data-target="#imageModal" onclick="setFomMediaId(`{{ $md['id'] }}`)" data-url="{{ $md['url'] }}">Edit</button>
                                                                
                                                             </div>
                                                         @endforeach
@@ -294,7 +294,7 @@ function setFomMediaId(id){
                                                                     <div class="col-xl-12">
                                                                         <input type="file" id="input-file-now" class="dropify" name="media" required />
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-primary mt-3">Simpan Perubahan</button>
+                                                                    <button type="submit" class="btn btn-turquoise mt-3">Simpan Perubahan</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -317,7 +317,7 @@ function setFomMediaId(id){
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                                <button type="button" class="btn btn-primary" id="confirmButton">Jadikan Utama</button>
+                                                                <button type="button" class="btn btn-turquoise" id="confirmButton">Jadikan Utama</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -353,14 +353,14 @@ function setFomMediaId(id){
                                                                        </tr>
                                                                 </tbody>
                                                                 </table>
-                                                                <a href="{{route('listing.control-panel.properti.edit.addres',$ads['slug'])}}"><button class="btn btn-primary">Edit</button></a>
+                                                                <a href="{{route('listing.control-panel.properti.edit.addres',$ads['slug'])}}"><button class="btn btn-turquoise">Edit</button></a>
                                                         
                                           
                                               
                                                 </div>
                                                 <div class="tab-pane p-3 @if($navLink == 'booster') active @endif" id="booster" role="tabpanel">
                                                     
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-sm">Booster</button>
+                                                <button type="button" class="btn btn-turquoise waves-effect waves-light" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-sm">Booster</button>
                                                 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="boosterModal" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -389,7 +389,7 @@ function setFomMediaId(id){
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <button class="btn btn-primary">Pasang</button>
+                                                            <button class="btn btn-turquoise">Pasang</button>
                                                         </form>
                                                         </div>
                                                     </div><!-- /.modal-content -->

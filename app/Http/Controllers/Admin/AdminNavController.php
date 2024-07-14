@@ -889,32 +889,32 @@ class AdminNavController extends Controller
     {
         $kpr = Kpr::where('uuid', $request->kodeKpr)->first();
         // Bad Request
-        // if ($kpr) {
-        //     $responBank = KprResponseBank::where('kpr_id', $kpr->id)->first();
-        //     // $responBank = KprResponseBank::first();
-        //     if (!$responBank) {
-        //         $responBank = new KprResponseBank();
+        if ($kpr) {
+            $responBank = KprResponseBank::where('kpr_id', $kpr->id)->first();
+            // $responBank = KprResponseBank::first();
+            if (!$responBank) {
+                $responBank = new KprResponseBank();
 
-        //     }
+            }
 
-        //     $responBank->kpr_id = $kpr->id;
-        //     $responBank->tanggal = $request->tanggal;
-        //     $responBank->kodeKpr = $request->kodeKpr;
-        //     $responBank->namaPengajuan = $request->namaPengajuan;
-        //     $responBank->noVisitor = $request->noVisitor;
-        //     $responBank->proses = $request->proses;
-        //     $responBank->status = $request->status;
-        //     $responBank->save();
-        //     $kpr->status = $request->proses;
-        //     $kpr->save();
-        //     return response()->json([
-        //         'message' => 'Data uploaded and processed successfully',
-        //         'error' => false,
-        //         'kpr_id' => $kpr->id,
-        //         'request' => $request->all(),
-        //     ], 200);
+            $responBank->kpr_id = $kpr->id;
+            $responBank->tanggal = $request->tanggal;
+            $responBank->kodeKpr = $request->kodeKpr;
+            $responBank->namaPengajuan = $request->namaPengajuan;
+            $responBank->noVisitor = $request->noVisitor;
+            $responBank->proses = $request->proses;
+            $responBank->status = $request->status;
+            $responBank->save();
+            $kpr->status = $request->proses;
+            $kpr->save();
+            return response()->json([
+                'message' => 'Data uploaded and processed successfully',
+                'error' => false,
+                'kpr_id' => $kpr->id,
+                'request' => $request->all(),
+            ], 200);
 
-        // }
+        }
         return response()->json([
             'message' => 'No file uploaded.',
             'error' => true,

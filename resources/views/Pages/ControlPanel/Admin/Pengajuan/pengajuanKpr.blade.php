@@ -51,32 +51,28 @@
                         data: {
                             tanggal: obj.Tanggal,
                             kodeKpr: obj["Kode KPR"],
-                            namaPengajuan: obj["Nama"],
-                            namaPengajuan: obj["Email"],
-                            namaPengajuan: obj["Telepon"],
-                            namaPengajuan: obj["Nama Bank Umum"],
-                            namaPengajuan: obj["Email Bank Umum"],
-                            namaPengajuan: obj["Nama Bank BPR"],
-                            namaPengajuan: obj["Email Bank BPR"], 
-                            status: obj.Status,
-                            proses: obj.Proses,
+                            namaPengajuan: obj["Nama Pengajuan"],
+                            noVisitor: obj["No HP Visitor"],
+                            proses: obj["Status"],
+                            status: obj["Proses"],  
                         },
                         success: function (response) {
+                            console.log(response);
                             var statusClass = response.error ? 'warning' : 'success';
                             const dataTable = `
                                 <tr class="table-${statusClass}"> 
                                     <td>${obj["Tanggal"]}</td>
                                     <th class="pr-1">${obj["Kode KPR"]}</th> 
-                                    <th class="pr-2">${obj["Nama Agen"]}</th> 
-                                    <th class="pr-2">${obj["Nama"]}</th>
+                                    <th class="pr-2">${obj["Nama Agent"]}</th> 
+                                    <th class="pr-2">${obj["Nama Pengajuan"]}</th>
                                     <th class="pr-2">${obj["Email"]}</th>
                                     <th class="pr-1">${obj["No HP Visitor"]}</th>
                                     <th class="pr-2">${obj["Nama Bank"]}</th>
                                     <th class="pr-2">${obj["Email PIC Bank"]}</th>
                                     <th class="pr-2">${obj["Bank BPR"]}</th>
                                     <th class="pr-2">${obj["Email PIC Bank BPR"]}</th> 
-                                    <td>${obj.Status}</td>
-                                    <td>${obj.Proses}</td>
+                                    <th class="pr-2">${obj["Status"]}</th> 
+                                    <th class="pr-2">${obj["Proses"]}</th>  
                                 </tr>`;
                             $('#bodyResponse').append(dataTable);
                             // if (!response.error) {
@@ -143,6 +139,8 @@
                         "Email PIC Bank": row.find('td').eq(8).text(),  
                         "Bank BPR": row.find('td').eq(9).text(),  
                         "Email PIC Bank BPR": row.find('td').eq(10).text(),  
+                        "Status":null,  
+                        "Proses":null,  
                     });
                 });
 

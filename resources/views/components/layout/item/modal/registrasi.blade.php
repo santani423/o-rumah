@@ -3,10 +3,18 @@
         overflow-y: auto;
         max-height: 80vh;
     }
+
+    .toggle-password {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+    }
 </style>
 
 <form class="form-horizontal m-t-20" action="{{ route('auth.in.registrasi') }}" method="post" onsubmit="return validateForm()">
-    <div class="modal fade Registrasi" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal fade Registrasi" id="Registrasi" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -45,27 +53,29 @@
                         <label for="noWa" class="col-12">Nomor WhatsApp</label>
                         <div class="col-12">
                             <input class="form-control" type="text" required="" placeholder="Nomor WhatsApp" name="noWa" id="noWa">
-                            <!-- <span id="noWa-error" class="text-danger"></span> -->
+                            <span id="noWa-error" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-12">Password</label>
-                        <div class="col-12">
-                            <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
-                            <!-- <span id="password-error" class="text-danger"></span> -->
+                        <label for="password_lr" class="col-12">Password</label>
+                        <div class="col-12 position-relative">
+                            <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password_lr">
+                            <span id="password-error" class="text-danger"></span>
+                            <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('password_lr')"></i>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="ulang_password" class="col-12">Ulang Password</label>
-                        <div class="col-12">
+                        <div class="col-12 position-relative">
                             <input class="form-control" type="password" required="" placeholder="Ulang Password" name="ulang_password" id="ulang_password">
-                            <!-- <span id="ulang_password-error" class="text-danger"></span> -->
+                            <span id="ulang_password-error" class="text-danger"></span>
+                            <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('ulang_password')"></i>
                         </div>
                     </div>
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button id="submit-button"  class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" data-toggle="modal" data-target=".pilihType">Daftar</button>
+                            <button id="submit-button" class="btn btn-block waves-effect waves-light btn-success" data-target=".pilihType" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="button">Daftar</button>
                         </div>
                     </div>
                     <div class="col-sm-5 m-t-20">
@@ -78,7 +88,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade pilihType" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal fade pilihType" id="pilihTypeModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -155,10 +165,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="card" onclick="document.getElementById('radioAplikator').checked = true;">
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 100%; position: relative;">
+                                    <div class="form-check" style="position: absolute; top: 0; right: 0;">
+                                        <input class="form-check-input" type="radio" name="pilihanType" id="radioAplikator" value="aplikator">
+                                    </div>
+                                    <h5 class="card-title">Aplikator</h5>
+                                    <p class="card-text text-center">Membuat dan mengembangkan aplikasi</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit">Pilih</button>
+                            <button class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit">Daftar</button>
                         </div>
                     </div>
                 </div>
@@ -167,115 +188,77 @@
     </div>
 </form>
 
-<script type="text/javascript">
-    function cekUsername() {
-        var username = $('#username').val();
+<script>
+    // Tambahkan event listeners untuk menghapus pesan error saat pengguna mulai mengetik di input fields
+    const fields = ['nama', 'username', 'email', 'noWa', 'password_lr', 'ulang_password'];
+    fields.forEach(field => {
+        document.getElementById(field).addEventListener('input', () => {
+            document.getElementById(`${field}-error`).innerText = '';
+        });
+    });
 
-        if (username.includes(' ')) {
-            $('#username-error').text('Username tidak boleh mengandung spasi.');
-            $('#username-status').text('');
-            $('#username-references').empty();
-            return;
-        } else {
-            $('#username-error').text('');
+    document.getElementById('submit-button').addEventListener('click', function (event) {
+        if (validateForm()) {
+            // Hide the Registrasi modal and show the pilihType modal if validation passes
+            $('#Registrasi').modal('hide');
+            $('#pilihTypeModal').modal('show');
         }
-
-        if (username) {
-            $.ajax({
-                url: "{{ route('cek-username') }}",
-                method: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    username: username
-                },
-                success: function (response) {
-                    $('#username-references').empty(); 
-                    if (response.exists) {
-                        $('#username-status').text('Username sudah ada').css('color', 'red');
-                        var references = response.references;
-                        references.forEach(function(ref) {
-                            $('#username-references').append('<li onclick="pilihUsername(\'' + ref + '\')">' + ref + '</li>');
-                        });
-                    } else {
-                        $('#username-status').text('Username tersedia').css('color', 'green');
-                    }
-                }
-            });
-        } else {
-            $('#username-status').text('');
-            $('#username-references').empty(); 
-        }
-    }
-
-    function pilihUsername(username) {
-        $('#username').val(username);
-        $('#username-status').text('Username tersedia').css('color', 'green');
-        $('#username-references').empty();
-    }
+    });
 
     function validateForm() {
-    var isValid = true;
+        let isValid = true;
 
-    var nama = $('#nama').val().trim();
-    var username = $('#username').val().trim();
-    var email = $('#email').val().trim();
-    var noWa = $('#noWa').val().trim();
-    var password = $('#password').val().trim();
-    var ulang_password = $('#ulang_password').val().trim();
+        const nama = document.getElementById('nama').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const noWa = document.getElementById('noWa').value.trim();
+        const password = document.getElementById('password_lr').value.trim();
+        const ulang_password = document.getElementById('ulang_password').value.trim();
 
-    if (!nama) {
-        $('#nama-error').text('Nama Lengkap harus diisi.');
-        isValid = false;
-    } else {
-        $('#nama-error').text('');
-    }
-    if (!username) {
-        $('#username-error').text('Username harus diisi.');
-        isValid = false;
-    } else if ($('#username-status').text() !== 'Username tersedia') {
-        $('#username-error').text('Username tidak valid.');
-        isValid = false;
-    } else {
-        $('#username-error').text('');
-    }
-    if (!email) {
-        $('#email-error').text('Alamat Email harus diisi.');
-        isValid = false;
-    } else {
-        $('#email-error').text('');
-    }
-    if (!noWa) {
-        $('#noWa-error').text('Nomor WhatsApp harus diisi.');
-        isValid = false;
-    } else {
-        $('#noWa-error').text('');
-    }
-    if (!password) {
-        $('#password-error').text('Password harus diisi.');
-        isValid = false;
-    } else {
-        $('#password-error').text('');
-    }
-    if (!ulang_password) {
-        $('#ulang_password-error').text('Ulang Password harus diisi.');
-        isValid = false;
-    } else if (password !== ulang_password) {
-        $('#ulang_password-error').text('Password dan Ulang Password tidak sesuai.');
-        isValid = false;
-    } else {
-        $('#ulang_password-error').text('');
+        if (!nama) {
+            document.getElementById('nama-error').innerText = 'Nama lengkap harus diisi.';
+            isValid = false;
+        }
+
+        if (!username) {
+            document.getElementById('username-error').innerText = 'Username harus diisi.';
+            isValid = false;
+        }
+
+        if (!email) {
+            document.getElementById('email-error').innerText = 'Alamat email harus diisi.';
+            isValid = false;
+        }
+
+        if (!noWa) {
+            document.getElementById('noWa-error').innerText = 'Nomor WhatsApp harus diisi.';
+            isValid = false;
+        }
+
+        if (!password) {
+            document.getElementById('password-error').innerText = 'Password harus diisi.';
+            isValid = false;
+        }
+
+        if (password !== ulang_password) {
+            document.getElementById('ulang_password-error').innerText = 'Password tidak cocok.';
+            isValid = false;
+        }
+
+        return isValid;
     }
 
-    // Update tombol berdasarkan hasil validasi
-    if (isValid) {
-        $('#submit-button').attr('data-toggle', 'modal');
-        $('#submit-button').attr('data-target', '.pilihType');
-    } else {
-        $('#submit-button').removeAttr('data-toggle');
-        $('#submit-button').removeAttr('data-target');
+    function togglePasswordVisibility(fieldId) {
+        var input = document.getElementById(fieldId);
+        var icon = input.nextElementSibling;
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     }
-
-    return isValid;
-}
-
 </script>

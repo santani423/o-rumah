@@ -36,7 +36,7 @@
                     <div class="form-group row">
                         <label for="username" class="col-12">Username</label>
                         <div class="col-12">
-                            <input class="form-control" type="text" required="" placeholder="Username" onkeyup="cekUsername()" name="username" id="username">
+                            <input class="form-control" type="text" required="" placeholder="Username" onkeyup="cekUsername()" name="username" id="username" autocomplete="off">
                             <span id="username-error" class="text-danger"></span>
                             <span id="username-status"></span>
                             <ul id="username-references"></ul>
@@ -45,7 +45,7 @@
                     <div class="form-group row">
                         <label for="email" class="col-12">Alamat Email</label>
                         <div class="col-12">
-                            <input class="form-control" type="email" required="" placeholder="Alamat Email" name="email" id="email">
+                            <input class="form-control" type="email" required="" placeholder="Alamat Email" name="email" id="email" autocomplete="off">
                             <span id="email-error" class="text-danger"></span>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <div class="col-12 position-relative">
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password_lr">
                             <span id="password-error" class="text-danger"></span>
-                            <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('password_lr')"></i>
+                            <i class="fa fa-eye-slash toggle-password" data-toggle-target="password_lr"></i>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -69,7 +69,7 @@
                         <div class="col-12 position-relative">
                             <input class="form-control" type="password" required="" placeholder="Ulang Password" name="ulang_password" id="ulang_password">
                             <span id="ulang_password-error" class="text-danger"></span>
-                            <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('ulang_password')"></i>
+                            <i class="fa fa-eye-slash toggle-password" data-toggle-target="ulang_password"></i>
                         </div>
                     </div>
 
@@ -98,6 +98,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id="type-error" class="text-danger text-center"></div>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card" onclick="document.getElementById('radioCustomer').checked = true;">
@@ -178,8 +179,11 @@
                         </div>
                     </div>
                     <div class="form-group text-center row m-t-20">
-                        <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit">Daftar</button>
+                        <div class="col-6">
+                            <button class="btn btn-block waves-effect waves-light btn-secondary" type="button" onclick="showRegistrasiModal()">Kembali</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-block waves-effect waves-light btn-success" style="background-color: #47C8C5; border-color: #47C8C5; color: white" type="submit" onclick="return validateTypeSelection()">Daftar</button>
                         </div>
                     </div>
                 </div>
@@ -218,34 +222,70 @@
         if (!nama) {
             document.getElementById('nama-error').innerText = 'Nama lengkap harus diisi.';
             isValid = false;
+        } else {
+            document.getElementById('nama-error').innerText = '';
         }
 
         if (!username) {
             document.getElementById('username-error').innerText = 'Username harus diisi.';
             isValid = false;
+        } else if (/\s/.test(username)) {
+            document.getElementById('username-error').innerText = 'Username tidak boleh mengandung spasi.';
+            isValid = false;
+        } else {
+            document.getElementById('username-error').innerText = '';
         }
 
         if (!email) {
             document.getElementById('email-error').innerText = 'Alamat email harus diisi.';
             isValid = false;
+        } else if (!validateEmail(email)) {
+            document.getElementById('email-error').innerText = 'Alamat email tidak valid.';
+            isValid = false;
+        } else {
+            document.getElementById('email-error').innerText = '';
         }
 
         if (!noWa) {
             document.getElementById('noWa-error').innerText = 'Nomor WhatsApp harus diisi.';
             isValid = false;
+        } else {
+            document.getElementById('noWa-error').innerText = '';
         }
 
         if (!password) {
             document.getElementById('password-error').innerText = 'Password harus diisi.';
             isValid = false;
+        } else if (password.length < 6) {
+            document.getElementById('password-error').innerText = 'Password harus terdiri dari minimal 6 karakter.';
+            isValid = false;
+        } else {
+            document.getElementById('password-error').innerText = '';
         }
 
         if (password !== ulang_password) {
             document.getElementById('ulang_password-error').innerText = 'Password tidak cocok.';
             isValid = false;
+        } else {
+            document.getElementById('ulang_password-error').innerText = '';
         }
 
         return isValid;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function validateTypeSelection() {
+        const selectedType = document.querySelector('input[name="pilihanType"]:checked');
+        if (!selectedType) {
+            document.getElementById('type-error').innerText = 'Anda harus memilih satu jenis pendaftaran.';
+            return false;
+        }
+        document.getElementById('type-error').innerText = ''; // Clear error message if valid
+        return true;
     }
 
     function togglePasswordVisibility(fieldId) {
@@ -261,4 +301,24 @@
             icon.classList.add('fa-eye');
         }
     }
+
+    function showRegistrasiModal() {
+        $('#pilihTypeModal').modal('hide');
+        $('#Registrasi').modal('show');
+    }
+
+    document.querySelectorAll('.toggle-password').forEach(item => {
+        item.addEventListener('click', function () {
+            const target = document.getElementById(this.getAttribute('data-toggle-target'));
+            if (target.type === 'password') {
+                target.type = 'text';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                target.type = 'password';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    });
 </script>

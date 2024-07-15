@@ -1,5 +1,4 @@
-<div class="modal fade loginDanRegistrasi" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
+<div class="modal fade loginDanRegistrasi" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,34 +18,22 @@
 
                     <div class="form-group row">
                         <div class="col-12">
-                            <input class="form-control" type="text" required="" placeholder="Email" name="email">
+                            <input class="form-control" type="text" required="" placeholder="Email" name="email" autocomplete="off">
                             <!-- Ubah placeholder jika perlu -->
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-12">
-                            <input class="form-control" type="password" required="" placeholder="Password"
-                                name="password" id="password">
+                        <div class="col-12 position-relative">
+                            <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
+                            <i class="fa fa-eye-slash toggle-password" data-toggle-target="password"></i>
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <label class="text-black mb-0">
-                                    <input type="checkbox" onclick="togglePasswordVisibility()"> Lihat Password
-                                </label>
-                                <a href="{{ route('forget.passwrod') }}" class="text-black">
+                                <a href="{{ route('password.request') }}" class="text-black">
                                     <label class="mb-0">Lupa Password?</label>
                                 </a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="form-group row">
-                        <div class="col-12">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Remember me</label>
-                            </div>
-                        </div>
-                    </div> -->
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
@@ -54,13 +41,8 @@
                         </div>
                     </div>
                     <div class="form-group m-t-10 mb-0 row">
-                        <!-- <div class="col-sm-7 m-t-20">
-                            <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i>
-                                <small>Forgot your password ?</small></a>
-                        </div> -->
                         <div class="col-sm-5 m-t-20" style="cursor: pointer;">
-                            <a data-toggle="modal" data-animation="bounce" data-target=".Registrasi" class="text-black"
-                                data-dismiss="modal" aria-label="Close"><i class="mdi mdi-account-circle"></i>
+                            <a data-toggle="modal" data-animation="bounce" data-target=".Registrasi" class="text-black" data-dismiss="modal" aria-label="Close"><i class="mdi mdi-account-circle"></i>
                                 <small>Tidak Punya Akun ?</small></a>
                         </div>
                     </div>
@@ -69,13 +51,20 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script>
-    function togglePasswordVisibility() {
-        var passwordInput = document.getElementById('password');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
-        }
-    }
-</script>
+
+<!-- <script>
+    document.querySelectorAll('.toggle-password').forEach(item => {
+        item.addEventListener('click', function () {
+            const target = document.getElementById(this.getAttribute('data-toggle-target'));
+            if (target.type === 'password') {
+                target.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                target.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
+</script> -->

@@ -869,7 +869,7 @@ class MemberNavController extends Controller
         }
         // // Simpan gambar jika ada
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images/profile/' . $user->id, 'public');
+            $path = $request->file('image')->store('images/profile_pengguna/' . $user->id, 'public');
             $user->image = Storage::url($path);
             $user->update(); // Menyimpan perubahan pada user
         }

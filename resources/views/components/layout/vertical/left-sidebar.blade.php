@@ -14,8 +14,8 @@
     <div class="sidebar-inner niceScrollleft">
         <div class="media mt-4 pl-2">
             <img class="d-flex mr-3 rounded-circle"
-                src="{{ asset('zenter/vertical/assets/images/users/avatar-6.jpg') }}" alt="Generic placeholder image"
-                height="64">
+                src="@if(Auth::user()->image){{asset(Auth::user()->image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif" alt="Generic placeholder image"
+                height="64" width="64" class="rounded-circle">
             <div class="media-body">
                 <h5 class="mt-0 font-14">{{ Auth::user()->name }}</h5>
             </div>
@@ -30,7 +30,7 @@
 
                     <p class="card-text mb-2 ml-2 p-0">{{ number_format($poin->balance, 0, '.', '') }}</p>
                     
-                        <button class="btn btn-turquoise " style="width: 105%;">   <i class="fas fa-sitemap"></i> Keanggotaan MLM</button>
+                        <!-- <button class="btn btn-turquoise " style="width: 105%;">   <i class="fas fa-sitemap"></i> Keanggotaan MLM</button> -->
                     
                 </div>
             </div>
@@ -136,6 +136,19 @@
                         </ul>
                     </li>
                 @endif
+                
+                <li>
+                    <a href="{{route('member.profile')}}" class="waves-effect">
+                        <i class="mdi mdi-account"></i> <!-- Ganti dengan ikon kunci -->
+                        <span> Profile </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('logout') }}" class="waves-effect">
+                        <i class="mdi mdi-logout"></i> <!-- Ganti dengan ikon kunci -->
+                        <span> Logout </span>
+                    </a>
+                </li>
 
             </ul>
         </div>

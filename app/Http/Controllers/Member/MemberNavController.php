@@ -869,13 +869,17 @@ class MemberNavController extends Controller
         }
         // // Simpan gambar jika ada
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/images/profile/' . $user->id);
+            $path = $request->file('image')->store('images/profile/' . $user->id, 'public');
             $user->image = Storage::url($path);
+            $user->update(); // Menyimpan perubahan pada user
         }
         if ($request->hasFile('company_image')) {
-            $path = $request->file('company_image')->store('public/company_images/profile/' . $user->id);
+            $path = $request->file('company_image')->store('images/company_image/' . $user->id, 'public');
             $user->company_image = Storage::url($path);
+            $user->update(); // Menyimpan perubahan pada user
         }
+        
+        
         $user->save();
         return back()->with('succsess', 'Berhasil Menyimpan Data Pefile');
 

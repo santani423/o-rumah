@@ -76,10 +76,26 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="has-submenu ">
+                        <a href="{{route('listing.index')}}"> Dashboard</a>
+                    </li>
+                        <!-- <li class="has-submenu ">
+                        <a href="{{route('listing.index')}}"> Logout</a>
+                    </li> -->
                     @endif
                     <li class="has-submenu ">
                         <a href="{{route('aboutAs')}}"> About Us</a>
                     </li>
+                    @if(Auth::user())
+                    </li>
+                        <li class="has-submenu ">
+                        <a href="{{route('member.profile')}}"> Profile</a>
+                    </li>
+                    </li>
+                        <li class="has-submenu ">
+                        <a href="{{route('listing.index')}}"> Logout</a>
+                    </li>
+                    @endif
                     <!-- <li class="has-submenu">
                         <a href="#"> Components</a>
                         <ul class="submenu">

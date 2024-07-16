@@ -11,8 +11,9 @@
     <a class="nav-link dropdown-toggle arrow-none waves-effect" href="{{route('member.favorit')}}" role="button"
         aria-haspopup="false" aria-expanded="true">
         <i class="mdi mdi-heart-outline mt-2" style=" font-size: 24px;"></i>
-
+        @if($like)
         <span class="badge badge-danger noti-icon-badge" id="like-count">{{$like}}</span>
+        @endif
     </a>
     <!-- <a class="nav-link dropdown-toggle arrow-none waves-effect" href="#" role="button" aria-haspopup="false"
         aria-expanded="true">
@@ -23,14 +24,14 @@
 <!-- notification-->
 
 <!-- User-->
-<li class="list-inline-item dropdown notification-list">
+<!-- <li class="list-inline-item dropdown notification-list">
     <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button"
         aria-haspopup="false" aria-expanded="false">
         <img src="@if(Auth::user()->image){{asset(Auth::user()->image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif"
             alt="user" class="rounded-circle">
     </a>
     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-        <!-- item-->
+        
         <div class="dropdown-item noti-title">
             <h5>{{Auth::user()->name}}</h5>
         </div>
@@ -43,4 +44,4 @@
         <a class="dropdown-item" href="{{route('auth.logout')}}"><i class="mdi mdi-logout m-r-5 text-muted"></i>
             Logout</a>
     </div>
-</li>
+</li> -->

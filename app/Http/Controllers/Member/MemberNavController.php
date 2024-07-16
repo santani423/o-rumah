@@ -868,8 +868,8 @@ class MemberNavController extends Controller
             $user->password = Hash::make($request->password);
         }
         // // Simpan gambar jika ada
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images/profile_pengguna/' . $user->id, 'public');
+        if ($request->hasFile('profile_pengguna')) {
+            $path = $request->file('profile_pengguna')->store('images/profile_pengguna/' . $user->id, 'public');
             $user->image = Storage::url($path);
             $user->update(); // Menyimpan perubahan pada user
         }

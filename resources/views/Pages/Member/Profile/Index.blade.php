@@ -63,8 +63,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Gambar </label>
-                    <input type="file" class="dropify" id="image" name="image"
+                    <label for="profile_pengguna">Profile </label>
+                    <input type="file" class="dropify" id="profile_pengguna" name="profile_pengguna"
                         data-default-file="{{asset(Auth::user()->image)}}">
                 </div>
                 <div class="form-group">

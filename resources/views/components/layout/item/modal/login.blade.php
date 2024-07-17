@@ -28,7 +28,7 @@
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
                             <i class="fa fa-eye-slash toggle-password" data-toggle-target="password"></i>
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <a href="{{ route('password.request') }}" class="text-black">
+                                <a href="{{ route('forget.passwrod') }}" class="text-black">
                                     <label class="mb-0">Lupa Password?</label>
                                 </a>
                             </div>

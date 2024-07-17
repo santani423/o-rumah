@@ -93,7 +93,7 @@
                     </li>
                     </li>
                         <li class="has-submenu ">
-                        <a href="{{route('llogout')}}"> Logout</a>
+                        <a href="{{route('logout')}}"> Logout</a>
                     </li>
                     @endif
                     <!-- <li class="has-submenu">

@@ -2,57 +2,54 @@
     @slot('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('forgot-password-form');
-            const spinner = document.getElementById('spinner');
-            const alertBox = document.getElementById('response-alert');
+    const form = $('#forgot-password-form');
+    const spinner = $('#spinner');
+    const alertBox = $('#response-alert');
 
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
+    form.on('submit', function (event) {
+        event.preventDefault();
 
-                const email = document.getElementById('emailSend').value;
-                // console.log("🚀 ~ email:", email)
-                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const email = $('#emailSend').val();
+        const token = $('meta[name="csrf-token"]').attr('content');
 
-                spinner.style.display = 'inline-block'; // Tampilkan spinner saat form disubmit
-                alertBox.style.display = 'none'; // Sembunyikan alert box setiap kali form disubmit
+        spinner.show(); // Tampilkan spinner saat form disubmit
+        alertBox.hide(); // Sembunyikan alert box setiap kali form disubmit
 
-                fetch("{{ route('forget.passwrod.email') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token
-                    },
-                    body: JSON.stringify({ email: email }) // Pastikan data yang dikirim adalah objek dengan properti email
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        spinner.style.display = 'none'; // Sembunyikan spinner setelah mendapat respons
+        $.ajax({
+            url: "{{ route('forget.passwrod.email') }}",
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token // Tambahkan header token CSRF
+            },
+            contentType: 'application/json',
+            data: JSON.stringify({ email: email }),
+            success: function (data) {
+                spinner.hide(); // Sembunyikan spinner setelah mendapat respons
 
-                        if (data.status === 'success') {
-                            alertBox.classList.remove('alert-danger');
-                            alertBox.classList.add('alert-success');
-                            alertBox.textContent = 'Link reset password telah dikirim ke email Anda.';
-                        } else {
-                            alertBox.classList.remove('alert-success');
-                            alertBox.classList.add('alert-danger');
-                            if (data.message) {
-                                alertBox.textContent = data.message;
-                            } else {
-                                alertBox.textContent = 'Terjadi kesalahan, silakan coba lagi.';
-                            }
-                        }
-                        alertBox.style.display = 'block';
-                    })
-                    .catch(error => {
-                        spinner.style.display = 'none'; // Sembunyikan spinner jika terjadi kesalahan
-                        alertBox.classList.remove('alert-success');
-                        alertBox.classList.add('alert-danger');
-                        alertBox.textContent = 'Terjadi kesalahan, silakan coba lagi.';
-                        alertBox.style.display = 'block';
-                        console.error('Error:', error);
-                    });
-            });
+                if (data.status === 'success') {
+                    alertBox.removeClass('alert-danger').addClass('alert-success');
+                    alertBox.text('Link reset password telah dikirim ke email Anda.');
+                } else {
+                    alertBox.removeClass('alert-success').addClass('alert-danger');
+                    if (data.message) {
+                        alertBox.text(data.message);
+                    } else {
+                        alertBox.text('Terjadi kesalahan, silakan coba lagi.');
+                    }
+                }
+                alertBox.show();
+            },
+            error: function (error) {
+                spinner.hide(); // Sembunyikan spinner jika terjadi kesalahan
+                alertBox.removeClass('alert-success').addClass('alert-danger');
+                alertBox.text('Terjadi kesalahan, silakan coba lagi.');
+                alertBox.show();
+                console.error('Error:', error);
+            }
         });
+    });
+});
+
     </script>
     @endslot
 

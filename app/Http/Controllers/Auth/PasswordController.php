@@ -40,9 +40,9 @@ class PasswordController extends Controller
     function forgetPassword()
     {
         // dd(99);
-        Mail::to('santani423@gmail.com')
-            ->send(new WelcomeDeveloper());
-            return 'okee';
+        // Mail::to('santani423@gmail.com')
+        //     ->send(new WelcomeDeveloper());
+        //     return 'okee';
         return view('Pages/forgetPassword');
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeDeveloper;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 
 class PasswordController extends Controller
@@ -13,6 +15,14 @@ class PasswordController extends Controller
     /**
      * Update the user's password.
      */
+
+     public function __invoke(Request $request)
+     {
+        Mail::to('santani423@gmail.com')
+            ->send(new WelcomeDeveloper());
+            return 'okee';
+     } 
+
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -29,6 +39,10 @@ class PasswordController extends Controller
 
     function forgetPassword()
     {
+        // dd(99);
+        Mail::to('santani423@gmail.com')
+            ->send(new WelcomeDeveloper());
+            return 'okee';
         return view('Pages/forgetPassword');
     }
 }

@@ -24,7 +24,7 @@
             contentType: 'application/json',
             data: JSON.stringify({ email: email }),
             success: function (data) {
-                spinner.hide(); // Sembunyikan spinner setelah mendapat respons
+                spinner.hide(); // Sembunyikan spinner setelah mendapat respons---------
 
                 if (data.status === 'success') {
                     alertBox.removeClass('alert-danger').addClass('alert-success');

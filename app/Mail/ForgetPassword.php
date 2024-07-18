@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Content;
 
 class ForgetPassword extends Mailable
 {
@@ -25,15 +26,19 @@ class ForgetPassword extends Mailable
     {
         $this->details = $details;
     }
-
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.forgetPassword',
+        );
+    }
     /**
      * Build the message.
      *
      * @return $this
      */
-    public function build()
+    public function attachments(): array
     {
-        return $this->subject('Forget Password O-Rumah')
-            ->view('emails.forgetPassword');
+        return [];
     }
 }

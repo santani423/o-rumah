@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgetPassword;
 use Illuminate\Http\Request;
 use App\Mail\MyTestMail;
 use App\Models\Ads;
@@ -237,7 +238,7 @@ class MailController extends Controller
                 'reset_link' => route('passwrod.change', $data->uuid),
             ];
              Mail::to($request->email)
-            ->send(new WelcomeDeveloper());
+            ->send(new ForgetPassword($details));
             // Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
         }
         // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));

@@ -15,6 +15,7 @@ use App\Services\WhatsAppService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 
+use App\Mail\WelcomeDeveloper;
 class MailController extends Controller
 {
     protected $whatsAppService;
@@ -235,7 +236,9 @@ class MailController extends Controller
             $details = [
                 'reset_link' => route('passwrod.change', $data->uuid),
             ];
-            Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+             Mail::to($request->email)
+            ->send(new WelcomeDeveloper());
+            // Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
         }
         // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));
 

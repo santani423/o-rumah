@@ -16,16 +16,16 @@
         alertBox.hide(); // Sembunyikan alert box setiap kali form disubmit
 
         $.ajax({
-            url: "{{ route('forget.passwrod.email') }}",
-            type: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': token // Tambahkan header token CSRF
-            },
-            contentType: 'application/json',
-            data: JSON.stringify({ email: email }),
+            url: "{{ route('forget.passwrod.email') }}?email="+email,
+            type: 'get',
+            // headers: {
+            //     'X-CSRF-TOKEN': token // Tambahkan header token CSRF
+            // },
+            // contentType: 'application/json',
+            // data: JSON.stringify({ email: email }),
             success: function (data) {
-                spinner.hide(); // Sembunyikan spinner setelah mendapat respons---------
-
+                spinner.hide(); // Sembunyikan spinner setelah mendapat respons
+                console.log(data);
                 if (data.status === 'success') {
                     alertBox.removeClass('alert-danger').addClass('alert-success');
                     alertBox.text('Link reset password telah dikirim ke email Anda.');

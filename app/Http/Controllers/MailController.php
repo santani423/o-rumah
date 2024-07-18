@@ -238,8 +238,7 @@ class MailController extends Controller
                 'reset_link' => route('passwrod.change', $data->uuid),
             ];
              Mail::to($request->email)
-            ->send(new ForgetPassword($details));
-            // Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+            ->send(new ForgetPassword($details)); 
         }
         // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));
 

@@ -17,7 +17,7 @@
 
         $.ajax({
             url: "{{ route('forget.passwrod.email') }}",
-            type: 'POST',
+            type: 'GET',
             headers: {
                 'X-CSRF-TOKEN': token // Tambahkan header token CSRF
             },

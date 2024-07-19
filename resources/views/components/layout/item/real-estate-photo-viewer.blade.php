@@ -6,16 +6,16 @@
     } */
 
     
-    .square-container img {
+    /* .square-container img {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-    }
+    } */
 
-    .carousel-item img {
+    /* .carousel-item img {
         width: 100%;
         height: 80vh;  
         object-fit: cover;  
@@ -24,8 +24,8 @@
         height: 50vw;  
     }
     .zoom-gallery {
-        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
-    }
+        height: 50vw;  
+    } */
 
     
 </style>
@@ -53,12 +53,12 @@
     </div>
     <div class="col-lg-6 mt-3">
         <div class="zoom-gallery">
-            <div class="row">
+            <div class="row square-container">
                 @foreach($media as $key => $md)
                     @if ($key < 4)
                         <div class="col-3 col-sm-3 col-md-6 d-flex align-items-center justify-content-center">
                             <a class="mb-3 square-container" href="{{ asset($md['url']) }}" title="Project {{ $key + 1 }}">
-                                <img src="{{ asset($md['url']) }}" alt="" class="img-fluid img-cover" />
+                                <img src="{{ asset($md['url']) }}" alt="" class="card-img-top img-fluid" />
                             </a>
                         </div>
                     @else

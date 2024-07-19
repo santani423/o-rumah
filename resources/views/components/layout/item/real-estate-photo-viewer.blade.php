@@ -3,10 +3,10 @@
         position: relative;
         width: 100%;
         padding-bottom: 100%; 
-    } */
+    }
 
     
-    /* .square-container img {
+    .square-container img {
         position: absolute;
         top: 0;
         left: 0;
@@ -15,7 +15,7 @@
         object-fit: cover;
     } */
 
-    /* .carousel-item img {
+    .carousel-item img {
         width: 100%;
         height: 80vh;  
         object-fit: cover;  
@@ -25,7 +25,7 @@
     }
     .zoom-gallery {
         height: 50vw;  
-    } */
+    }
 
     
 </style>

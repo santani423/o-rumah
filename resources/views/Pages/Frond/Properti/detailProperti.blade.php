@@ -92,6 +92,7 @@
                                             class="d-block w-100"
                                             src="{{ asset($md['url']) }}"
                                             alt="First slide"
+                                             style="max-width: 800px; height: auto;"
                                         />
                                     </div>
                                     @endforeach

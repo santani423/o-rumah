@@ -56,11 +56,12 @@
     @slot('css')
     <!-- Magnific popup -->
     <!-- Magnific popup -->
-    <!-- <link href="{{asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css')}}" rel="stylesheet"
-        type="text/css" /> -->
+    <link href="{{asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css')}}" rel="stylesheet"
+        type="text/css" />
     @endslot
 
     @slot('body')
+   
     <div class="row">
         <div class="col-lg-12">
             <div class="card">

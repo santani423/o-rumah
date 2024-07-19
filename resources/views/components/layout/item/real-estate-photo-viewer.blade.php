@@ -3,7 +3,7 @@
         position: relative;
         width: 100%;
         padding-bottom: 100%; 
-    }
+    } */
 
     
     .square-container img {
@@ -13,7 +13,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-    } */
+    }
 
     .carousel-item img {
         width: 100%;

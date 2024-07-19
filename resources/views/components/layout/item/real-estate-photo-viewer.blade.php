@@ -17,18 +17,21 @@
 
     .carousel-item img {
         width: 100%;
-        height: 80vh; /* Tinggi gambar menjadi 70% dari tinggi layar */
-        object-fit: cover; /* Mengisi seluruh kontainer dengan gambar */
+        height: 80vh; 
+        object-fit: cover;  
     }
     .carousel-inner {
-        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
+        height: 50vw; 
     }
     .zoom-gallery {
-        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
+        height: 20vw; 
     }
-    .carousel-inner{
-        height: 150vw;
+    @media (max-width: 768px) {
+    .carousel-inner {
+        height: 100vw;
     }
+}
+
     
 </style>
 

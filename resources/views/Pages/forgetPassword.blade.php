@@ -68,7 +68,7 @@
                                 placeholder="Masukkan email Anda">
                         </div>
                         <div class="form-group text-center mt-4">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-success">
                                 <span id="spinner" style="display:none;">
                                     <i class="fas fa-spinner fa-spin"></i> Loading...
                                 </span>

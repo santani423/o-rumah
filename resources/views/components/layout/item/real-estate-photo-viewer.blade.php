@@ -33,10 +33,10 @@
 <div class="row">
     <div class="col-lg-6">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner" role="listbox">
+            <div class="square-container" role="listbox">
                 @foreach($media as $key => $md)
                     <div class="carousel-item @if($key == 0) active @endif">
-                        <img class="d-block img-fluid" src="{{ asset($md['url']) }}" alt="First slide" 
+                        <img class="card-img-top img-fluid" src="{{ asset($md['url']) }}" alt="First slide" 
                         style="max-width: 800px; height: 533px;">
                     </div>
                 @endforeach

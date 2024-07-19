@@ -36,7 +36,8 @@
             <div class="carousel-inner" role="listbox">
                 @foreach($media as $key => $md)
                     <div class="carousel-item @if($key == 0) active @endif">
-                        <img class="d-block img-fluid" src="{{ asset($md['url']) }}" alt="First slide">
+                        <img class="d-block img-fluid" src="{{ asset($md['url']) }}" alt="First slide" 
+                        style="max-width: 800px; height: auto;">
                     </div>
                 @endforeach
             </div>

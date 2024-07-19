@@ -27,7 +27,7 @@
         height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
     }
     .carousel-inner{
-        height: 100vw;
+        height: 150vw;
     }
     
 </style>

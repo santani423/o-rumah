@@ -1,8 +1,8 @@
 <style>
-    /* .square-container {
+    .square-container {
         position: relative;
         width: 100%;
-        padding-bottom: 100%; 
+        padding-bottom: 100%; /* Membuat kontainer persegi dengan rasio 1:1 */
     }
 
     
@@ -17,26 +17,28 @@
 
     .carousel-item img {
         width: 100%;
-        height: 80vh; 
-        object-fit: cover;  
+        height: 80vh; /* Tinggi gambar menjadi 70% dari tinggi layar */
+        object-fit: cover; /* Mengisi seluruh kontainer dengan gambar */
     }
     .carousel-inner {
-        height: 50vw; 
+        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
     }
     .zoom-gallery {
-        height: 50vw; 
-    } */
-
+        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
+    }
+    .carousel-inner{
+        height: 100vw;
+    }
     
 </style>
 
 <div class="row">
     <div class="col-lg-6">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="square-container" role="listbox">
+            <div class="carousel-inner" role="listbox">
                 @foreach($media as $key => $md)
                     <div class="carousel-item @if($key == 0) active @endif">
-                        <img class="card-img-top img-fluid" src="{{ asset($md['url']) }}" alt="First slide">
+                        <img class="img-fluid img-cover" src="{{ asset($md['url']) }}" alt="First slide">
                     </div>
                 @endforeach
             </div>

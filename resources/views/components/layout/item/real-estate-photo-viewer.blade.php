@@ -1,8 +1,8 @@
 <style>
-    .square-container {
+    /* .square-container {
         position: relative;
         width: 100%;
-        padding-bottom: 100%; /* Membuat kontainer persegi dengan rasio 1:1 */
+        padding-bottom: 100%; 
     }
 
     
@@ -17,12 +17,12 @@
 
     .carousel-item img {
         width: 100%;
-        height: 80vh; /* Tinggi gambar menjadi 70% dari tinggi layar */
-        object-fit: cover; /* Mengisi seluruh kontainer dengan gambar */
+        height: 80vh;  
+        object-fit: cover;  
     }
     .carousel-inner {
-        height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
-    }
+        height: 50vw;  
+    } */
     .zoom-gallery {
         height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
     }

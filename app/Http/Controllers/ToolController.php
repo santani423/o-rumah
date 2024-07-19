@@ -301,7 +301,7 @@ function order(Request $request){
     // dd($request->all());
     $auth = User::whereId($ads->user_id)->first();
     // dd($ads);
-    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC014');
+    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC015');
     return response()->json([
         'success' => true,                  // Indicates the request was successful
         'message' => 'Order has been processed successfully!',

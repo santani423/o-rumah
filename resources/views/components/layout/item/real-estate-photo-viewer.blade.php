@@ -1,8 +1,39 @@
+<style>
+    /* .square-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%; 
+    }
+
+    
+    .square-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: 80vh; 
+        object-fit: cover;  
+    }
+    .carousel-inner {
+        height: 50vw; 
+    }
+    .zoom-gallery {
+        height: 50vw; 
+    } */
+
+    
+</style>
 
 <div class="row">
     <div class="col-lg-6">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner" role="listbox">
+            <div class="square-container" role="listbox">
                 @foreach($media as $key => $md)
                     <div class="carousel-item @if($key == 0) active @endif">
                         <img class="card-img-top img-fluid" src="{{ asset($md['url']) }}" alt="First slide">

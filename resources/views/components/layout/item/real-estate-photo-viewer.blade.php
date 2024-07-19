@@ -13,7 +13,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-    }
+    } */
 
     .carousel-item img {
         width: 100%;
@@ -22,7 +22,7 @@
     }
     .carousel-inner {
         height: 50vw;  
-    } */
+    }
     .zoom-gallery {
         height: 50vw; /* Set tinggi elemen menjadi 50% dari lebar viewport */
     }

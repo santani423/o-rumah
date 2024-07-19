@@ -158,6 +158,7 @@
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
+            loadAds(currentPage); // Load ads with latitude and longitude as null
         } else {
             document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
             loadAds(currentPage); // Load ads with latitude and longitude as null

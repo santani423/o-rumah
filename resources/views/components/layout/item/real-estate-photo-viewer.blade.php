@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .square-container {
         position: relative;
         width: 100%;
@@ -28,7 +28,7 @@
     }
 
     
-</style>
+</style> -->
 
 <div class="row">
     <div class="col-lg-6">

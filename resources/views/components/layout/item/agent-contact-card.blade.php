@@ -60,11 +60,11 @@
         if (isOrder) {
             $.ajax({
                 url: '{{ route("order") }}', // Endpoint untuk order, pastikan route nama sesuai
-                type: 'POST',
-                data: JSON.stringify({
+                type: 'get',
+                data: {
                     // Tambahkan data yang diperlukan untuk permintaan order
-                    adsId : {{$ads->ads_id}}
-                }),
+                    adsId : "{{$ads->ads_id}}"
+                },
                 contentType: 'application/json',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -82,7 +82,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    alert('An error occurred. Please try again--.');
                 }
             });
         } else {

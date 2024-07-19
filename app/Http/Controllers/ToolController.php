@@ -298,8 +298,10 @@ function searchAgnet(Request $request) {
 function order(Request $request){
    
     $ads = Ads::whereId($request->adsId)->first();
+    // dd($request->all());
     $auth = User::whereId($ads->user_id)->first();
-    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC015');
+    // dd($ads);
+    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC014');
     return response()->json([
         'success' => true,                  // Indicates the request was successful
         'message' => 'Order has been processed successfully!',

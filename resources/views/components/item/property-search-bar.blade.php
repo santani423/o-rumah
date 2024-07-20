@@ -1,7 +1,7 @@
 
 <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="tab-container mb-2">
+                <div class="tab-container mb-1">
                     <div class="tab active" id="jual-tab" onclick="showTab('jual')">Beli</div>
                     <div class="tab " id="sewa-tab" onclick="showTab('sewa')">Sewa</div>
                 </div>

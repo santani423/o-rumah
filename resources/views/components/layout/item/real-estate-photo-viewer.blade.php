@@ -28,7 +28,7 @@
     }
     @media (max-width: 768px) {
     .carousel-inner {
-        height: 100vw;
+        height: 120vw;
     }
 }
 

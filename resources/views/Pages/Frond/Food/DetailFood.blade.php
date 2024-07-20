@@ -25,7 +25,7 @@
             const likeButton = document.getElementById('likeButton');
             likeButton.addEventListener('click', function () {
                 const addId = '{{$ads->ads_id}}'; // Pastikan ini adalah ID iklan yang benar
-                const agentId = '{{$agent['id']}}'; // Pastikan ini adalah ID agen yang benar
+                const agentId = "{{$agent['id']}}"; // Pastikan ini adalah ID agen yang benar
                 const type = '{{$typeFood}}'; // Pastikan ini adalah tipe yang benar
                 $.ajax({
                     url: "{{ route('ad.like') }}",
@@ -53,9 +53,7 @@
         });
     </script>
     @endslot
-    @slot('css')
-    <!-- Magnific popup -->
-    <!-- Magnific popup -->
+    @slot('css') 
     <link href="{{asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css')}}" rel="stylesheet"
         type="text/css" />
     @endslot

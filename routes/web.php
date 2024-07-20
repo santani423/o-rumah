@@ -344,6 +344,8 @@ Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->n
 Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
 Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update'); 
+Route::get('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCode'])->name('passwrod.verifikasi.code');
+Route::post('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCodeTes'])->name('verification.code');
 
 
 Route::get('/testing/location', function () {

@@ -12,6 +12,7 @@ use App\Models\Lelang;
 use App\Models\User;
 use App\Models\PasswordChanges;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 use App\Services\WhatsAppService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
@@ -224,25 +225,56 @@ class MailController extends Controller
 
     }
 
-    function forgetPassword(Request $request)
-    {
+  
 
-        $user = User::where('email', $request->email)->first();
+public function forgetPassword(Request $request)
+{
+    $contact = $request->contact;
+    $email = $request->email;
+    $method = $request->method;
+
+    if ($method == 'email') {
+        $user = User::where('email', $contact)->first();
         if ($user) {
+
             $data = new PasswordChanges();
             $data->user_id = $user->id;
-            $data->email = $request->email;
+            $data->email = $email;
             $data->uuid = Str::uuid();
+            $data->expired = Carbon::now()->addHour();
+            $data->noVerifikasi = PasswordChanges::generateUniqueVerificationCode();
             $data->save();
+
             $details = [
                 'reset_link' => route('passwrod.change', $data->uuid),
             ];
-             Mail::to($request->email)
-            ->send(new ForgetPassword($details)); 
+            Mail::to($email)->send(new ForgetPassword($details));
         }
-        // Mail::to('1123150108@global.ac.id')->send(new \App\Mail\ForgetPassword($details));
+    } else {
+        $user = User::where('wa_phone', $contact)->first();
+        if ($user) {
+            
+            $data = new PasswordChanges();
+            $data->user_id = $user->id;
+            $data->email = $user->email;
+            $data->uuid = Str::uuid();
+            $data->expired = Carbon::now()->addHour();
+            $data->noVerifikasi =  str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $data->save();
+             
 
+            $namaAplikasi = 'O-Rumah';
+            $message = "Halo $user->name,\n\n" .
+                "Kami menerima permintaan untuk mengubah kata sandi Anda di $namaAplikasi. Berikut adalah kode verifikasi Anda:\n\n" .
+                "**{$data->noVerifikasi}**\n\n" .
+                "Jika Anda tidak merasa melakukan permintaan ini, abaikan pesan ini.\n\n";
+              
 
-        return response()->json(['status' => 'success', 'request' => $request->all()], 200);
+            $response = $this->whatsAppService->sendMessage($contact, $message);
+        }
     }
+
+    return response()->json(['status' => 'success', 'request' => $request->all()], 200);
+}
+
 }

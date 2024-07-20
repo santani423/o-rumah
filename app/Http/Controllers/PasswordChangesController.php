@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class PasswordChangesController extends Controller
 {
@@ -83,4 +84,27 @@ class PasswordChangesController extends Controller
     {
         //
     }
+
+    function verifikasiCode(){
+        return view('Pages/verifikasiCode' );
+    }
+
+    public function verifikasiCodeTes(Request $request) {
+        // Validasi untuk memastikan kode verifikasi ada
+        $request->validate([
+            'verification_code' => 'required'
+        ]);
+    
+        // Mencari data perubahan password berdasarkan kode verifikasi
+        $passwordChanges = PasswordChanges::where('noVerifikasi', $request->verification_code)->first();
+        
+        // Jika data perubahan password ditemukan, redirect ke halaman perubahan password
+        if ($passwordChanges) {
+            return redirect()->route('passwrod.change', $passwordChanges->uuid);
+        }
+    
+        // Jika tidak ditemukan, kembali dengan pesan error
+        return back()->with('error', 'Kode Verifikasi salah!!');
+    }
+    
 }

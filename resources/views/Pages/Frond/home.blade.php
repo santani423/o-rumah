@@ -384,7 +384,7 @@ loadAds(currentPage);
 
  
 
-    <div class="container mt-5">
+    <div class="container mt-2">
         <!-- Tabs -->
         <x-Item.PropertySearchBar>
         </x-Item.PropertySearchBar>
@@ -404,7 +404,7 @@ loadAds(currentPage);
                             <a href="{{ route('ofoods') }}"><img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt=""><br>O-Foods</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
+                            <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari LBH</a>
@@ -417,7 +417,7 @@ loadAds(currentPage);
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
-                            <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a>
+                            <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"><img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt=""><br>Estate</a>
                         </div>
                     </div>
                 </div>
@@ -425,7 +425,7 @@ loadAds(currentPage);
         </div>
 
         <!-- end wrapper -->
-        <div  id="adsListsWithDistance" class="row mt-5"></div>
+        <div  id="adsListsWithDistance" class="row mt-2"></div>
         <div class="row mt-2">
     <div class="col-12 d-flex justify-content-center">
     <button type="button" class="btn   "  

@@ -44,9 +44,11 @@
                                         : $agent['wa_phone'];
                         @endphp
                         <div class="col-lg-6 mb-3">
-                            <button class="btn btn-success btn-block" onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
-                                <i class="mdi mdi-whatsapp"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'WhatsApp' }}
-                            </button>
+                        <button class="btn btn-success btn-block" 
+                                onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                            {!! $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
+                        </button>
+
                         </div>
                     @endif
                 </div>

@@ -81,7 +81,7 @@
                         value="{{Auth::user()->company_name}}">
                 </div>
                 <div class="form-group">
-                    <label for="company_image">Gambar Perusahaan</label>
+                    <label for="company_image">Logo Perusahaan</label>
                     <input type="file" class="dropify" id="company_image" name="company_image"
                         data-default-file="{{asset(Auth::user()->company_image)}}">
                 </div>

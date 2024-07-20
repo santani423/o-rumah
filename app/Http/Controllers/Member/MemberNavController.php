@@ -871,12 +871,12 @@ class MemberNavController extends Controller
         if ($request->hasFile('profile_pengguna')) {
             $path = $request->file('profile_pengguna')->store('images/company_image/' . $user->id, 'public');
             $user->image = Storage::url($path);
-            $user->update(); // Menyimpan perubahan pada user
+            $user->save(); // Menyimpan perubahan pada user
         }
         if ($request->hasFile('company_image')) {
             $path = $request->file('company_image')->store('images/company_image/' . $user->id, 'public');
             $user->company_image = Storage::url($path);
-            $user->update(); // Menyimpan perubahan pada user
+            $user->save(); // Menyimpan perubahan pada user
         }
         
         

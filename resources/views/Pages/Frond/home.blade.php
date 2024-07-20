@@ -384,13 +384,13 @@ loadAds(currentPage);
 
  
 
-    <div class="container mt-2">
+    <div class="container mt-1">
         <!-- Tabs -->
         <x-Item.PropertySearchBar>
         </x-Item.PropertySearchBar>
 
 
-        <div class="card mt-2">
+        <div class="card mt-1">
             <div class="card-body">
                 <div class="nav-container">
                     <div class="nav-links row">
@@ -425,8 +425,8 @@ loadAds(currentPage);
         </div>
 
         <!-- end wrapper -->
-        <div  id="adsListsWithDistance" class="row mt-2"></div>
-        <div class="row mt-2">
+        <div  id="adsListsWithDistance" class="row mt-1"></div>
+        <div class="row mt-1">
     <div class="col-12 d-flex justify-content-center">
     <button type="button" class="btn   "  
         style="background-color: #47C8C5;
@@ -445,7 +445,7 @@ loadAds(currentPage);
 </div>
 
 
-        <div class="card mt-2">
+        <div class="card mt-1">
             <div class="card-body" style=" background-color: #f0f0f0;">
                 <div class="nav-container">
                     <div class="nav-links d-flex justify-content-between">
@@ -453,21 +453,21 @@ loadAds(currentPage);
                         <div class="nav-item ml-2">
                             <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
                                 <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                    <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
                                 </div>
                             </a>
                         </div>
                         <div class="nav-item ml-2">
                             <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
                                 <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                    <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
                                 </div>
                             </a>
                         </div>
                         <div class="nav-item ml-2">
                             <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
                                 <div class="d-flex flex-column align-items-center"> 
-                                    <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-2">
+                                    <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
                                 </div>
                             </a>
                         </div>

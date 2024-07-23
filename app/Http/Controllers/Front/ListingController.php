@@ -143,7 +143,7 @@ class ListingController extends Controller
     ];
     $navLink = $request->navLink;
 
-    $bosterAdsTYpe = bosterAdsTYpe::where('type','property')->get();
+    $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
     
     $latitude = $request->input('latitude');
     $longitude = $request->input('longitude');
@@ -158,7 +158,7 @@ class ListingController extends Controller
 
        
     // dd($position);
-        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsTYpe','BosterAds'));
+        return view('Pages/ControlPanel/Member/Properti/view',compact('ads','navLink','media','bosterAdsType','BosterAds'));
     }
 
     function editPropertiTentangProperti($slug='')  {

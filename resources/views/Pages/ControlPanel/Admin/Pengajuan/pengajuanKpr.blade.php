@@ -26,6 +26,7 @@
                           <tr>  
                             <th >Tanggal</th>
                             <th class="pr-1">Kode KPR</th> 
+                            <th class="pr-1">Kode Property</th> 
                             <th class="pr-2">Nama Agen</th> 
                             <th class="pr-2">Nama</th>
                             <th class="pr-2">Email</th>
@@ -63,6 +64,7 @@
                                 <tr class="table-${statusClass}"> 
                                     <td>${obj["Tanggal"]}</td>
                                     <th class="pr-1">${obj["Kode KPR"]}</th> 
+                                    <th class="pr-2">${obj["Kode Property"]}</th> 
                                     <th class="pr-2">${obj["Nama Agent"]}</th> 
                                     <th class="pr-2">${obj["Nama Pengajuan"]}</th>
                                     <th class="pr-2">${obj["Email"]}</th>
@@ -131,14 +133,15 @@
                     selectedData.push({
                         "Tanggal": row.find('td').eq(1).text(),
                         "Kode KPR": row.find('td').eq(2).text(),
-                        "Nama Agent": row.find('td').eq(3).text(),
-                        "Nama Pengajuan": row.find('td').eq(4).text(),
-                        "Email": row.find('td').eq(5).text(),  
-                        "No HP Visitor": row.find('td').eq(6).text(),  
-                        "Nama Bank": row.find('td').eq(7).text(),  
-                        "Email PIC Bank": row.find('td').eq(8).text(),  
-                        "Bank BPR": row.find('td').eq(9).text(),  
-                        "Email PIC Bank BPR": row.find('td').eq(10).text(),  
+                        "Kode Property": row.find('td').eq(3).text(),
+                        "Nama Agent": row.find('td').eq(4).text(),
+                        "Nama Pengajuan": row.find('td').eq(5).text(),
+                        "Email": row.find('td').eq(6).text(),  
+                        "No HP Visitor": row.find('td').eq(7).text(),  
+                        "Nama Bank": row.find('td').eq(8).text(),  
+                        "Email PIC Bank": row.find('td').eq(9).text(),  
+                        "Bank BPR": row.find('td').eq(10).text(),  
+                        "Email PIC Bank BPR": row.find('td').eq(11).text(),  
                         "Status":null,  
                         "Proses":null,  
                     });
@@ -164,6 +167,7 @@
                             <th class="pr-1">Select</th>
                             <th >Tanggal</th>
                             <th class="pr-1">Kode KPR</th>
+                            <th class="pr-1">Kode Property</th>
                             <!-- <th class="pr-1">Ads ID</th>
                             <th class="pr-1">User ID</th>
                             <th class="pr-1">Bank ID</th>
@@ -190,6 +194,7 @@
                                 <td><input type="checkbox" name="selectRow" class="selectRow"></td>
                                 <td>{{date('d-m-Y', strtotime($item->created_at))}}</td>
                                 <td>{{ $item->uuid }}</td>
+                                <td>{{ $item->kodeProperty }}</td>
                                 <!-- <td>{{ $item->ads_id }}</td>
                                 <td>{{ $item->user_id }}</td>
                                 <td>{{ $item->bank_id }}</td>
@@ -218,7 +223,7 @@
             <h6>Input response bank</h6>
             <input type="file" id="upload" class="form-control" accept=".xlsx, .xls" />
             <div id="responseKprBank"></div>
-            <button id="downloadExcel" class="btn btn-success">Download Excel</button>
+            <button id="downloadExcel" class="btn btn-turquoise">Download Excel</button>
         </div>
     </div>
     @endslot

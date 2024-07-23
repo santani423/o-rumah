@@ -72,7 +72,7 @@
                 <form action="{{route('admin.email.bank')}}" method="post">
                     @csrf
                     <input type="hidden" name="kpr_id" value="{{$kpr->id}}">
-                    <button class="btn btn-primary">Kirm Email</button>
+                    <button class="btn btn-turquoise">Kirm Email</button>
                 </form>
                 <form action="{{route('admin.pengajuan.kpr.setting.status', $kpr->id)}}" method="post">
                     @csrf
@@ -87,7 +87,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="text-right"><button class="btn btn-primary">Simpan Status</button></div>
+                    <div class="text-right"><button class="btn btn-turquoise">Simpan Status</button></div>
                 </form>
             </div>
 
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="text-center m-t-15">
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">
+                            <button type="submit" class="btn btn-turquoise waves-effect waves-light">
                                 Simpan
                             </button>
                         </div>
@@ -130,7 +130,7 @@
                                     <td>{{ $file['file_type'] }}</td>
                                     <td>
                                         <a href="{{ asset($file['file_path'] . '/' . $file['file_name']) }}"
-                                            class="btn btn-primary" download>
+                                            class="btn btn-turquoise" download>
                                             Download
                                         </a>
                                     </td>
@@ -159,7 +159,7 @@
                         </div>
 
                         <div class="text-center m-t-15">
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">
+                            <button type="submit" class="btn btn-turquoise waves-effect waves-light">
                                 Simpan
                             </button>
                         </div>
@@ -179,7 +179,7 @@
                                     <td>{{ $file['file_type'] }}</td>
                                     <td>
                                         <a href="{{ asset($file['file_path'] . '/' . $file['file_name']) }}"
-                                            class="btn btn-primary" download>
+                                            class="btn btn-turquoise" download>
                                             Download
                                         </a>
                                     </td>
@@ -209,12 +209,12 @@
                                 <p>{{ $doc['title'] }}</p>
 
                             </div>
-                            <a href="{{ asset($doc['image']) }}" class="btn btn-primary"
+                            <a href="{{ asset($doc['image']) }}" class="btn btn-turquoise"
                                 download="{{ $doc['filename'] }}">Download</a>
                         </div>
                     @endforeach
                 </div>
-                <a href="{{route('admin.pengajuan.kpr.downloadKprFiles', $kpr->id)}}" class="btn btn-primary">Download
+                <a href="{{route('admin.pengajuan.kpr.downloadKprFiles', $kpr->id)}}" class="btn btn-turquoise">Download
                     ZIP </a>
             </div>
         </div>

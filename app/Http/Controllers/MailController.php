@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BankEmail;
 use App\Mail\ForgetPassword;
 use Illuminate\Http\Request;
 use App\Mail\MyTestMail;
@@ -18,6 +19,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 
 use App\Mail\WelcomeDeveloper;
+use Illuminate\Support\Facades\Storage;
+
 class MailController extends Controller
 {
     protected $whatsAppService;
@@ -62,7 +65,7 @@ class MailController extends Controller
                 'bankBpr.email as bank_bpr_email'
             )
             ->first();
-
+                // dd($kpr);
         // return response()->json([
         //     'message' => 'Email berhasil dikirim',
         //     'kpr' => $kpr
@@ -76,10 +79,17 @@ class MailController extends Controller
             'body' => 'This is for testing email using smtp'
         ];
 
-
-
-        Mail::to($request->bank_umum_email)->send(new \App\Mail\BankEmail($details));
-        Mail::to($request->bank_bpr_email)->send(new \App\Mail\BankEmail($details));
+        $file = route('home').$kpr->image_ktp; 
+        // dd($file);
+        $files = [
+            'https://o-rumah.com/assets/logo-o-rumah.png',
+            'https://o-rumah.com/storage/images/properti/property/1345/VCWRjQKA2SbfnjYejIQhpanlbPv8mowdQ34iDTcx.jpg',
+        ];
+        Mail::to('santani423@gmail.com')->send(new BankEmail($details, $files));
+        // Mail::to('santani423@gmail.com')->send(new \App\Mail\BankEmail($details,$file));
+        // Mail::to('santani423@gmail.com')->send(new \App\Mail\BankEmail($details,$file));
+        // Mail::to($request->bank_umum_email)->send(new \App\Mail\BankEmail($details));
+//         // Mail::to($request->bank_bpr_email)->send(new \App\Mail\BankEmail($details));
 
         return response()->json([
             'message' => 'Email berhasil dikirim'

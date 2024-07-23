@@ -78,7 +78,7 @@
                     @csrf
                    
                     <input type="hidden" name="lelang_id" value="{{$pengajuanLelang->id}}">
-                    <button class="btn btn-primary">Kirm Email</button>
+                    <button class="btn btn-turquoise">Kirm Email</button>
                 </form> 
             </div>
 
@@ -112,12 +112,12 @@
                                 <p>{{ $doc['title'] }}</p>
 
                             </div>
-                            <a href="{{ asset($doc['image']) }}" class="btn btn-primary"
+                            <a href="{{ asset($doc['image']) }}" class="btn btn-turquoise"
                                 download="{{ $doc['filename'] }}">Download</a>
                         </div>
                     @endforeach
                 </div>
-                <!-- <a href="{{route('admin.pengajuan.kpr.downloadKprFiles', $pengajuanLelang->id)}}" class="btn btn-primary">Download
+                <!-- <a href="{{route('admin.pengajuan.kpr.downloadKprFiles', $pengajuanLelang->id)}}" class="btn btn-turquoise">Download
                     ZIP </a> -->
             </div>
             </div>

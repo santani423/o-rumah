@@ -347,6 +347,7 @@ Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update
 Route::get('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCode'])->name('passwrod.verifikasi.code');
 Route::post('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCodeTes'])->name('verification.code');
 
+Route::get('/simulator-kpr', [ToolController::class, 'simulatorKpr'])->name('simulatorKpr');
 
 Route::get('/testing/location', function () {
     return view('testing/location');

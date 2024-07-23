@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    protected $whatsAppService;
+
+    public function __construct(WhatsAppService $whatsAppService)
+    {
+        $this->whatsAppService = $whatsAppService;
+    }
     public function inLogin(Request $request)
     {
         try {
@@ -94,7 +101,21 @@ class AuthController extends Controller
             'wa_phone' => $validatedData['noWa'],
             'type' => $validatedData['pilihanType'],
         ]);
-
+   
+        $nama = $validatedData['nama'];
+        $namaAplikasi = 'O-Rumah';
+        $message = "🎉 Halo! $nama 🎉
+        
+        Selamat bergabung di $namaAplikasi! 🏠 Kami sangat senang memiliki kalian sebagai bagian dari komunitas ini. 🤗
+        
+        Ayo kejar reward prestasi mobil dengan mengajak lebih banyak teman bergabung! Semakin banyak yang ikut, semakin seru perjalanan kita menuju kesuksesan bersama. 🚀
+        
+        Jangan ragu untuk berbagi pengalaman dan cerita kalian di sini. Mari bersama-sama mencapai impian dan meraih kesuksesan! 💪
+        
+        Terima kasih sudah menjadi bagian dari $namaAplikasi! 🙌";
+        
+        $response = $this->whatsAppService->sendMessage($validatedData['noWa'], $message);
+        
         return redirect(route('home'))->with('success', 'Registrasi berhasil. Silahkan login.');
     } catch (\Illuminate\Validation\ValidationException $e) {
         return back()->withErrors($e->validator)->withInput()->with('error', 'Terjadi kesalahan pada validasi data.');

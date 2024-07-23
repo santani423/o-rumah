@@ -60,8 +60,11 @@
                     <li class="has-submenu ">
                         <a href="{{route('latest')}}"> Properti</a>
                     </li>
-                    <li class="has-submenu ">
+                    <!-- <li class="has-submenu ">
                         <a href="{{route('auction')}}"> Properti Lelang</a>
+                    </li> -->
+                    <li class="has-submenu ">
+                        <a href="{{route('simulatorKpr')}}"> Simulai KPR</a>
                     </li>
                     @if(Auth::user())
                         <li class="has-submenu">

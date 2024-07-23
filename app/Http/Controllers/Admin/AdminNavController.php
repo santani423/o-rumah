@@ -872,6 +872,7 @@ class AdminNavController extends Controller
             ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
             ->select(
                 'kpr.*',
+                'ads.uuid as kodeProperty',
                 'userAgen.name as namaAgen',
                 'bankUmum.alias_name as bank_umum_name',
                 'bankUmum.email as bank_umum_email',
@@ -891,8 +892,10 @@ class AdminNavController extends Controller
         // Bad Request
         if ($kpr) {
             $responBank = KprResponseBank::where('kpr_id', $kpr->id)->first();
+          
             // $responBank = KprResponseBank::first();
             if (!$responBank) {
+                // dd(88);
                 $responBank = new KprResponseBank();
 
             }

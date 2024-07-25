@@ -18,4 +18,7 @@
         
     </div> 
     @endforeach
- 
+
+@if($adsLists->isEmpty())
+    <h3 style="color:white">Property tidak ditemukan</h3>
+@endif

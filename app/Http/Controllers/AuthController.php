@@ -114,6 +114,9 @@ class AuthController extends Controller
         $namaAplikasi = 'O-Rumah';
         $message = "🎉 Halo! $nama 🎉
         
+        Email Anda: $user->email
+        Username Anda: $user->username
+
         Selamat bergabung di $namaAplikasi! 🏠 Kami sangat senang memiliki kalian sebagai bagian dari komunitas ini. 🤗
         
         Ayo kejar reward prestasi mobil dengan mengajak lebih banyak teman bergabung! Semakin banyak yang ikut, semakin seru perjalanan kita menuju kesuksesan bersama. 🚀

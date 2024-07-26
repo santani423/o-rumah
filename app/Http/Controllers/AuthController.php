@@ -20,7 +20,7 @@ class AuthController extends Controller
     }
     public function inLogin(Request $request)
     {
-        
+        try {
             // Validasi input
             $credentials = $request->validate([
                 'email' => 'required|email',
@@ -61,7 +61,12 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
             ], 401); // 401 Unauthorized
-        
+        } catch (\Exception $e) {
+            Log::error('Error during login: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
+            ], 500); // 500 Internal Server Error
+        }
     }
     
     

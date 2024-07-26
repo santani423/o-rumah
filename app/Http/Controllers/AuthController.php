@@ -25,43 +25,51 @@ class AuthController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
-
+    
             // Cek rate limiting
             if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
-                return back()->withErrors([
-                    'email' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.',
-                ])->onlyInput('email');
+                return response()->json([
+                    'message' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.',
+                ], 429);
             }
-
+    
             // Mencoba melakukan autentikasi
             if (auth()->attempt($credentials)) {
                 // Regenerasi session ID untuk mencegah fixation attacks
                 $request->session()->regenerate();
-
+    
                 // Reset rate limiter
                 RateLimiter::clear($this->throttleKey($request));
-
-                // Mengembalikan response redirect ke halaman home
-                return redirect()->route('home')->with('success', 'Login berhasil, dialihkan ke dashboard.');
+    
+                // Mengembalikan response JSON dengan pesan sukses
+                return response()->json([
+                    'message' => 'Login berhasil, dialihkan ke dashboard.',
+                    'redirect' => route('home'),
+                    'email' => $request->email,
+                    'password' => $request->password,
+                ], 200);
             }
-
+    
             // Inkrement rate limiter
             RateLimiter::hit($this->throttleKey($request));
-
+    
             // Logging untuk autentikasi yang gagal
             \Log::warning('Login gagal untuk email: ' . $request->email);
-
-            // Mengembalikan response kembali ke halaman login dengan pesan error
-            return back()->withErrors([
-                'email' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
-            ])->onlyInput('email'); // Mempertahankan input email
+    
+            // Mengembalikan response JSON dengan pesan error
+            return response()->json([
+                'message' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+            ], 401); // 401 Unauthorized
         } catch (\Exception $e) {
             \Log::error('Error during login: ' . $e->getMessage());
-            return back()->withErrors([
-                'error' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
-            ]);
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat login. Silakan coba lagi.',
+            ], 500); // 500 Internal Server Error
         }
     }
+    
+    
+    
 
     protected function throttleKey(Request $request)
     {

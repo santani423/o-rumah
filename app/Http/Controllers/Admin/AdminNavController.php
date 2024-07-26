@@ -869,15 +869,17 @@ class AdminNavController extends Controller
             ->join('ads', 'ads.id', '=', 'kpr.ads_id')
             ->join('users as userAgen', 'userAgen.id', '=', 'ads.user_id')
             ->join('banks as bankUmum', 'bankUmum.id', '=', 'kpr.bank_id')
+            ->leftjoin('email_banks as email_banks_umum', 'email_banks_umum.id', '=', 'kpr.bank_id')
             ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
+            ->leftjoin('email_banks as email_banks_bpr', 'email_banks_bpr.id', '=', 'kpr.bank_bpr_id')
             ->select(
                 'kpr.*',
                 'ads.uuid as kodeProperty',
                 'userAgen.name as namaAgen',
                 'bankUmum.alias_name as bank_umum_name',
-                'bankUmum.email as bank_umum_email',
+                'email_banks_umum.email as bank_umum_email',
                 'bankBpr.alias_name as bank_bpr_name',
-                'bankBpr.email as bank_bpr_email'
+                'email_banks_bpr.email as bank_bpr_email'
             )
             ->get();
         // dd($kpr);

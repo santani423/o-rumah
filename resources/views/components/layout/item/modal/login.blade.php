@@ -8,12 +8,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                @if(session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                <form class="form-horizontal m-t-20" action="{{ route('auth.in.login') }}" method="POST">
+                <div id="alert" class="alert d-none" role="alert"></div>
+                <form id="loginForm" class="form-horizontal m-t-20">
                     @csrf <!-- CSRF Token -->
 
                     <div class="form-group row">
@@ -28,7 +24,7 @@
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
                             <i class="fa fa-eye-slash toggle-password" data-toggle-target="password"></i>
                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                <a href="{{ route('forget.passwrod') }}" class="text-black">
+                                <a href="{{ route('forget.password') }}" class="text-black">
                                     <label class="mb-0">Lupa Password?</label>
                                 </a>
                             </div>
@@ -37,7 +33,10 @@
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white;" type="submit">Log In</button>
+                            <button id="loginButton" class="btn btn-block waves-effect waves-light" style="background-color: #47C8C5; border-color: #47C8C5; color: white;" type="submit">
+                                <span id="loginButtonText">Log In</span>
+                                <span id="loginSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="form-group m-t-10 mb-0 row">
@@ -52,19 +51,73 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- <script>
-    document.querySelectorAll('.toggle-password').forEach(item => {
-        item.addEventListener('click', function () {
-            const target = document.getElementById(this.getAttribute('data-toggle-target'));
-            if (target.type === 'password') {
-                target.type = 'text';
-                this.classList.remove('fa-eye');
-                this.classList.add('fa-eye-slash');
-            } else {
-                target.type = 'password';
-                this.classList.remove('fa-eye-slash');
-                this.classList.add('fa-eye');
-            }
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginButtonText = document.getElementById('loginButtonText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const alertBox = document.getElementById('alert');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Show spinner and disable button
+            loginButtonText.classList.add('d-none');
+            loginSpinner.classList.remove('d-none');
+            loginButton.disabled = true;
+
+            const formData = new FormData(loginForm);
+
+            fetch("{{ route('auth.in.login') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': formData.get('_token'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide spinner and enable button
+                loginButtonText.classList.remove('d-none');
+                loginSpinner.classList.add('d-none');
+                loginButton.disabled = false;
+
+                if (data.redirect) {
+                    window.location.href = "https://member.o-rumah.com/auth_get.php?Auth_Email="+data.email+"&Auth_Pass="+data.password;
+                } else {
+                    alertBox.classList.remove('d-none', 'alert-success');
+                    alertBox.classList.add('alert-danger');
+                    alertBox.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                // Hide spinner and enable button
+                loginButtonText.classList.remove('d-none');
+                loginSpinner.classList.add('d-none');
+                loginButton.disabled = false;
+
+                alertBox.classList.remove('d-none', 'alert-success');
+                alertBox.classList.add('alert-danger');
+                alertBox.textContent = 'Terjadi kesalahan saat login. Silakan coba lagi.';
+                console.error('Error:', error);
+            });
+        });
+
+        document.querySelectorAll('.toggle-password').forEach(item => {
+            item.addEventListener('click', function () {
+                const target = document.getElementById(this.getAttribute('data-toggle-target'));
+                if (target.type === 'password') {
+                    target.type = 'text';
+                    this.classList.remove('fa-eye');
+                    this.classList.add('fa-eye-slash');
+                } else {
+                    target.type = 'password';
+                    this.classList.remove('fa-eye-slash');
+                    this.classList.add('fa-eye');
+                }
+            });
         });
     });
-</script> -->
+</script>

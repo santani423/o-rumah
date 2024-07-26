@@ -39,7 +39,7 @@ Route::get('/kirim-email', [MailController::class, 'index']);
 Route::get('/logout', [ProfileController::class, 'logout'])->name('auth.logout');
 Route::get('/teslogin', [ProfileController::class, 'teslogin'])->name('teslogin');
 
-Route::post('/auth/in/login', [AuthController::class, 'inLogin'])->name('auth.in.login');
+Route::get('/auth/in/login', [AuthController::class, 'inLogin'])->name('auth.in.login');
 Route::post('/auth/in/registrasi', [AuthController::class, 'inRegistrasi'])->name('auth.in.registrasi');
 // Home and coming soon
 Route::get('/', [Front\HomeController::class, 'index'])->name('home');

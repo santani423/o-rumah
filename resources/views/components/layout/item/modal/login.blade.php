@@ -70,7 +70,7 @@
             const formData = new FormData(loginForm);
 
             fetch("{{ route('auth.in.login') }}", {
-                method: 'get',
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': formData.get('_token'),
                     'Accept': 'application/json'
@@ -78,7 +78,7 @@
                 body: formData
             })
             .then(response => response.json())
-            .then(data => { 
+            .then(data => {
                 // Hide spinner and enable button
                 loginButtonText.classList.remove('d-none');
                 loginSpinner.classList.add('d-none');

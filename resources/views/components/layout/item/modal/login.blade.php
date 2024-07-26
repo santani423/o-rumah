@@ -22,7 +22,7 @@
                     <div class="form-group row">
                         <div class="col-12 position-relative">
                             <input class="form-control" type="password" required="" placeholder="Password" name="password" id="password">
-                            <i class="fa fa-eye-slash toggle-password" data-toggle-target="password"></i>
+                            <i class="fa fa-eye-slash toggle-password" data-toggle-target="password" style="cursor: pointer; position: absolute; right: 15px; top: 40%; transform: translateY(-50%);"></i>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <a href="{{ route('forget.password') }}" class="text-black">
                                     <label class="mb-0">Lupa Password?</label>
@@ -52,72 +52,55 @@
 </div><!-- /.modal -->
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const loginForm = document.getElementById('loginForm');
-        const loginButton = document.getElementById('loginButton');
-        const loginButtonText = document.getElementById('loginButtonText');
-        const loginSpinner = document.getElementById('loginSpinner');
-        const alertBox = document.getElementById('alert');
-
-        loginForm.addEventListener('submit', function (event) {
+    $(document).ready(function () {
+        $('#loginForm').on('submit', function (event) {
             event.preventDefault(); // Prevent the form from submitting the traditional way
 
             // Show spinner and disable button
-            loginButtonText.classList.add('d-none');
-            loginSpinner.classList.remove('d-none');
-            loginButton.disabled = true;
+            $('#loginButtonText').addClass('d-none');
+            $('#loginSpinner').removeClass('d-none');
+            $('#loginButton').prop('disabled', true);
 
-            const formData = new FormData(loginForm);
+            const formData = $(this).serialize();
 
-            fetch("{{ route('auth.in.login') }}", {
+            $.ajax({
+                url: "{{ route('auth.in.login') }}",
                 method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': formData.get('_token'),
-                    'Accept': 'application/json'
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    // Hide spinner and enable button
+                    $('#loginButtonText').removeClass('d-none');
+                    $('#loginSpinner').addClass('d-none');
+                    $('#loginButton').prop('disabled', false);
+
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    } else {
+                        $('#alert').removeClass('d-none alert-success').addClass('alert-danger').text(data.message);
+                    }
                 },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Hide spinner and enable button
-                loginButtonText.classList.remove('d-none');
-                loginSpinner.classList.add('d-none');
-                loginButton.disabled = false;
+                error: function (xhr, status, error) {
+                    // Hide spinner and enable button
+                    $('#loginButtonText').removeClass('d-none');
+                    $('#loginSpinner').addClass('d-none');
+                    $('#loginButton').prop('disabled', false);
 
-                if (data.redirect) {
-                    window.location.href = data.redirect;
-                } else {
-                    alertBox.classList.remove('d-none', 'alert-success');
-                    alertBox.classList.add('alert-danger');
-                    alertBox.textContent = data.message;
-                }
-            })
-            .catch(error => {
-                // Hide spinner and enable button
-                loginButtonText.classList.remove('d-none');
-                loginSpinner.classList.add('d-none');
-                loginButton.disabled = false;
-
-                alertBox.classList.remove('d-none', 'alert-success');
-                alertBox.classList.add('alert-danger');
-                alertBox.textContent = 'Terjadi kesalahan saat login. Silakan coba lagi.';
-                console.error('Error:', error);
-            });
-        });
-
-        document.querySelectorAll('.toggle-password').forEach(item => {
-            item.addEventListener('click', function () {
-                const target = document.getElementById(this.getAttribute('data-toggle-target'));
-                if (target.type === 'password') {
-                    target.type = 'text';
-                    this.classList.remove('fa-eye');
-                    this.classList.add('fa-eye-slash');
-                } else {
-                    target.type = 'password';
-                    this.classList.remove('fa-eye-slash');
-                    this.classList.add('fa-eye');
+                    $('#alert').removeClass('d-none alert-success').addClass('alert-danger').text('Terjadi kesalahan saat login. Silakan coba lagi.');
+                    console.error('Error:', error);
                 }
             });
         });
+
+        // $('.toggle-password').on('click', function () {
+        //     const target = $('#' + $(this).data('toggle-target'));
+        //     if (target.attr('type') === 'password') {
+        //         target.attr('type', 'text');
+        //         $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+        //     } else {
+        //         target.attr('type', 'password');
+        //         $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+        //     }
+        // });
     });
 </script>

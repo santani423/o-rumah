@@ -75,7 +75,7 @@ class MailController extends Controller
                 'email_banks_bpr.email as bank_bpr_email'
             )
             ->first();
-                dd($kpr);
+                // dd($kpr);
         // return response()->json([
         //     'message' => 'Email berhasil dikirim',
         //     'kpr' => $kpr

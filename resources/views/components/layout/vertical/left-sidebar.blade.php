@@ -20,7 +20,7 @@
                 <h5 class="mt-0 font-14">{{ Auth::user()->name }}</h5>
             </div>
         </div>
-        @if(Auth::user()->level == 'admin')
+    
         <div class="row ">
             <div class="col-md-12 mt-1">
                 <div class="card m-3 bg-light pr-2">
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        @endif
+       
         <div id="sidebar-menu">
             <ul>
                 <li class="menu-title">Menu</li>

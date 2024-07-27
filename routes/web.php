@@ -205,6 +205,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(BosterAdsController::class)->group(function () {
         Route::post('/boosterAds', 'store')->name('boosterAds.store');
+        Route::post('/boosterAds/listing', 'storeListing')->name('boosterAds.storeListing');
 
     });
 

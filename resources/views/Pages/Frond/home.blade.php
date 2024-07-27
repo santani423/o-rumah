@@ -148,7 +148,7 @@
     @slot('js')
     <script>
     let currentPage = 1;
-    const perPage = 5;
+    const perPage = 4;
     let latitude = null;
     let longitude = null;
     let isFirstLoad = true; 

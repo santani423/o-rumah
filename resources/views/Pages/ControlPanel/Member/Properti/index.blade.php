@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Listing">
     @slot('body')
     <div class="row">
         <div class="col-sm-12">
@@ -16,6 +16,11 @@
     @if (session('status'))
     <div class="alert {{ session('alert-class') }}">
         {{ session('status') }}
+    </div>
+    @endif
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
     @endif
     @if($titipAds->isNotEmpty())
@@ -134,7 +139,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="boosterForm" method="POST" action="{{ route('boosterAds.store') }}">
+                <form id="boosterForm" method="POST" action="{{ route('boosterAds.storeListing') }}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="ads_id" id="booster_ads_id" value="">

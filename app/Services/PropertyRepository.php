@@ -16,8 +16,9 @@ use Carbon\Carbon;
 
 trait PropertyRepository
 {
-    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $adsType = null, $property_type = null)
+    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $adsType = null, $property_type = null)
 {
+   
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
             $join->on('media.model_id', '=', 'ads.id')
@@ -87,7 +88,7 @@ trait PropertyRepository
     
 
 
-private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 3, $code = 'PTYHOME')
+private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $code = 'PTYHOME')
 {
     $booster = bosterAdsTYpe::where('code', $code)->first();
     // dd($code);

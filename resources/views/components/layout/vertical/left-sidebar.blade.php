@@ -115,9 +115,9 @@
                         <ul class="list-unstyled">
                             <li><a href="{{route('admin.nav.bank')}}">Bank</a></li> 
                         </ul>
-                        <ul class="list-unstyled"> 
+                        <!-- <ul class="list-unstyled"> 
                             <li><a href="{{route('admin.nav.typeProperti')}}">Type Properti</a></li>
-                        </ul>
+                        </ul> -->
                     </li>
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-table"></i><span> Browser

@@ -79,11 +79,12 @@
                         @else
                         <button class="btn btn-danger m-2" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}" data-user_lelang_properties_id="{{ $ads->user_lelang_properties_id }}">Non Aktifkan</button>
                         @endif
-                        <div class="form-group m-2 w-100 ">
+                        <div class="form-group m-2 w-100">
                             <label class="mb-2 pb-1">Booster</label>
-                            <select name="" id="" class="form-control w-100">
+                            <select name="booster" class="form-control w-100 booster-select" data-ads-id="{{ $ads->ads_id }}">
+                                <option value="0" data-title="Pilih Booster" selected="selected">Pilih Booster</option>
                                 @foreach($bosterAdsType as $bat)
-                                <option value="{{ $bat->id }}">{{ $bat->title }}</option>
+                                <option value="{{ $bat->id }}" data-title="{{ $bat->title }}">{{ $bat->title }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -94,9 +95,7 @@
         @endforeach
     </div>
 
-
-
-    <!-- Modal -->
+    <!-- Modal untuk konfirmasi pengaturan status -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -124,6 +123,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal untuk konfirmasi pemilihan booster -->
+    <div class="modal fade" id="boosterModal" tabindex="-1" role="dialog" aria-labelledby="boosterModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="boosterModalLabel">Konfirmasi Pemilihan Booster</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="boosterForm" method="POST" action="{{ route('boosterAds.store') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="ads_id" id="booster_ads_id" value="">
+                        <input type="hidden" name="booster_id" id="booster_id" value="">
+                        <p>Apakah Anda yakin ingin memilih booster <span id="booster_title"></span> untuk iklan Anda?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-turquoise">Ya, Pilih Booster</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     @endslot
 
     @slot('js')
@@ -141,6 +166,20 @@
                 modal.find('.modal-body #descPenguranganPoin').show();
             } else {
                 modal.find('.modal-body #descPenguranganPoin').hide();
+            }
+        });
+
+        $('.booster-select').change(function(event) {
+            var select = $(event.target);
+            var adsId = select.data('ads-id');
+            var boosterId = select.val();
+            var boosterTitle = select.find('option:selected').data('title');
+            if (boosterId !== "0") {
+                var modal = $('#boosterModal');
+                modal.find('.modal-body #booster_ads_id').val(adsId);
+                modal.find('.modal-body #booster_id').val(boosterId);
+                modal.find('.modal-body #booster_title').text(boosterTitle);
+                modal.modal('show');
             }
         });
     </script>

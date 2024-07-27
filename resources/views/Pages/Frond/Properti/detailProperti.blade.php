@@ -91,6 +91,7 @@
                         <div class="col-lg-4 mb-3">
                             <x-Layout.Item.AgentContactCard :agent="$agent" btnKpr="true"
                                 :ads="$ads"></x-Layout.Item.AgentContactCard>
+                            <x-Item.SimulatorKpr ></x-Item.SimulatorKpr>
                         </div>
                     </div>
                 </div>

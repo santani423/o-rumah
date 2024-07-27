@@ -662,7 +662,7 @@ class HomeController extends Controller
             $user->company_name = $request->company_name;
             $user->bank_name = $request->bank_name;
             $user->bank_number = $request->bank_number;
-            $user->update();
+            $user->save();
 
             if ($request->image != null) {
                 $user->clearMediaCollection('profileAvatar');
@@ -670,7 +670,7 @@ class HomeController extends Controller
                 // dd($user->getFirstMediaUrl('profileAvatar'));
 
                 $user->image = $user->getFirstMediaUrl('profileAvatar');
-                $user->update();
+                $user->save();
             }
 
             if ($request->company_image != null) {
@@ -678,7 +678,7 @@ class HomeController extends Controller
                 $user->addMedia($request->company_image)->toMediaCollection('companyAvatar');
 
                 $user->company_image = $user->getFirstMediaUrl('companyAvatar');
-                $user->update();
+                $user->save();
             }
 
             return redirect()->back()->with('success', 'Profil berhasil diubah');

@@ -310,7 +310,7 @@ function order(Request $request){
 }
 
 function simulatorKpr()  {
-    return view('pages.simulator-kpr');
+    return view('pages.simulatorKpr');
 }
 
 }

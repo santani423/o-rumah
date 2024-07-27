@@ -339,8 +339,8 @@ Route::get('/titip-ads/list', [TitipAdsController::class, 'index'])->name('titip
 
 
 
-Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.passwrod');
-// Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
+Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->name('forget.password');
+// Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');-----
 Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
 Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update'); 

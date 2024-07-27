@@ -14,79 +14,87 @@
         <div class="clearfix"></div>
     </div>
     @if (session('status'))
-            <div class="alert {{ session('alert-class') }}">
-                {{ session('status') }}
-            </div>
-        @endif
+    <div class="alert {{ session('alert-class') }}">
+        {{ session('status') }}
+    </div>
+    @endif
     @if($titipAds->isNotEmpty())
     <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <h6 class="card-header mt-0">Permintaan Titip Iklan</h6>
-            <div class="card-body">
-                <!-- <h4 class="card-title font-20 mt-0">Special title treatment</h4> -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Owner</th>
-                            <th>Ads</th>
-                            <th>Status</th>
-                            <th>Actions</th> <!-- Added this header for the buttons -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($titipAds as $key => $row) { ?>
+        <div class="col-lg-12">
+            <div class="card">
+                <h6 class="card-header mt-0">Permintaan Titip Iklan</h6>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Owner</th>
+                                <th>Ads</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($titipAds as $key => $row)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td><?php echo $row['owner']['name']; ?></td>
-                                <td><?php echo $row['ads']['title']; ?></td>
-                                <td><?php echo $row['status']; ?></td>
+                                <td>{{ $row['owner']['name'] }}</td>
+                                <td>{{ $row['ads']['title'] }}</td>
+                                <td>{{ $row['status'] }}</td>
                                 <td>
-    <div class="d-inline-block">
-        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="status" value="approval">
-            <button class="btn btn-turquoise btn-sm">Terima</button>
-        </form>
-        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
-            @csrf
-            @method('PUT')
-            <input type="hidden" name="status" value="reject">
-            <button class="btn btn-danger btn-sm">Tolak</button>
-        </form>
-    </div>
-</td>
-
+                                    <div class="d-inline-block">
+                                        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="approval">
+                                            <button class="btn btn-turquoise btn-sm">Terima</button>
+                                        </form>
+                                        <form action="{{ route('titip-ads.put', $row->id) }}" method="post" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="reject">
+                                            <button class="btn btn-danger btn-sm">Tolak</button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-@endif
+    @endif
     <div class="row">
         @foreach($properties as $ads)
-            <div class="col-6 col-md-6 col-lg-6 col-xl-3 mb-3">
-            <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
-                :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
-                :label="$ads->user_lelang_properties_id ? 'Lelang' : ''"
-                :linkTujuan="$ads->user_lelang_properties_id ? '#' : route('listing.control-panel.view.property', ['slug' => $ads->slug])  ">
+        <div class="col-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+            <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk" :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address" :label="$ads->user_lelang_properties_id ? 'Lelang' : ''" :linkTujuan="$ads->user_lelang_properties_id ? '#' : route('listing.control-panel.view.property', ['slug' => $ads->slug])">
             </x-Layout.Item.ProductItem>
-
-                
-                @if($ads->is_active)
-                <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}" data-user_lelang_properties_id="{{ $ads->user_lelang_properties_id }}"> Aktifkan</button>
-                @else
-                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}" data-user_lelang_properties_id="{{ $ads->user_lelang_properties_id }}">Non Aktifkan</button>
-                @endif 
-            </div><!-- end col -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        @if($ads->is_active)
+                        <button class="btn btn-turquoise m-2" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}" data-user_lelang_properties_id="{{ $ads->user_lelang_properties_id }}">Aktifkan</button>
+                        @else
+                        <button class="btn btn-danger m-2" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}" data-user_lelang_properties_id="{{ $ads->user_lelang_properties_id }}">Non Aktifkan</button>
+                        @endif
+                        <div class="form-group m-2 w-100 ">
+                            <label class="mb-2 pb-1">Booster</label>
+                            <select name="" id="" class="form-control w-100">
+                                @foreach($bosterAdsType as $bat)
+                                <option value="{{ $bat->id }}">{{ $bat->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end col -->
         @endforeach
     </div>
+
+
 
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -105,7 +113,7 @@
                         <input type="hidden" name="user_lelang_properties_id" id="user_lelang_properties_id" value="">
                         <p>Apakah Anda yakin ingin mengubah status item ini?</p>
                         <div id="descPenguranganPoin" style="display: none;">
-                            <x-Item.Balach.DescPenguranganPoin code='ABC010'/>
+                            <x-Item.Balach.DescPenguranganPoin code='ABC010' />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -120,11 +128,11 @@
 
     @slot('js')
     <script>
-        $('#confirmModal').on('show.bs.modal', function (event) {
+        $('#confirmModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var adsId = button.data('ads-id');
-            var isActive = button.data('is-active'); // Get is_active value
-            var userLelangPropertiesId = button.data('user_lelang_properties_id'); // Get user_lelang_properties_id value
+            var isActive = button.data('is-active');
+            var userLelangPropertiesId = button.data('user_lelang_properties_id');
             var modal = $(this);
             modal.find('.modal-body #ads_id').val(adsId);
             modal.find('.modal-body #user_lelang_properties_id').val(userLelangPropertiesId);

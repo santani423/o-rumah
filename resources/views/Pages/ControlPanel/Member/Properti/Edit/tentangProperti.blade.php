@@ -249,11 +249,11 @@
                                     <p>Tidak ada kondisi lingkungan yang tersedia.</p>
                                 @endforelse
                             </div>
-                            <label for="youtube_link" class="mt-3">Link YouTube</label>
+                            <label for="youtube_link" class="mt-3">Link Embet YouTube</label>
             <input type="text" class="form-control" id="youtube_link" name="videoYoutube"
                 placeholder="Masukkan Link YouTube">
                         </div>
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-success">Simpan</button>
                     </div>
                 </div>
 

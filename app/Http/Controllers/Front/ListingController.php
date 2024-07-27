@@ -91,8 +91,8 @@ class ListingController extends Controller
 
             $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
         // dd($titipAds);
-
-        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds'));
+        $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
+        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType'));
         // return Inertia::render('Listing/ListingPage', [
         //     'properties' => $properties->items(),
         //     'pagination' => $properties,

@@ -45,10 +45,10 @@
                         @endphp
                         <div class="col-lg-6 mb-3">
                         <button class="btn btn-success btn-block" 
-                                onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
-                            {!! $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
+                                onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant'  ? 'true' : 'false' }})">
+                            {!! $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
                         </button>
-
+                     
                         </div>
                     @endif
                 </div>
@@ -84,7 +84,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again--.');
+                    alert('An error occurred. Please try again.');
                 }
             });
         } else {

@@ -116,7 +116,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body text-center"> 
-                        <h5>Angsuran/bulan Fix</h5>
+                        <h5>Angsuran/Bulan Fix</h5>
                         <hr>
                         <div id="hasil-cicilan" class="mt-3"></div>
                     </div>

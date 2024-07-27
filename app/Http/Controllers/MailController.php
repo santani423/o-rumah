@@ -91,10 +91,13 @@ class MailController extends Controller
 
         $file = route('home').$kpr->image_ktp; 
         // dd($file);
+        // $files = [
+        //     'https://o-rumah.com'.$kpr->image_ktp,
+        //     'https://o-rumah.com'.$kpr->image_kk,
+        //     'https://o-rumah.com'.$kpr->image_npwp,
+        // ];
         $files = [
-            'https://o-rumah.com'.$kpr->image_ktp,
-            'https://o-rumah.com'.$kpr->image_kk,
-            'https://o-rumah.com'.$kpr->image_npwp,
+            
         ];
         Mail::to($kpr->bank_umum_email)->send(new BankEmail($details, $files));
         Mail::to($kpr->bank_bpr_email)->send(new BankEmail($details, $files));

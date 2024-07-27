@@ -25,6 +25,11 @@
             border-color: #47C8C5;
             color: white
         }
+        .btn-success {
+            background-color: #47C8C5;
+            border-color: #47C8C5;
+            color: white
+        }
         .logo-orumah {
             height: 80px; /* Tinggi gambar mengikuti tinggi pembungkus */
             width: auto; /* Lebar gambar otomatis mengikuti tinggi gambar */

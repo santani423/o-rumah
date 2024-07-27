@@ -164,6 +164,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/plans', 'plans')->name('nav.plans');
         Route::get('/website-ads-sections', 'websiteAdsSections')->name('nav.websiteAdsSections');
         Route::get('/settings', 'settings')->name('nav.settings');
+        
+        Route::get('/kategoriAds', 'kategoriAds')->name('nav.kategoriAds');
+        Route::get('/subKategoriAds/{id}', 'subKategoriAds')->name('nav.subKategoriAds');
+        Route::put('/subKategoriAds/{id}', 'updateSubKategoriAds')->name('nav.subKategoriAds.update');
 
         Route::prefix('transaksi')->name('transaksi.')->group(function () {
             Route::get('/panding', 'transaksiPanding')->name('panding');

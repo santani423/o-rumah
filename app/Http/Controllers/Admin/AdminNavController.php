@@ -42,6 +42,8 @@ use App\Services\KodeService;
 use App\Models\Ads;
 use App\Models\BalachBoosterAds;
 use App\Models\bosterAdsTYpe;
+use App\Models\Kategori;
+use App\Models\SupKategori;
 
 class AdminNavController extends Controller
 {
@@ -1128,6 +1130,44 @@ class AdminNavController extends Controller
 
     function typeProperti()  {
         
+    }
+
+    function kategoriAds() {
+        $kategoris = Kategori::get();
+        return view('Pages/ControlPanel/Admin/Setting/KategoriAds/index',compact('kategoris'));
+    }
+    function subKategoriAds($id='') {
+        $subKategoris = SupKategori::where('kategori_id',$id)->get();
+        // dd($subKategoris);
+        return view('Pages/ControlPanel/Admin/Setting/KategoriAds/SubKategori',compact('subKategoris'));
+    }
+
+   
+    public function updateSubKategoriAds(Request $request, $id)
+    {
+        // dd($request);
+        // Validasi input
+     
+
+        // Mencari data sub kategori berdasarkan ID
+        $subKategori = SupKategori::findOrFail($id);
+
+        // Mengupdate data sub kategori
+        $subKategori->nama = $request->nama;  
+        // Jika ada file gambar yang diupload, simpan file tersebut dan update field gambar
+        if ($request->hasFile('gambar')) {
+            $image = $request->file('gambar');
+            $path = $image->store('/images/icon', 'public');
+            // dd($path);
+            $subKategori->gambar =  "/storage/".$path;
+        }
+        // dd($request->gambar);
+
+        // Menyimpan perubahan
+        $subKategori->save();
+
+        // Redirect atau memberikan respon sukses
+        return back()->with('success', 'Sub kategori berhasil diupdate.');
     }
 
 }

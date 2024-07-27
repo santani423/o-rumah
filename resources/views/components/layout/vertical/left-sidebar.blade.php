@@ -135,6 +135,9 @@
                         <ul class="list-unstyled">
                             <li><a href="{{route('admin.nav.ads.control-booster')}}">Booster</a></li>
                         </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.kategoriAds')}}">Kategori Ads</a></li> 
+                        </ul>
                     </li>
                 @endif
                 

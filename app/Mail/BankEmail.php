@@ -33,7 +33,7 @@ class BankEmail extends Mailable
      */
     public function build()
     {
-        $email = $this->subject('Mail from websitepercobaan.com')
+        $email = $this->subject('O-Rumah')
                       ->view('emails.kpr')
                       ->with('details', $this->details);
 

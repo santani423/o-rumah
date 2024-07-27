@@ -422,7 +422,7 @@ class AdminNavController extends Controller
 
     function bank()
     {
-        $bank = Bank::paginate(10)->items();
+        $bank = Bank::get();
         // dd($bank);
         $Cities = Cities::get();
         $Provinces = Provinces::get();
@@ -866,22 +866,30 @@ class AdminNavController extends Controller
 
 
         $kpr = Kpr::orderBy('created_at', 'asc')
-            ->join('ads', 'ads.id', '=', 'kpr.ads_id')
-            ->join('users as userAgen', 'userAgen.id', '=', 'ads.user_id')
-            ->join('banks as bankUmum', 'bankUmum.id', '=', 'kpr.bank_id')
-            ->leftjoin('email_banks as email_banks_umum', 'email_banks_umum.id', '=', 'kpr.bank_id')
-            ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
-            ->leftjoin('email_banks as email_banks_bpr', 'email_banks_bpr.id', '=', 'kpr.bank_bpr_id')
-            ->select(
-                'kpr.*',
-                'ads.uuid as kodeProperty',
-                'userAgen.name as namaAgen',
-                'bankUmum.alias_name as bank_umum_name',
-                'email_banks_umum.email as bank_umum_email',
-                'bankBpr.alias_name as bank_bpr_name',
-                'email_banks_bpr.email as bank_bpr_email'
-            )
-            ->get();
+        ->join('ads', 'ads.id', '=', 'kpr.ads_id')
+        ->join('users as userAgen', 'userAgen.id', '=', 'ads.user_id')
+        ->join('banks as bankUmum', 'bankUmum.id', '=', 'kpr.bank_id')
+        ->leftJoin('email_banks as email_banks_umum', function($join) {
+            $join->on('email_banks_umum.bank_id', '=', 'kpr.bank_id')
+                ->where('email_banks_umum.email_type', '=', 'kpr');
+        })
+        ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
+        ->leftJoin('email_banks as email_banks_bpr', function($join) {
+            $join->on('email_banks_bpr.bank_id', '=', 'kpr.bank_bpr_id')
+                ->where('email_banks_bpr.email_type', '=', 'kpr');
+        })
+        ->select(
+            'kpr.*',
+            'ads.uuid as kodeProperty',
+            'userAgen.name as namaAgen',
+            'bankUmum.id as id_bank_umum',
+            'bankUmum.alias_name as bank_umum_name',
+            'email_banks_umum.email as bank_umum_email',
+            'bankBpr.alias_name as bank_bpr_name',
+            'email_banks_bpr.email as bank_bpr_email'
+        )
+        ->get();
+
         // dd($kpr);
         return view('Pages/ControlPanel/Admin/Pengajuan/pengajuanKpr', compact('kpr'));
         // return Inertia::render('Admin/Page/Pengajuan/Kpr/Index', compact('kpr'));

@@ -1,7 +1,7 @@
 <x-Layout.Vertical.Master>
     @slot('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
     <script>
         document.getElementById('upload').addEventListener('change', handleFile, false);
 
@@ -161,7 +161,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table">
+                <table id="datatable"  class="table">
                     <thead>
                         <tr>
                             <th class="pr-1">Select</th>

@@ -1,21 +1,17 @@
 <x-Layout.Vertical.Master>
     @slot('body')
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="mt-0 header-title">
-                        Hoverable rows
-                    </h4>
-                    <div class="text-right"><a href="{{route('admin.nav.bank.add')}}" class="btn btn-primary">Tambah
-                            Bank</a>
-                    </div>
-                    <div class="table-responsive">
-
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+            
+                                            <h4 class="mt-0 header-title">Data Bank</h4>
+                                            
+            
+                                            <table id="datatable" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                <th>#</th>
                                     <th>Nama Bank</th>
                                     <th>Kode</th>
                                     <th>Tipe</th>
@@ -30,12 +26,14 @@
                                     <th>Detail</th>
                                     <th>Status Aktif</th>
                                     <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bank as $bk)
+                                                </tr>
+                                                </thead>
+            
+            
+                                                <tbody>
+                                                @foreach ($bank as $key => $bk)
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th scope="row">{{++$key}}</th>
                                         <td>{{$bk->bank}}</td>
                                         <td>{{$bk->code}}</td>
                                         <td>{{$bk->type}}</td>
@@ -54,13 +52,12 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end col -->
-    </div>
+                                                                    </tbody>
+                                            </table>
+            
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
     @endslot
 </x-Layout.Vertical.Master>

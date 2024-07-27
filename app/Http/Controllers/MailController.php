@@ -48,24 +48,34 @@ class MailController extends Controller
     public function adminEmailBank(Request $request)
     {
 
-        $kpr = Kpr::orderBy('created_at', 'asc')
+       
+            $kpr = Kpr::orderBy('created_at', 'asc')
             ->join('ads', 'ads.id', '=', 'kpr.ads_id')
             ->join('users as userAgen', 'userAgen.id', '=', 'ads.user_id')
             ->join('banks as bankUmum', 'bankUmum.id', '=', 'kpr.bank_id')
+            ->leftJoin('email_banks as email_banks_umum', function($join) {
+                $join->on('email_banks_umum.bank_id', '=', 'kpr.bank_id')
+                    ->where('email_banks_umum.email_type', '=', 'kpr');
+            })
             ->join('banks as bankBpr', 'bankBpr.id', '=', 'kpr.bank_bpr_id')
-            ->join('jobs', 'jobs.id', '=', 'kpr.job_id')
+            ->leftJoin('email_banks as email_banks_bpr', function($join) {
+                $join->on('email_banks_bpr.bank_id', '=', 'kpr.bank_bpr_id')
+                    ->where('email_banks_bpr.email_type', '=', 'kpr');
+            })
+            
             ->where('kpr.id', $request->kpr_id)
             ->select(
                 'kpr.*',
+                'ads.uuid as kodeProperty',
                 'userAgen.name as namaAgen',
+                'bankUmum.id as id_bank_umum',
                 'bankUmum.alias_name as bank_umum_name',
-                'bankUmum.email as bank_umum_email',
+                'email_banks_umum.email as bank_umum_email',
                 'bankBpr.alias_name as bank_bpr_name',
-                'jobs.title as job_title',
-                'bankBpr.email as bank_bpr_email'
+                'email_banks_bpr.email as bank_bpr_email'
             )
             ->first();
-                // dd($kpr);
+                dd($kpr);
         // return response()->json([
         //     'message' => 'Email berhasil dikirim',
         //     'kpr' => $kpr
@@ -82,10 +92,13 @@ class MailController extends Controller
         $file = route('home').$kpr->image_ktp; 
         // dd($file);
         $files = [
-            'https://o-rumah.com/assets/logo-o-rumah.png',
-            'https://o-rumah.com/storage/images/properti/property/1345/VCWRjQKA2SbfnjYejIQhpanlbPv8mowdQ34iDTcx.jpg',
+            'https://o-rumah.com'.$kpr->image_ktp,
+            'https://o-rumah.com'.$kpr->image_kk,
+            'https://o-rumah.com'.$kpr->image_npwp,
         ];
-        Mail::to('santani423@gmail.com')->send(new BankEmail($details, $files));
+        Mail::to($kpr->bank_umum_email)->send(new BankEmail($details, $files));
+        Mail::to($kpr->bank_bpr_email)->send(new BankEmail($details, $files));
+        // Mail::to('santani423@gmail.com')->send(new BankEmail($details, $files));
         // Mail::to('santani423@gmail.com')->send(new \App\Mail\BankEmail($details,$file));
         // Mail::to('santani423@gmail.com')->send(new \App\Mail\BankEmail($details,$file));
         // Mail::to($request->bank_umum_email)->send(new \App\Mail\BankEmail($details));

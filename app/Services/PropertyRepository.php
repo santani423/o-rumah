@@ -13,12 +13,15 @@ use App\Models\AdBalaceControl;
 use App\Models\bosterAdsTYpe;
 use App\Models\UserClickAdsHistory;
 use Carbon\Carbon;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Extended\Kecamatan;
 
 trait PropertyRepository
 {
-    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $adsType = null, $property_type = null)
+    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $adsType = null, $property_type = null,$district=null)
 {
-   
+    $datadistrict = District::where('code',$district)->first();
+    // dd($datadistrict);
     $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
         ->join('media', function ($join) {
             $join->on('media.model_id', '=', 'ads.id')
@@ -37,25 +40,31 @@ trait PropertyRepository
             "ads.status",
             'media.id as media_id',
             'media.file_name as file_name',
-            "ads.is_active"
+            "ads.is_active", 
         );
+        if($datadistrict){
+            // dd($query->get());
+            $query->where('ads_properties.district_id',$datadistrict->id);
+        } 
+            if (!is_null($latitude) && !is_null($longitude)) {
+                $query->selectRaw("
+                    (6371 * acos(
+                        cos(radians($latitude))
+                        * cos(radians(ads_properties.lat))
+                        * cos(radians(ads_properties.lng) - radians($longitude))
+                        + sin(radians($latitude))
+                        * sin(radians(ads_properties.lat))
+                    )) AS distance
+                ");
+                // dd(($latitude != null && $longitude != null) );
+                if ($latitude != 'null' && $longitude != 'null'){
+        
+                    $query->having('distance', '<', $radius);
+                }
+            }
+         
 
-    if (!is_null($latitude) && !is_null($longitude)) {
-        $query->selectRaw("
-            (6371 * acos(
-                cos(radians($latitude))
-                * cos(radians(ads_properties.lat))
-                * cos(radians(ads_properties.lng) - radians($longitude))
-                + sin(radians($latitude))
-                * sin(radians(ads_properties.lat))
-            )) AS distance
-        ");
-        // dd(($latitude != null && $longitude != null) );
-        if ($latitude != 'null' && $longitude != 'null'){
-
-            $query->having('distance', '<', $radius);
-        }
-    }
+   
 
     if ($adsType != null) {
         $query->where('ads_properties.ads_type', $adsType);
@@ -64,6 +73,7 @@ trait PropertyRepository
     if ($property_type != null) {
         $query->where('ads_properties.property_type', $property_type);
     }
+   
 
     $adsLists = $query->where(function ($query) use ($searchQuery) {
             $query->where('ads.title', 'like', '%' . $searchQuery . '%')
@@ -88,8 +98,9 @@ trait PropertyRepository
     
 
 
-private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $code = 'PTYHOME')
+private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $code = 'PTYHOME',$district=null)
 {
+    $datadistrict = District::where('code',$district)->first();
     $booster = bosterAdsTYpe::where('code', $code)->first();
     // dd($code);
     $perPage = 1;
@@ -133,19 +144,29 @@ private function getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radi
             'boster_ads_t_ypes.slug as booster_slug' // Menambahkan slug dari bosterAdsTYpe
         );
 
-    if ($latitude != null && $longitude != null && $latitude != 'null' && $longitude != 'null') {
-        // dd(99);
-        $query->selectRaw("
-            (6371 * acos(
-                cos(radians($latitude))
-                * cos(radians(ads_properties.lat))
-                * cos(radians(ads_properties.lng) - radians($longitude))
-                + sin(radians($latitude))
-                * sin(radians(ads_properties.lat))
-            )) AS distance
-        ")
-        ->having('distance', '<', $radius);
-    }
+        if($datadistrict){
+            // dd($query->get());
+            $query->where('ads_properties.district_id',$datadistrict->id);
+        } 
+            if (!is_null($latitude) && !is_null($longitude)) {
+                $query->selectRaw("
+                    (6371 * acos(
+                        cos(radians($latitude))
+                        * cos(radians(ads_properties.lat))
+                        * cos(radians(ads_properties.lng) - radians($longitude))
+                        + sin(radians($latitude))
+                        * sin(radians(ads_properties.lat))
+                    )) AS distance
+                ");
+                // dd(($latitude != null && $longitude != null) );
+                if ($latitude != 'null' && $longitude != 'null'){
+        
+                    $query->having('distance', '<', $radius);
+                }
+            }
+        
+
+   
 
     $adsLists = $query->where(function ($query) use ($searchQuery) {
             $query->where('ads.title', 'like', '%' . $searchQuery . '%')

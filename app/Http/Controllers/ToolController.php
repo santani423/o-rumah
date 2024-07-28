@@ -92,7 +92,8 @@ class ToolController extends Controller
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage,$page,$ads_type);
+        $district = $request->input('district');
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage,$page,$ads_type,null,$district);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
         // dd($adsLists);
@@ -103,13 +104,14 @@ class ToolController extends Controller
     {
         // dd($request);
         $latitude = $request->input('latitude');
+        $district = $request->input('district');
         $longitude = $request->input('longitude');
         $ads_type = $request->input('ads_type');
         $radius = $request->input('radius', 300); // default radius of 300 if not provided
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYHOME');
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYHOME',$district);
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
@@ -248,6 +250,7 @@ public function searchDistricts(Request $request)
         $result = $districts->map(function($district) {
             return [
                 'id' => $district->id,
+                'code' => $district->code,
                 'name' => $district->city->province->name . '-' . $district->city->name . '-' . $district->name,
                 'meta'=>$district->meta
             ];

@@ -39,7 +39,6 @@
             margin-right: 10px;
         }
 
-        /* Loading Overlay Styles */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -106,14 +105,10 @@
             const incrementButtons = document.querySelectorAll('.btn-increment');
             const decrementButtons = document.querySelectorAll('.btn-decrement');
 
-            console.log('Increment Buttons:', incrementButtons.length);
-            console.log('Decrement Buttons:', decrementButtons.length);
-
             incrementButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const input = this.parentElement.previousElementSibling;
                     input.value = parseInt(input.value, 10) + 1;
-                    console.log('Incremented Value:', input.value);
                 });
             });
 
@@ -122,7 +117,6 @@
                     const input = this.parentElement.previousElementSibling;
                     if (parseInt(input.value, 10) > 0) {
                         input.value = parseInt(input.value, 10) - 1;
-                        console.log('Decremented Value:', input.value);
                     }
                 });
             });
@@ -195,7 +189,6 @@
     </script>
     <script>
         document.getElementById('judulIklan').addEventListener('input', function() {
-            console.log(this.value);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -225,17 +218,13 @@
         });
     </script>
     <script>
-        // Fungsi untuk menghitung dan menampilkan jumlah karakter
         function updateCharCount() {
             var textarea = document.getElementById('elm1');
             var charCount = document.getElementById('charCount');
-            console.log(textarea);
             charCount.textContent = textarea.value.length + ' karakter';
         }
 
-        // Initialize the character count on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('sdf');
             var textarea = document.getElementById('elm1');
             var charCount = document.getElementById('charCount');
             charCount.textContent = textarea.value.length + ' karakter';
@@ -243,14 +232,11 @@
     </script>
 
     <script>
-        // Get all radio buttons with name 'property_type'
         const radios = document.querySelectorAll('input[name="property_type"]');
 
-        // Add an event listener to each radio button
         radios.forEach(radio => {
             radio.addEventListener('change', function() {
                 if (this.checked) {
-                    console.log(this.value);
                     const formLuasBangunan = document.getElementById('formLuasBangunan');
                     const formTahunDibangun = document.getElementById('formTahunDibangun');
                     const formDayaListrik = document.getElementById('formDayaListrik');
@@ -273,7 +259,6 @@
             });
         });
 
-        // Log the initially selected value on page load (if any)
         document.addEventListener('DOMContentLoaded', function() {
             const checkedRadio = document.querySelector('input[name="property_type"]:checked');
             if (checkedRadio) {
@@ -306,7 +291,6 @@
             const furnitureCondition = document.querySelector('input[name="furniture_condition"]:checked');
             const otherFacilities = document.querySelectorAll('input[name="other_facility[]"]:checked');
 
-            // Clear previous error messages
             document.getElementById('adsTypeError').innerText = "";
             document.getElementById('propertyTypeError').innerText = "";
             document.getElementById('cektitle').innerText = "";
@@ -475,7 +459,7 @@
             });
 
             $.ajax({
-                url: "{{route('member.properti.store.listing')}}", // Replace with your server endpoint URL
+                url: "{{route('member.properti.store.listing')}}",
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -487,15 +471,13 @@
                     console.log('response', response);
                     hideLoading();
                     alert('Data berhasil disimpan!');
-                    // Additional success handling if needed
+                    uploadImageItem(); // Call image upload function here
                 },
                 error: function(xhr, status, error) {
                     hideLoading();
                     alert('Terjadi kesalahan saat menyimpan data: ' + error);
-                    // Additional error handling if needed
                 }
             });
-
         }
 
         function showLoading() {
@@ -517,16 +499,130 @@
             input.value = currentValue;
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            var resizedPhotos = [];
+            var resizedPhotosInput = document.getElementById('resized_photos');
+            resizedPhotosInput.value = JSON.stringify(resizedPhotos);
+
+            document.getElementById('photo').addEventListener('change', function(event) {
+                var files = event.target.files;
+                var previewContainer = document.getElementById('preview-container');
+
+                Array.from(files).forEach(file => {
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            var img = new Image();
+                            img.onload = function() {
+                                var canvas = document.createElement('canvas');
+                                var ctx = canvas.getContext('2d');
+                                var maxWidth = 800;
+                                var maxHeight = 800;
+                                var width = img.width;
+                                var height = img.height;
+
+                                if (width > height) {
+                                    if (width > maxWidth) {
+                                        height *= maxWidth / width;
+                                        width = maxWidth;
+                                    }
+                                } else {
+                                    if (height > maxHeight) {
+                                        width *= maxHeight / height;
+                                        height = maxHeight;
+                                    }
+                                }
+
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+
+                                var resizedDataUrl = canvas.toDataURL('image/jpeg');
+                                resizedPhotos.push(resizedDataUrl);
+
+                                var imgPreview = document.createElement('img');
+                                imgPreview.src = resizedDataUrl;
+                                imgPreview.className = 'preview-img';
+
+                                var removeButton = document.createElement('button');
+                                removeButton.type = 'button';
+                                removeButton.className = 'btn btn-danger btn-sm';
+                                removeButton.innerText = 'Remove';
+                                removeButton.onclick = function() {
+                                    var index = resizedPhotos.indexOf(resizedDataUrl);
+                                    if (index !== -1) {
+                                        resizedPhotos.splice(index, 1);
+                                        previewContainer.removeChild(imgPreviewContainer);
+                                        resizedPhotosInput.value = JSON.stringify(resizedPhotos);
+                                    }
+                                };
+
+                                var imgPreviewContainer = document.createElement('div');
+                                imgPreviewContainer.className = 'img-preview-container';
+                                imgPreviewContainer.appendChild(imgPreview);
+                                imgPreviewContainer.appendChild(removeButton);
+                                previewContainer.appendChild(imgPreviewContainer);
+
+                                resizedPhotosInput.value = JSON.stringify(resizedPhotos);
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            $('#uploadFormItem').on('submit', function(event) {
+                event.preventDefault();
+                var uploadStatus = document.getElementById('upload-status');
+                var uploadCount = 0;
+
+                if (resizedPhotos.length === 0) {
+                    alert('Tunggu sampai gambar selesai diubah ukurannya.');
+                    return;
+                }
+
+                uploadStatus.innerHTML = 'Mengupload...';
+
+                function uploadImage(index) {
+                    if (index >= resizedPhotos.length) {
+                        uploadStatus.innerHTML = `Semua gambar telah berhasil diupload. Jumlah total: ${uploadCount}`;
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '{{ route("upload.photo") }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            resized_photos: [resizedPhotos[index]]
+                        },
+                        success: function(response) {
+                            uploadCount++;
+                            uploadStatus.innerHTML = `Upload berhasil: ${uploadCount} gambar`;
+                            uploadImage(index + 1);
+                        },
+                        error: function(xhr, status, error) {
+                            uploadStatus.innerHTML = 'Terjadi kesalahan saat mengupload gambar.';
+                        }
+                    });
+                }
+
+                uploadImage(0);
+            });
+        });
+
+        function uploadImageItem() {
+            $('#uploadFormItem').submit();
+        }
+    </script>
     @endslot
 
     @slot('body')
-
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
-                <!-- <div class="btn-group float-right">
-                    <a href="{{route('member.properti.create')}}" class="btn btn-turquoise">Pasang Iklan</a>
-                </div> -->
                 <h4 class="page-title">Buat Iklan</h4>
             </div>
         </div>
@@ -535,7 +631,6 @@
 
     <div class="row">
         <div class="col-12">
-
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -549,7 +644,6 @@
                 <div class="card-body">
                     <h4 class="card-title font-20 mt-0">Lokasi</h4>
                     <div class="row">
-
                         <div class="col-lg-6">
                             <h4 class="card-title font-20 mt-0">{{$data['area']}}</h4>
                             <p>{{$data['area']}}</p>
@@ -560,10 +654,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-12">
-
             <form id="propertiForm" action="{{route('member.properti.store.listing')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="district_id" name="district_id" value="{{$data['districtId']}}">
@@ -615,7 +707,6 @@
                         <div id="preview"></div>
                         <p>Jumlah gambar yang di-upload: <span id="fileCount">0</span></p>
 
-                        <!-- Input untuk link video YouTube -->
                         <div class="form-group">
                             <label for="youtubeLink">Link Video YouTube</label>
                             <input type="url" class="form-control" id="youtubeLink" name="youtubeLink" placeholder="Masukkan link video YouTube">
@@ -627,18 +718,52 @@
                     </div>
                 </div>
         </div>
-
-
-    </div>
     </div>
     </form>
     </div>
 
-    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
     </div>
+    <style>
+        .preview-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin: 10px;
+        }
 
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .preview-container .img-preview-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .preview-container .img-preview-container button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+    </style>
+    <div class="container mt-5">
+        @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        <form id="uploadFormItem" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="photo">Pilih Foto:</label>
+                <input type="file" class="form-control" name="photo[]" id="photo" accept="image/*" multiple>
+            </div>
+            <div id="preview-container" class="preview-container"></div>
+            <input type="hidden" name="resized_photos" id="resized_photos">
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <div id="upload-status" class="mt-3"></div>
+    </div>
     @endslot
-
 </x-Layout.Vertical.Master>

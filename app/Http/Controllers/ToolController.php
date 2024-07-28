@@ -17,6 +17,7 @@ use App\Services\MarchantService;
 use App\Services\PropertyRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Laravolt\Indonesia\Models\District;
 
 class ToolController extends Controller
@@ -314,6 +315,31 @@ function order(Request $request){
 
 function simulatorKpr()  {
     return view('Pages/simulatorKpr');
+}
+public function uploadPhoto(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'resized_photos' => 'required|string',
+    ]);
+
+    $resizedPhotos = json_decode($request->input('resized_photos'), true);
+
+    foreach ($resizedPhotos as $resizedPhoto) {
+        // Pisahkan header dari data base64
+        list($type, $data) = explode(';', $resizedPhoto);
+        list(, $data) = explode(',', $data);
+
+        // Decode data base64
+        $data = base64_decode($data);
+
+        // Tentukan nama file dan simpan ke storage
+        $filename = time() . '_' . uniqid() . '.jpg';
+        $path = 'photos/' . $filename;
+        Storage::disk('public')->put($path, $data);
+    }
+
+    return back()->with('success', 'Foto berhasil diupload dan diubah ukurannya!');
 }
 
 }

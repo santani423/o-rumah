@@ -353,6 +353,10 @@ Route::get('/password-verifikasi-code', [PasswordChangesController::class, 'veri
 Route::post('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCodeTes'])->name('verification.code');
 
 Route::get('/simulator-kpr', [ToolController::class, 'simulatorKpr'])->name('simulatorKpr');
+Route::get('/upload', function () {
+    return view('upload');
+});
+Route::post('/upload', [ToolController::class, 'uploadPhoto'])->name('upload.photo');
 
 Route::get('/testing/location', function () {
     return view('testing/location');

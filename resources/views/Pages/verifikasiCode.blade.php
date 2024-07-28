@@ -13,7 +13,7 @@
                     <div id="info-alert" class="alert alert-info" role="alert">
                         Kami telah mengirimkan kode verifikasi ke nomor WhatsApp Anda.
                         <br>
-                        Belum mendapatkan kode verifikasi? <a href="{{route('forget.passwrod')}}" id="resend-code">Kirim Ulang</a>
+                        Belum mendapatkan kode verifikasi? <a href="{{route('forget.password')}}" id="resend-code">Kirim Ulang</a>
                     </div>
                     <form id="verification-code-form" action="{{ route('verification.code') }}" method="post">
                         @csrf

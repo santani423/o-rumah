@@ -761,7 +761,7 @@
             </div>
             <div id="preview-container" class="preview-container"></div>
             <input type="hidden" name="resized_photos" id="resized_photos">
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="button" class="btn btn-success" onclick="validateForm()">Upload</button>
         </form>
         <div id="upload-status" class="mt-3"></div>
     </div>

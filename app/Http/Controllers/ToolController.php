@@ -94,7 +94,7 @@ class ToolController extends Controller
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
         $district = $request->input('district');
-        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage,$page,$ads_type,null,$district);
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $ads_type, null, $district);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
         // dd($adsLists);
@@ -112,11 +112,11 @@ class ToolController extends Controller
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYHOME',$district);
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage, $page, 'PTYHOME', $district);
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
-        
+
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
     function adsListsWithDistanceBoosterSundul(Request $request)
@@ -128,11 +128,11 @@ class ToolController extends Controller
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYSDL');
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage, $page, 'PTYSDL');
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
-        
+
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
     function adsListsWithDistanceBoosterEksklusif(Request $request)
@@ -144,11 +144,11 @@ class ToolController extends Controller
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
-        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage,$page,'PTYESKL');
+        $adsLists = $this->getAdsListsWithDistanceBoosterHome($latitude, $longitude, $radius, $searchQuery, $perPage, $page, 'PTYESKL');
         // dd($adsLists);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
-        
+
         return view('Pages/Tool/Property/getAdsListsWithDistance', compact('adsLists'));
     }
 
@@ -199,15 +199,15 @@ class ToolController extends Controller
         $adsId = $request->input('ads_id');
         $lelangId = $request->input('user_lelang_properties_id');
         $auth = Auth::user();
-    
+
         // Menggunakan Eloquent untuk mencari iklan berdasarkan ID
         $ad = Ads::find($adsId);
         $userLelang = UserLelangPropertie::find($lelangId);
-    
+
         if (!$ad) {
             return redirect()->back()->with('error', 'Ad not found!');
         }
-    
+
         // Mengubah status iklan dan menyimpan perubahan
         if ($lelangId) {
             if (!$userLelang) {
@@ -215,7 +215,7 @@ class ToolController extends Controller
             }
             $userLelang->is_active = !$userLelang->is_active;
             $userLelang->save();
-            if ( $userLelang->is_active) {
+            if ($userLelang->is_active) {
                 $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
             }
         } else {
@@ -223,37 +223,37 @@ class ToolController extends Controller
             $ad->save();
         }
         // Memproses logika poin iklan jika iklan diaktifkan
-      
+
         if ($ad->is_active) {
             $this->manageAdvertisingPoints($request, $ad, $auth, 'ABC010');
         }
-    
+
         return redirect()->back()->with('status', 'Ad status updated successfully!');
     }
-    
-public function searchDistricts(Request $request)
+
+    public function searchDistricts(Request $request)
     {
         $keyword = $request->input('keyword');
         // return response()->json($keyword);
         // Query untuk mencari distrik berdasarkan keyword
         $districts = District::with('city.province')
-        ->where('name', 'LIKE', '%' . $keyword . '%')
-        ->orWhereHas('city', function($query) use ($keyword) {
-            $query->where('name', 'LIKE', '%' . $keyword . '%');
-        })
-        ->orWhereHas('city.province', function($query) use ($keyword) {
-            $query->where('name', 'LIKE', '%' . $keyword . '%');
-        })
-        ->get();
+            ->where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhereHas('city', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->orWhereHas('city.province', function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->get();
         // dd($districts);
 
         // Mengubah hasil menjadi format Provinsi-Kota-Distrik
-        $result = $districts->map(function($district) {
+        $result = $districts->map(function ($district) {
             return [
                 'id' => $district->id,
                 'code' => $district->code,
                 'name' => $district->city->province->name . '-' . $district->city->name . '-' . $district->name,
-                'meta'=>$district->meta
+                'meta' => $district->meta
             ];
         });
 
@@ -263,12 +263,12 @@ public function searchDistricts(Request $request)
     public function cekUsername(Request $request)
     {
         $username = $request->input('username');
-        
+
         // Cek jika username mengandung spasi
         if (strpos($username, ' ') !== false) {
             $username = str_replace(' ', '', $username); // Hapus semua spasi dari username
         }
-        
+
         $user = User::where('username', $username)->first();
         if ($user) {
             $references = $this->generateUsernameReferences($username);
@@ -279,67 +279,61 @@ public function searchDistricts(Request $request)
     }
 
     private function generateUsernameReferences($username)
-{
-    $references = [];
-    for ($i = 1; $i <= 4; $i++) {
-        $newUsername = $username . mt_rand(11, 9999); // Menggabungkan username asli dengan angka acak antara 11 dan 9999
-        while (User::where('username', $newUsername)->exists()) {
-            $newUsername = $username . mt_rand(11, 999); // Pastikan username baru unik
+    {
+        $references = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $newUsername = $username . mt_rand(11, 9999); // Menggabungkan username asli dengan angka acak antara 11 dan 9999
+            while (User::where('username', $newUsername)->exists()) {
+                $newUsername = $username . mt_rand(11, 999); // Pastikan username baru unik
+            }
+            $references[] = $newUsername;
         }
-        $references[] = $newUsername;
+        return $references;
     }
-    return $references;
-}
 
-function searchAgnet(Request $request) {
-    $keyword = $request->input('keyword');
+    function searchAgnet(Request $request)
+    {
+        $keyword = $request->input('keyword');
 
         $agents = User::where('username', 'LIKE', '%' . $keyword . '%')->get();
 
         return response()->json($agents);
-}
-
-function order(Request $request){
-   
-    $ads = Ads::whereId($request->adsId)->first();
-    // dd($request->all());
-    $auth = User::whereId($ads->user_id)->first();
-    // dd($ads);
-    $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC015');
-    return response()->json([
-        'success' => true,                  // Indicates the request was successful
-        'message' => 'Order has been processed successfully!',
-        'data' => $request->all()              // Include the data received from the request
-    ]);
-}
-
-function simulatorKpr()  {
-    return view('Pages/simulatorKpr');
-}
-public function uploadPhoto(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'resized_photos' => 'required|string',
-    ]);
-
-    $resizedPhotos = json_decode($request->input('resized_photos'), true);
-
-    foreach ($resizedPhotos as $resizedPhoto) {
-        // Pisahkan header dari data base64
-        list($type, $data) = explode(';', $resizedPhoto);
-        list(, $data) = explode(',', $data);
-
-        // Decode data base64
-        $data = base64_decode($data);
-
-        // Tentukan nama file dan simpan ke storage
-        $filename = time() . '_' . uniqid() . '.jpg';
-        $path = 'photos/' . $filename;
-        Storage::disk('public')->put($path, $data);
     }
 
-    return back()->with('success', 'Foto berhasil diupload dan diubah ukurannya!');
-}
+    function order(Request $request)
+    {
 
+        $ads = Ads::whereId($request->adsId)->first();
+        // dd($request->all());
+        $auth = User::whereId($ads->user_id)->first();
+        // dd($ads);
+        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC015');
+        return response()->json([
+            'success' => true,                  // Indicates the request was successful
+            'message' => 'Order has been processed successfully!',
+            'data' => $request->all()              // Include the data received from the request
+        ]);
+    }
+
+    function simulatorKpr()
+    {
+        return view('Pages/simulatorKpr');
+    }
+    public function uploadPhoto(Request $request)
+    {
+        $resizedPhotos = $request->input('resized_photos', []);
+        $uploadedFiles = [];
+
+        foreach ($resizedPhotos as $index => $resizedPhoto) {
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
+            $filename = 'photos/photo_' . time() . '_' . $index . '.jpg';
+            Storage::put('public/' . $filename, $decodedImage);
+            $uploadedFiles[] = $filename;
+        }
+
+        return response()->json([
+            'message' => 'Images uploaded successfully',
+            'uploaded_files' => $uploadedFiles,
+        ]);
+    }
 }

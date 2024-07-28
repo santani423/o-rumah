@@ -688,14 +688,11 @@ class MemberNavController extends Controller
             'getAllEnvironmentalConditions' => $getAllEnvironmentalConditions,
         ]);
     }
-
     function propertiStoreListing(Request $request)
     {
-        // dd($request);
         $request->validate([
             // 'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Validasi untuk setiap file
-            'fileInput.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png', // Validasi untuk setiap file nantinya di pasang 500mb
-            'fileInput' => 'required', // Pastikan setidaknya satu file diunggah
+            // 'fileInput' => 'required', // Pastikan setidaknya satu file diunggah
             'title' => 'required|string|max:255|unique:ads,title',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
@@ -720,10 +717,10 @@ class MemberNavController extends Controller
             'house_facility' => 'nullable',
             'other_facility' => 'nullable', 
         ], [
-            'fileInput.*.file' => 'File harus berupa file.',
-            'fileInput.*.mimes' => 'File harus berformat: pdf, doc, docx, jpg, jpeg, png.',
-            'fileInput.*.max' => 'Ukuran file tidak boleh lebih dari 2048 kilobytes.',
-            'fileInput.required' => 'Setidaknya satu file harus diunggah.',
+            // 'fileInput.*.file' => 'File harus berupa file.',
+            // 'fileInput.*.mimes' => 'File harus berformat: pdf, doc, docx, jpg, jpeg, png.',
+            // 'fileInput.*.max' => 'Ukuran file tidak boleh lebih dari 2048 kilobytes.',
+            // 'fileInput.required' => 'Setidaknya satu file harus diunggah.',
             'title.required' => 'Judul harus diisi.',
             'title.string' => 'Judul harus berupa string.',
             'title.max' => 'Judul tidak boleh lebih dari 255 karakter.',
@@ -759,7 +756,7 @@ class MemberNavController extends Controller
             'video.string' => 'Link video harus berupa string.',
             'video.max' => 'Link video tidak boleh lebih dari 255 karakter.',
         ]);
-
+    
         $user = Auth::user();
         $ads = new Ads();
         $ads->title = $request->title;
@@ -772,79 +769,68 @@ class MemberNavController extends Controller
         $ads->is_archived = 1;
         $ads->status = 'available';
         $ads->save();
-        $ads->uuid = $this->KodeIklan('property',$request->ads_type,$ads->created_at,Ads::whereMonth('created_at', Carbon::now()->month)->count());
-        // $ads->uuid = Str::uuid() . '-' . str_pad(Ads::whereMonth('created_at', Carbon::now()->month)->count(), 5, '0', STR_PAD_LEFT);
+        $ads->uuid = $this->KodeIklan('property', $request->ads_type, $ads->created_at, Ads::whereMonth('created_at', Carbon::now()->month)->count());
         $ads->save();
         $hargaInt = (int) preg_replace('/\D/', '', $request->price);
-
-
+    
         $AdsProperty = new AdsProperty();
         $AdsProperty->ads_id = $ads->id;
         $AdsProperty->district_id = $request->district_id;
         $AdsProperty->district_name = $request->district_name;
         $AdsProperty->lat = $request->lat;
         $AdsProperty->lng = $request->lng;
-        // $AdsProperty->location = $request->adds;
         $AdsProperty->area = $request->area;
-        $AdsProperty->address = $request->adres;
+        $AdsProperty->address = $request->address;
         $AdsProperty->ads_type = $request->ads_type;
         $AdsProperty->property_type = $request->property_type;
-        // $AdsProperty->rent_type = $request->adds;
         $AdsProperty->price = $hargaInt;
         $AdsProperty->certificate = json_encode($request->certificate);
         $AdsProperty->housing_name = $request->housing_name;
         $AdsProperty->cluster_name = $request->cluster_name;
         $AdsProperty->year_built = date('Y', strtotime($request->year_built));
-
         $AdsProperty->lt = $request->lt;
         $AdsProperty->lb = $request->lb;
         $AdsProperty->dl = $request->dl;
         $AdsProperty->jl = $request->jl;
         $AdsProperty->jk = $request->jk;
         $AdsProperty->jkm = $request->jkm;
-        // $AdsProperty->apartment_type = $request->adds;
-        // $AdsProperty->floor_location = $request->adds;
-        // dd($request->house_facility);
         $AdsProperty->furniture_condition = $request->furniture_condition;
         $AdsProperty->house_facility = json_encode($request->house_facility);
         $AdsProperty->other_facility = json_encode($request->other_facility);
         $AdsProperty->video = $request->youtubeLink;
-        // $AdsProperty->property_type_id = $request->adds;
         $AdsProperty->save();
         $AdsProperty->uuid = Str::uuid() . '-' . str_pad(AdsProperty::whereMonth('created_at', Carbon::now()->month)->count(), 5, '0', STR_PAD_LEFT);
         $AdsProperty->save();
-
-        if ($request->hasFile('fileInput')) {
-            foreach ($request->file('fileInput') as $image) {
-                $path = $image->store('/images/properti/property/' . $ads->id, 'public');
-                $imageUrl = Storage::url($path);
-
-                $media = new Media();
-                $media->model_type = 'App\\Models\\Food';
-                $media->model_id = $ads->id;
-                $media->collection_name = 'images';
-                $media->name = $image->getClientOriginalName();
-                $media->file_name = basename($path);
-                $media->manipulations = '[]';
-                $media->custom_properties = '[]';
-                $media->generated_conversions = '[]';
-                $media->responsive_images = '[]';
-                $media->mime_type = $image->getClientMimeType();
-                $media->disk = '/storage/images/properti/property/' . $ads->id; // Ganti disk sesuai konfigurasi storage
-
-                $media->size = $image->getSize();
-                $media->save();
-            }
-        }
-        $AdsProperty->image = $media->disk . '/' . $media->file_name;
-        $AdsProperty->save();
-       
+    
+        // if ($request->hasFile('fileInput')) {
+        //     foreach ($request->file('fileInput') as $image) {
+        //         $path = $image->store('/images/properti/property/' . $ads->id, 'public');
+        //         $imageUrl = Storage::url($path);
+    
+        //         $media = new Media();
+        //         $media->model_type = 'App\\Models\\Food';
+        //         $media->model_id = $ads->id;
+        //         $media->collection_name = 'images';
+        //         $media->name = $image->getClientOriginalName();
+        //         $media->file_name = basename($path);
+        //         $media->manipulations = '[]';
+        //         $media->custom_properties = '[]';
+        //         $media->generated_conversions = '[]';
+        //         $media->responsive_images = '[]';
+        //         $media->mime_type = $image->getClientMimeType();
+        //         $media->disk = '/storage/images/properti/property/' . $ads->id;
+        //         $media->size = $image->getSize();
+        //         $media->save();
+        //     }
+        //     $AdsProperty->image = $media->disk . '/' . $media->file_name;
+        //     $AdsProperty->save();
+        // }
+    
         $this->manageAdvertisingPoints($request, $ads, $user, 'ABC009');
-
-        // return false;
-        return redirect(route('listing.index'))->with('success', 'Listing berhasil disimpan.');
-        // return response()->json(['message' => 'Data stored successfully', 'data' => $request->all()]);
+    
+        return response()->json(['message' => 'Listing berhasil disimpan.', 'data' => $ads, 'property' => $AdsProperty]);
     }
+    
 
     function profile()
     {

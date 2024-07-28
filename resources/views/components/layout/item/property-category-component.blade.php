@@ -3,7 +3,7 @@
         <h4 class="card-title font-20 mt-0">Kategori Properti</h4>
         <div class="row">
             <div class="col-md-12">
-                <label class="control-label">Tipe Iklan</label>
+                <label class="control-label">Tipe Iklan <span class="text-danger">*</span></label>
             </div>
             <div class="col-md-9">
                 <div class="form-check-inline my-1" style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
@@ -20,9 +20,12 @@
                         <label class="custom-control-label" for="ads_type2">Sewa</label>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <small id="adsTypeError" class="text-danger"></small>
+                </div>
             </div>
             <div class="col-md-12">
-                <label class="control-label">Tipe Properti</label>
+                <label class="control-label">Tipe Properti <span class="text-danger">*</span></label>
             </div>
             <div class="col-md-9">
                 @foreach ($propertyType as $key => $type)
@@ -35,7 +38,13 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="col-md-12">
+                    <small id="propertyTypeError" class="text-danger"></small>
+                </div>
             </div>
+            
         </div>
     </div>
 </div>
+
+

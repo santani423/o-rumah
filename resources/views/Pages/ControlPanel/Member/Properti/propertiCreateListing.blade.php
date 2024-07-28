@@ -1,5 +1,4 @@
 <x-Layout.Vertical.Master>
-
     @slot('css')
     <style>
         .btn-outline-secondary {
@@ -39,12 +38,46 @@
             height: auto;
             margin-right: 10px;
         }
+
+        /* Loading Overlay Styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <!-- Summernote css -->
     <link href="{{asset('zenter/vertical/assets/plugins/summernote/summernote-bs4.css')}}" rel="stylesheet" />
     @endslot
-    @slot('js')
 
+    @slot('js')
     <!--Wysiwig js-->
     <script src="{{asset('zenter/vertical/assets/plugins/tinymce/tinymce.min.js')}}"></script>
     <script src="{{asset('zenter/vertical/assets/pages/editor.init.js')}}"></script>
@@ -189,7 +222,6 @@
         // Log the initial value on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('ddddd', document.getElementById('judulIklan').value);
-
         });
     </script>
     <script>
@@ -201,7 +233,6 @@
             charCount.textContent = textarea.value.length + ' karakter';
         }
 
-
         // Initialize the character count on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('sdf');
@@ -212,7 +243,6 @@
     </script>
 
     <script>
-        // Get all radio buttons with name 'property_type'
         // Get all radio buttons with name 'property_type'
         const radios = document.querySelectorAll('input[name="property_type"]');
 
@@ -391,56 +421,89 @@
             }
 
             if (valid) {
+                showLoading();
                 submitForm();
             } else {
                 alert("Please fill in all required fields.");
             }
         }
 
-
         function submitForm() {
-            const formData = {
-                district_id: document.getElementById('district_id').value.trim(),
-                district_name: document.getElementById('district_name').value.trim(),
-                lat: document.getElementById('lat').value.trim(),
-                lng: document.getElementById('lng').value.trim(),
-                area: document.getElementById('area').value.trim(),
-                adres: document.getElementById('adres').value.trim(),
+            const formData = new FormData();
+            formData.append('district_id', document.getElementById('district_id').value.trim());
+            formData.append('district_name', document.getElementById('district_name').value.trim());
+            formData.append('lat', document.getElementById('lat').value.trim());
+            formData.append('lng', document.getElementById('lng').value.trim());
+            formData.append('area', document.getElementById('area').value.trim());
+            formData.append('adres', document.getElementById('adres').value.trim());
+            formData.append('ads_type', document.querySelector('input[name="ads_type"]:checked').value);
+            formData.append('property_type', document.querySelector('input[name="property_type"]:checked').value);
+            formData.append('title', document.getElementById('judulIklan').value.trim());
+            formData.append('description', document.getElementById('descriptionIklan').value.trim());
+            formData.append('price', document.getElementById('harga').value.trim());
+            formData.append('housing_name', document.getElementById('housing_name').value.trim());
+            formData.append('cluster_name', document.getElementById('cluster_name').value.trim());
+            formData.append('lt', document.getElementById('lt').value.trim());
+            formData.append('lb', document.getElementById('lb').value.trim());
+            formData.append('year_built', document.getElementById('year_built').value.trim());
+            formData.append('dl', document.getElementById('dl').value.trim());
 
-                ads_type: document.querySelector('input[name="ads_type"]:checked').value,
-                property_type: document.querySelector('input[name="property_type"]:checked').value,
-                title: document.getElementById('judulIklan').value.trim(),
-                description: document.getElementById('descriptionIklan').value.trim(),
-                price: document.getElementById('harga').value.trim(),
-                housing_name: document.getElementById('housing_name').value.trim(),
-                cluster_name: document.getElementById('cluster_name').value.trim(),
-                lt: document.getElementById('lt').value.trim(),
-                lb: document.getElementById('lb').value.trim(),
-                year_built: document.getElementById('year_built').value.trim(),
-                dl: document.getElementById('dl').value.trim(),
-                certificates: Array.from(document.querySelectorAll('input[name="certificate[]"]:checked')).map(el => el.value),
-                jk: document.getElementById('jk').value.trim(),
-                jkm: document.getElementById('jkm').value.trim(),
-                jl: document.getElementById('jl').value.trim(),
-                youtubeLink: document.getElementById('youtubeLink').value.trim(),
-                house_facilities: Array.from(document.querySelectorAll('input[name="house_facility[]"]:checked')).map(el => el.value),
-                furniture_condition: document.querySelector('input[name="furniture_condition"]:checked').value,
-                other_facilities: Array.from(document.querySelectorAll('input[name="other_facility[]"]:checked')).map(el => el.value)
-            };
-            console.log('formData', formData);
+            const certificates = Array.from(document.querySelectorAll('input[name="certificate[]"]:checked')).map(el => el.value);
+            certificates.forEach((certificate, index) => {
+                formData.append(`certificates[${index}]`, certificate);
+            });
+
+            formData.append('jk', document.getElementById('jk').value.trim());
+            formData.append('jkm', document.getElementById('jkm').value.trim());
+            formData.append('jl', document.getElementById('jl').value.trim());
+            formData.append('youtubeLink', document.getElementById('youtubeLink').value.trim());
+
+            const houseFacilities = Array.from(document.querySelectorAll('input[name="house_facility[]"]:checked')).map(el => el.value);
+            houseFacilities.forEach((facility, index) => {
+                formData.append(`house_facilities[${index}]`, facility);
+            });
+
+            formData.append('furniture_condition', document.querySelector('input[name="furniture_condition"]:checked').value);
+
+            const otherFacilities = Array.from(document.querySelectorAll('input[name="other_facility[]"]:checked')).map(el => el.value);
+            otherFacilities.forEach((facility, index) => {
+                formData.append(`other_facilities[${index}]`, facility);
+            });
+
+            currentFiles.forEach((file, index) => {
+                formData.append(`fileInput[${index}]`, file);
+            });
+
             $.ajax({
                 url: "{{route('member.properti.store.listing')}}", // Replace with your server endpoint URL
                 type: 'POST',
                 data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(response) {
+                    console.log('response', response);
+                    hideLoading();
                     alert('Data berhasil disimpan!');
                     // Additional success handling if needed
                 },
                 error: function(xhr, status, error) {
+                    hideLoading();
                     alert('Terjadi kesalahan saat menyimpan data: ' + error);
                     // Additional error handling if needed
                 }
             });
+
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
         }
     </script>
     <script>
@@ -455,6 +518,7 @@
         }
     </script>
     @endslot
+
     @slot('body')
 
     <div class="row">
@@ -500,8 +564,7 @@
         </div>
         <div class="col-12">
 
-            <form action="{{route('member.properti.store.listing')}}" method="post" enctype="multipart/form-data">
-
+            <form id="propertiForm" action="{{route('member.properti.store.listing')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="district_id" name="district_id" value="{{$data['districtId']}}">
                 <input type="hidden" id="district_name" name="district_name" value="{{$data['district']}}">
@@ -569,6 +632,13 @@
     </div>
     </div>
     </form>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
     @endslot
 
 </x-Layout.Vertical.Master>

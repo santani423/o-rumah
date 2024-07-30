@@ -121,7 +121,7 @@
             var kategori = '{{$kategori}}' 
             // alert('dfd');
             // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load('{{ route('tool.getFoodListsWithDistance') }}'+'?latitude='+lat+'&longitude='+long+'&kategori=' + kategori);
+            $('#adsListsWithDistance').load(`{{ route('tool.getFoodListsWithDistance') }}`+'?latitude='+lat+'&longitude='+long+'&kategori=' + kategori);
         }
         function showError(error) {
             switch (error.code) {

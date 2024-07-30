@@ -24,7 +24,7 @@ trait FoodService
                 return $query->join('kategori_food', 'kategori_food.oFood_id', '=', 'ofoods.id')
                     ->join('sup_kategoris', 'sup_kategoris.id', '=', 'kategori_food.kategori_id')
                     ->join('kategoris', 'kategoris.id', '=', 'sup_kategoris.kategori_id')
-                    ->where('kategoris.nama', $kategori);
+                    ->where('sup_kategoris.nama', $kategori);
             })
             ->where('ads.is_active', 1)
             ->select(

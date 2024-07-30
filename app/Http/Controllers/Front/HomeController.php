@@ -262,7 +262,10 @@ class HomeController extends Controller
     public function omerchant(Request $request)
     {
         $adsLists = Ads::join('omerchants', 'omerchants.ads_id', '=', 'ads.id')
-            ->where('ads.is_active', 1)->paginate(100000);
+            ->where('ads.is_active', 1)
+            ->orderBy('ads.created_at', 'desc')
+            ->paginate(100000);
+
         // $bannerLists = Banner::active()->where('show_on', 'omerchant')->get();
         $bannerLists = Banner::where('show_on', 'marchent')->orderBy('order', 'asc')->active()->get();
 
@@ -279,6 +282,7 @@ class HomeController extends Controller
 
     function omerchantByKategori($kategori)
     {
+        // dd($kategori);
         return view('Pages/Frond/Marchent/marchentByKategori', compact('kategori'));
     }
     public function lawHelper(Request $request)

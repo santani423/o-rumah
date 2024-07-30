@@ -21,10 +21,10 @@ trait MarchantService
             })
             ->join('users', 'users.id', '=', 'ads.user_id')
             ->when($kategori, function ($query, $kategori) {
-                return $query->join('kategori_marchents', 'kategori_marchents.oFood_id', '=', 'omerchants.id')
+                return $query->join('kategori_marchents', 'kategori_marchents.marchent_id', '=', 'omerchants.id')
                     ->join('sup_kategoris', 'sup_kategoris.id', '=', 'kategori_marchents.kategori_id')
-                    ->join('kategoris', 'kategoris.id', '=', 'sup_kategoris.kategori_id')
-                    ->where('kategoris.nama', $kategori);
+                    // ->join('kategoris', 'kategoris.id', '=', 'sup_kategoris.kategori_id')
+                    ->where('sup_kategoris.nama', $kategori);
             })
             ->where('ads.is_active', 1)
             ->select(
@@ -56,7 +56,7 @@ trait MarchantService
             })
             ->orderBy('ads.id', 'desc')
             ->paginate($perPage)->items();
-
+// dd($adsLists);
         return $adsLists;
     }
 

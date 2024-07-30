@@ -176,12 +176,14 @@ class ToolController extends Controller
         $kategori = strval($request->input('kategori', ''));
 
         $adsLists = $this->getAdsFoodListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $kategori);
-
+        // dd($adsLists);
+        // return '9999';
         return view('Pages/Tool/Food/getAdsFoodListsWithDistance', compact('adsLists'));
     }
 
     function getMarchantListsWithDistance(Request $request)
     {
+        // dd(99);
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
         $radius = $request->input('radius', 10);

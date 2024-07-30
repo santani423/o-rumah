@@ -216,6 +216,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/member/properti/create', 'propertiCreate')->name('member.properti.create');
         Route::get('/member/properti/create/listing', 'propertiCreateListing')->name('member.properti.create.listing');
         Route::post('/member/properti/create/listing/store', 'propertiStoreListing')->name('member.properti.store.listing');
+        Route::post('/member/properti/create/listing/store/upload', 'propertiStoreListingUpload')->name('member.properti.store.listing.upload');
 
 
         Route::get('/member/food', 'food')->name('member.food');

@@ -72,6 +72,31 @@
             }
         }
     </style>
+
+    <style>
+        .preview-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin: 10px;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .preview-container .img-preview-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .preview-container .img-preview-container button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+    </style>
     <!-- Summernote css -->
     <link href="{{asset('zenter/vertical/assets/plugins/summernote/summernote-bs4.css')}}" rel="stylesheet" />
     @endslot
@@ -267,6 +292,7 @@
         });
     </script>
     <script>
+        const adsId = 688;
         function validateForm() {
             let valid = true;
 
@@ -468,9 +494,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log('response', response);
+                    console.log('response', response.data.ads_id);
                     hideLoading();
                     alert('Data berhasil disimpan!');
+                     
+                    console.log('adsId upload kon',response.data.id);
+                 
                     uploadImageItem(); // Call image upload function here
                 },
                 error: function(xhr, status, error) {
@@ -590,13 +619,15 @@
                         uploadStatus.innerHTML = `Semua gambar telah berhasil diupload. Jumlah total: ${uploadCount}`;
                         return;
                     }
-
+                    console.log('adsId upload',adsId);
                     $.ajax({
-                        url: '{{ route("upload.photo") }}',
+                        url: '{{ route("member.properti.store.listing.upload") }}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            resized_photos: [resizedPhotos[index]]
+                            resized_photos: [resizedPhotos[index]],
+                            ads_id: adsId
+                            // ads_id: document.getElementById('ads_id').value.trim()
                         },
                         success: function(response) {
                             uploadCount++;
@@ -720,50 +751,31 @@
         </div>
     </div>
     </form>
+    <div class="card">
+        <div class="card-body">
+            @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            <form id="uploadFormItem" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label for="photo">Pilih Foto:</label>
+                    <input type="file" class="form-control" name="photo[]" id="photo" accept="image/*" multiple>
+                </div>
+                <div id="preview-container" class="preview-container"></div>
+                <input type="hidden" name="resized_photos" id="resized_photos">
+                <input type="hiddesn" name="ads_id" id="ads_id">
+                <button type="button" class="btn btn-success" onclick="validateForm()">Upload</button>
+            </form>
+            <div id="upload-status" class="mt-3"></div>
+        </div>
+    </div>
+    </div>
     </div>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
     </div>
-    <style>
-        .preview-img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin: 10px;
-        }
-
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .preview-container .img-preview-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .preview-container .img-preview-container button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-        }
-    </style>
-    <div class="container mt-5">
-        @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        <form id="uploadFormItem" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="photo">Pilih Foto:</label>
-                <input type="file" class="form-control" name="photo[]" id="photo" accept="image/*" multiple>
-            </div>
-            <div id="preview-container" class="preview-container"></div>
-            <input type="hidden" name="resized_photos" id="resized_photos">
-            <button type="button" class="btn btn-success" onclick="validateForm()">Upload</button>
-        </form>
-        <div id="upload-status" class="mt-3"></div>
-    </div>
+    
     @endslot
 </x-Layout.Vertical.Master>

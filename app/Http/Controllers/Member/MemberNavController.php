@@ -759,7 +759,7 @@ class MemberNavController extends Controller
     
         $user = Auth::user();
         $ads = new Ads();
-        $ads->title = $request->title. '-' . uniqid();
+        $ads->title = $request->title;
         $ads->slug = Str::slug($request->title) . '-' . uniqid();
         $ads->description = $request->description;
         $ads->type = 'property';

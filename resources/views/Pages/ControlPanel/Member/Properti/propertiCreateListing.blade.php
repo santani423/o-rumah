@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Tambah Iklan">
     @slot('css')
     <style>
         .btn-outline-secondary {
@@ -51,6 +51,8 @@
             align-items: center;
             z-index: 9999;
             display: none;
+            color: #fff;
+            font-size: 20px;
         }
 
         .spinner {
@@ -60,6 +62,7 @@
             width: 120px;
             height: 120px;
             animation: spin 2s linear infinite;
+            margin-right: 20px;
         }
 
         @keyframes spin {
@@ -606,6 +609,7 @@
                 function uploadImage(index) {
                     if (index >= resizedPhotos.length) {
                         uploadStatus.innerHTML = `Semua gambar telah berhasil diupload. Jumlah total: ${uploadCount}`;
+                        window.location.href = '{{ route("listing.index") }}';
                         return;
                     }
                     $.ajax({
@@ -623,7 +627,7 @@
                             uploadImage(index + 1);
                         },
                         error: function(xhr, status, error) {
-                            uploadStatus.innerHTML = 'Terjadi kesalahan saat mengupload gambar.';
+                            uploadStatus.innerHTML = 'Terjadi kesalahan saat mengupload gambar: ' + error;
                         }
                     });
                 }
@@ -748,6 +752,7 @@
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
+        <div id="loadingText">Mengupload...</div>
     </div>
     
     @endslot

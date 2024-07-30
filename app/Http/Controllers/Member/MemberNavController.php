@@ -833,44 +833,49 @@ class MemberNavController extends Controller
     
 
     function propertiStoreListingUpload(Request $request)
-    {
-        $resizedPhotos = $request->input('resized_photos', []);
-        $uploadedFiles = [];
+{
+    $resizedPhotos = $request->input('resized_photos', []);
+    $uploadedFiles = [];
 
-        foreach ($resizedPhotos as $index => $resizedPhoto) {
-            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
-            $nameImg = 'photo_' . time() .rand(1,9999999999). '_' . $index . '.jpg';
-            $disk = 'images/properti/property/'.$request->ads_id;
-            $filename = $disk.'/'.$nameImg;
-            Storage::put('public/' . $filename, $decodedImage);
-            $uploadedFiles[] = $filename;
-            $ads = Ads::whereId($request->ads_id)->first();
-            $AdsProperty = AdsProperty::where('ads_id',$ads->id)->first();
-            $media = new Media();
-                $media->model_type = 'App\\Models\\property';
-                $media->model_id = $ads->id;
-                $media->collection_name = 'images';
-                $media->name = $nameImg;
-                $media->file_name = $nameImg;
-                $media->manipulations = '[]';
-                $media->custom_properties = '[]';
-                $media->generated_conversions = '[]';
-                $media->responsive_images = '[]';
-                $media->mime_type = 'image/jpg';
-                $media->disk = '/storage/'.$disk ;
-                $media->size = strlen($decodedImage);
-                $media->save();
-                
-                $AdsProperty->image = '/storage/'.$filename;
-                $AdsProperty->save();
-        }
+    foreach ($resizedPhotos as $index => $resizedPhoto) {
+        $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
+        $nameImg = 'photo_' . time() . rand(1, 9999999999) . '_' . $index . '.jpg';
+        $disk = 'public/images/properti/property/' . $request->ads_id;
+        $filename = $disk . '/' . $nameImg;
 
-        return response()->json([
-            'message' => 'Images uploaded successfully',
-            'uploaded_files' => $uploadedFiles,
-            'filename' => $filename,
-        ]);
+        Storage::put($filename, $decodedImage);
+        $url = Storage::url($filename);
+
+        $uploadedFiles[] = $url;
+        
+        $ads = Ads::find($request->ads_id);
+        $AdsProperty = AdsProperty::where('ads_id', $ads->id)->first();
+
+        $media = new Media();
+        $media->model_type = 'App\\Models\\property';
+        $media->model_id = $ads->id;
+        $media->collection_name = 'images';
+        $media->name = $nameImg;
+        $media->file_name = $nameImg;
+        $media->manipulations = '[]';
+        $media->custom_properties = '[]';
+        $media->generated_conversions = '[]';
+        $media->responsive_images = '[]';
+        $media->mime_type = 'image/jpeg';
+        $media->disk = $disk;
+        $media->size = strlen($decodedImage);
+        $media->save();
+
+        $AdsProperty->image = $url;
+        $AdsProperty->save();
     }
+
+    return response()->json([
+        'message' => 'Images uploaded successfully',
+        'uploaded_files' => $uploadedFiles,
+    ]);
+}
+
     function profile()
     {
         return view('Pages/Member/Profile/Index');

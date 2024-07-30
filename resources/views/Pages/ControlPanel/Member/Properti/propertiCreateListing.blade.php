@@ -727,7 +727,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title font-20 mt-0">Upload Media</h4>
+                        
                         @error('fileInput')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
@@ -743,9 +743,7 @@
                             <input type="url" class="form-control" id="youtubeLink" name="youtubeLink" placeholder="Masukkan link video YouTube">
                         </div>
 
-                        <div class="text-right">
-                            <button type="button" class="btn btn-turquoise" onclick="validateForm()">Simpan</button>
-                        </div>
+                      
                     </div>
                 </div>
         </div>
@@ -753,6 +751,7 @@
     </form>
     <div class="card">
         <div class="card-body">
+        <h4 class="card-title font-20 mt-0">Upload Media</h4>
             @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -765,7 +764,9 @@
                 <div id="preview-container" class="preview-container"></div>
                 <input type="hidden" name="resized_photos" id="resized_photos">
                 <input type="hiddesn" name="ads_id" id="ads_id">
-                <button type="button" class="btn btn-success" onclick="validateForm()">Upload</button>
+                <div class="text-right">
+                            <button type="button" class="btn btn-turquoise" onclick="validateForm()">Simpan</button>
+                        </div>
             </form>
             <div id="upload-status" class="mt-3"></div>
         </div>

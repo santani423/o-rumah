@@ -488,6 +488,7 @@
                 },
                 success: function(response) {
                     adsId = response.data.id; // Set the adsId with the response data
+                    console.log('response properti',response);
                     hideLoading();
                     uploadImageItem(); // Call image upload function here
                 },

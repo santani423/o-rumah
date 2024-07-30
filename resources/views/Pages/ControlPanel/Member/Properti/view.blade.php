@@ -203,8 +203,9 @@
                                         </tr>
                                         <tr>
                                             <th scope="row" style="width: 200px">Fasilitas Perumahan</th>
+                                            
                                             <td>
-                                                @if (!empty($ads['other_facility']))
+                                                @if (!empty($ads['other_facility']) && $ads['other_facility'] != 'null')
                                                     <ul>
                                                         @foreach (json_decode($ads['other_facility']) as $facility)
                                                             <li>{{ $facility }}</li>

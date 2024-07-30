@@ -784,7 +784,7 @@ class MemberNavController extends Controller
         $AdsProperty->ads_type = $request->ads_type;
         $AdsProperty->property_type = $request->property_type;
         $AdsProperty->price = $hargaInt;
-        $AdsProperty->certificate = json_encode($request->certificate);
+        $AdsProperty->certificate = json_encode($request->certificates);
         $AdsProperty->housing_name = $request->housing_name;
         $AdsProperty->cluster_name = $request->cluster_name;
         $AdsProperty->year_built = date('Y', strtotime($request->year_built));
@@ -795,8 +795,8 @@ class MemberNavController extends Controller
         $AdsProperty->jk = $request->jk;
         $AdsProperty->jkm = $request->jkm;
         $AdsProperty->furniture_condition = $request->furniture_condition;
-        $AdsProperty->house_facility = json_encode($request->house_facility);
-        $AdsProperty->other_facility = json_encode($request->other_facility);
+        $AdsProperty->house_facility = json_encode($request->house_facilities);
+        $AdsProperty->other_facility = json_encode($request->other_facilities);
         $AdsProperty->video = $request->youtubeLink;
         $AdsProperty->save();
         $AdsProperty->uuid = Str::uuid() . '-' . str_pad(AdsProperty::whereMonth('created_at', Carbon::now()->month)->count(), 5, '0', STR_PAD_LEFT);
@@ -828,7 +828,7 @@ class MemberNavController extends Controller
     
         $this->manageAdvertisingPoints($request, $ads, $user, 'ABC009');
     
-        return response()->json(['message' => 'Listing berhasil disimpan.', 'data' => $ads, 'property' => $AdsProperty]);
+        return response()->json(['message' => 'Listing berhasil disimpan.', 'data' => $ads, 'property' => $AdsProperty,'request'=>$request->all(),'house_facility'=>$request->house_facility]);
     }
     
 

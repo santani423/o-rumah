@@ -840,7 +840,7 @@ class MemberNavController extends Controller
     foreach ($resizedPhotos as $index => $resizedPhoto) {
         $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
         $nameImg = 'photo_' . time() . rand(1, 9999999999) . '_' . $index . '.jpg';
-        $disk = 'public/images/properti/property/' . $request->ads_id;
+        $disk = 'public/images/properti/property';
         $filename = $disk . '/' . $nameImg;
 
         Storage::put($filename, $decodedImage);

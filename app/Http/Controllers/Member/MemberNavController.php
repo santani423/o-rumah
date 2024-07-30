@@ -855,14 +855,14 @@ class MemberNavController extends Controller
         $media->model_type = 'App\\Models\\property';
         $media->model_id = $ads->id;
         $media->collection_name = 'images';
-        $media->name = $nameImg;
+        $media->name = $nameImg;    
         $media->file_name = $nameImg;
         $media->manipulations = '[]';
         $media->custom_properties = '[]';
         $media->generated_conversions = '[]';
         $media->responsive_images = '[]';
         $media->mime_type = 'image/jpeg';
-        $media->disk = $disk. '/';
+        $media->disk = str_replace("public", "storage", $disk);
         $media->size = strlen($decodedImage);
         $media->save();
 

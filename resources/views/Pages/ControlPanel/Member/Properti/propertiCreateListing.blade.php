@@ -148,7 +148,7 @@
         });
     </script>
     <script>
-        let currentFiles = []; // Array untuk menyimpan file yang telah di-upload
+        let resizedPhotos = []; // Array untuk menyimpan file yang telah di-upload
 
         document.getElementById('dropzone').addEventListener('dragover', function(event) {
             event.preventDefault();
@@ -168,18 +168,8 @@
             this.style.background = 'white';
             const files = event.dataTransfer.files;
             for (let i = 0; i < files.length; i++) {
-                if (!currentFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
-                    currentFiles.push(files[i]);
-                }
-            }
-            updatePreviewAndCount();
-        });
-
-        document.getElementById('fileInput').addEventListener('change', function() {
-            const files = this.files;
-            for (let i = 0; i < files.length; i++) {
-                if (!currentFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
-                    currentFiles.push(files[i]);
+                if (!photo.some(f => f.name === files[i].name && f.size === files[i].size)) {
+                    photo.push(files[i]);
                 }
             }
             updatePreviewAndCount();
@@ -190,10 +180,10 @@
             previewContainer.innerHTML = ''; // Bersihkan preview sebelumnya
 
             // Tampilkan jumlah file
-            document.getElementById('fileCount').textContent = currentFiles.length;
+            document.getElementById('fileCount').textContent = photo.length;
 
             // Membuat preview untuk setiap file
-            currentFiles.forEach((file, index) => {
+            photo.forEach((file, index) => {
                 const fileUrl = URL.createObjectURL(file);
                 const preview = document.createElement('div');
                 preview.innerHTML = `
@@ -206,7 +196,7 @@
 
         function removeFile(index) {
             // Menghapus file dari array berdasarkan index
-            currentFiles.splice(index, 1);
+            photo.splice(index, 1);
 
             // Update preview dan jumlah file
             updatePreviewAndCount();
@@ -292,7 +282,8 @@
         });
     </script>
     <script>
-        const adsId = 688;
+        let adsId = null;
+
         function validateForm() {
             let valid = true;
 
@@ -430,6 +421,12 @@
                 valid = false;
             }
 
+            // Ensure at least one photo is uploaded
+            if (resizedPhotos.length === 0) {
+                alert('Anda harus mengupload setidaknya satu foto.');
+                valid = false;
+            }
+
             if (valid) {
                 showLoading();
                 submitForm();
@@ -480,10 +477,6 @@
                 formData.append(`other_facilities[${index}]`, facility);
             });
 
-            currentFiles.forEach((file, index) => {
-                formData.append(`fileInput[${index}]`, file);
-            });
-
             $.ajax({
                 url: "{{route('member.properti.store.listing')}}",
                 type: 'POST',
@@ -494,12 +487,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log('response', response.data.ads_id);
+                    adsId = response.data.id; // Set the adsId with the response data
                     hideLoading();
-                    alert('Data berhasil disimpan!');
-                     
-                    console.log('adsId upload kon',response.data.id);
-                 
                     uploadImageItem(); // Call image upload function here
                 },
                 error: function(xhr, status, error) {
@@ -530,7 +519,6 @@
     </script>
     <script>
         $(document).ready(function() {
-            var resizedPhotos = [];
             var resizedPhotosInput = document.getElementById('resized_photos');
             resizedPhotosInput.value = JSON.stringify(resizedPhotos);
 
@@ -619,17 +607,16 @@
                         uploadStatus.innerHTML = `Semua gambar telah berhasil diupload. Jumlah total: ${uploadCount}`;
                         return;
                     }
-                    console.log('adsId upload',adsId);
                     $.ajax({
                         url: '{{ route("member.properti.store.listing.upload") }}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
                             resized_photos: [resizedPhotos[index]],
-                            ads_id: adsId
-                            // ads_id: document.getElementById('ads_id').value.trim()
+                            ads_id: adsId // Use the adsId variable
                         },
                         success: function(response) {
+                            console.log('response',response);
                             uploadCount++;
                             uploadStatus.innerHTML = `Upload berhasil: ${uploadCount} gambar`;
                             uploadImage(index + 1);
@@ -725,33 +712,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        
-                        @error('fileInput')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        <div id="dropzone" class="dropzone" onclick="document.getElementById('fileInput').click();">
-                            <input type="file" id="fileInput" name="fileInput[]" accept="image/*" multiple style="display: none;">
-                            <p>Drag file ke sini atau klik untuk memilih file</p>
-                        </div>
-                        <div id="preview"></div>
-                        <p>Jumlah gambar yang di-upload: <span id="fileCount">0</span></p>
-
-                        <div class="form-group">
-                            <label for="youtubeLink">Link Video YouTube</label>
-                            <input type="url" class="form-control" id="youtubeLink" name="youtubeLink" placeholder="Masukkan link video YouTube">
-                        </div>
-
-                      
-                    </div>
-                </div>
+               
         </div>
     </div>
     </form>
     <div class="card">
         <div class="card-body">
         <h4 class="card-title font-20 mt-0">Upload Media</h4>
+        <div class="form-group">
+                            <label for="youtubeLink">Link Video YouTube</label>
+                            <input type="url" class="form-control" id="youtubeLink" name="youtubeLink" placeholder="Masukkan link video YouTube">
+                        </div>
             @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -763,7 +734,7 @@
                 </div>
                 <div id="preview-container" class="preview-container"></div>
                 <input type="hidden" name="resized_photos" id="resized_photos">
-                <input type="hiddesn" name="ads_id" id="ads_id">
+                <input type="hidden" name="ads_id" id="ads_id">
                 <div class="text-right">
                             <button type="button" class="btn btn-turquoise" onclick="validateForm()">Simpan</button>
                         </div>

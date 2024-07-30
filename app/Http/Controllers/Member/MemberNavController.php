@@ -840,11 +840,12 @@ class MemberNavController extends Controller
         foreach ($resizedPhotos as $index => $resizedPhoto) {
             $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
             $nameImg = 'photo_' . time() .rand(1,9999999999). '_' . $index . '.jpg';
-            $disk = 'images/properti/property/'.$request->ads_id.'/';
-            $filename = $disk.$nameImg;
+            $disk = 'images/properti/property/'.$request->ads_id;
+            $filename = $disk.'/'.$nameImg;
             Storage::put('public/' . $filename, $decodedImage);
             $uploadedFiles[] = $filename;
             $ads = Ads::whereId($request->ads_id)->first();
+            $AdsProperty = AdsProperty::where('ads_id',$ads->id)->first();
             $media = new Media();
                 $media->model_type = 'App\\Models\\property';
                 $media->model_id = $ads->id;
@@ -856,14 +857,18 @@ class MemberNavController extends Controller
                 $media->generated_conversions = '[]';
                 $media->responsive_images = '[]';
                 $media->mime_type = 'image/jpg';
-                $media->disk = $disk ;
+                $media->disk = '/storage/'.$disk ;
                 $media->size = strlen($decodedImage);
                 $media->save();
+                
+                $AdsProperty->image = '/storage/'.$filename;
+                $AdsProperty->save();
         }
 
         return response()->json([
             'message' => 'Images uploaded successfully',
             'uploaded_files' => $uploadedFiles,
+            'filename' => $filename,
         ]);
     }
     function profile()

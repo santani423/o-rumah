@@ -862,7 +862,7 @@ class MemberNavController extends Controller
         $media->generated_conversions = '[]';
         $media->responsive_images = '[]';
         $media->mime_type = 'image/jpeg';
-        $media->disk = $disk;
+        $media->disk = $disk. '/';
         $media->size = strlen($decodedImage);
         $media->save();
 

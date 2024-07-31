@@ -114,17 +114,16 @@ class AuthController extends Controller
         $nama = $validatedData['nama'];
         $namaAplikasi = 'O-Rumah';
         $message = "🎉 Halo! $nama 🎉
-        
+ 
         Email Anda: $user->email
         Username Anda: $user->username
 
-        Selamat bergabung di $namaAplikasi! 🏠 Kami sangat senang memiliki kalian sebagai bagian dari komunitas ini. 🤗
-        
-        Ayo kejar reward prestasi mobil dengan mengajak lebih banyak teman bergabung! Semakin banyak yang ikut, semakin seru perjalanan kita menuju kesuksesan bersama. 🚀
-        
-        Jangan ragu untuk berbagi pengalaman dan cerita kalian di sini. Mari bersama-sama mencapai impian dan meraih kesuksesan! 💪
-        
-        Terima kasih sudah menjadi bagian dari $namaAplikasi! 🙌";
+        Selamat bergabung di O-Rumah 🏠, Kami berterima kasih atas kepercayaan Anda memilih O-Rumah sebagai partner dalam berbisnis.
+
+        Ayo kejar reward prestasi mobil dan berbagai bonus uang tunai dengan mengajak lebih banyak teman bergabung. Semakin banyak yang ikut, semakin banyak manfaat yang didapatkan.
+                      
+        Mari maju bersama O-Rumah 🙌";
+
         
         $response = $this->whatsAppService->sendMessage($validatedData['noWa'], $message);
         

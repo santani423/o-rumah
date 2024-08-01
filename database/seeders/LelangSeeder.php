@@ -22,14 +22,14 @@ class LelangSeeder extends Seeder
       
         // Create sample Ads
         $ads = new Ads();
-        $ads->title = $faker->sentence(3) . ' - ' . uniqid();
+        $ads->title = 'ini baru'.$faker->sentence(3) . ' - ' . uniqid();
         $ads->slug = Str::slug($ads->title) . '-' . uniqid();
         $ads->description = $faker->paragraph;
         $ads->type = 'lelang';
         $ads->published_at = Carbon::now();
         $ads->user_id = 158;
-        $ads->is_active = $faker->boolean;
-        $ads->is_archived = $faker->boolean;
+        $ads->is_active = 1; 
+        $ads->is_archived =1;
         $ads->status = 'available';
         $ads->save();
 
@@ -41,8 +41,8 @@ class LelangSeeder extends Seeder
         $adsProperty->ads_id = (string) $ads->id;
         $adsProperty->district_id = $faker->numberBetween(1, 10);
         $adsProperty->district_name = $faker->city;
-        $adsProperty->lat = $faker->latitude;
-        $adsProperty->lng = $faker->longitude;
+        $adsProperty->lat = '-6.1570781';
+        $adsProperty->lng = '106.5811157';
         $adsProperty->area = $faker->state;
         $adsProperty->address = $faker->address;
         $adsProperty->ads_type = 'lelang';

@@ -173,7 +173,7 @@ class HomeController extends Controller
                 "ads.title",
                 "ads.slug",
                 "users.name as name_user",
-                "users.name as username",
+                "users.username as username",
                 "ads_properties.ads_type",
                 "ads_properties.image",
                 "ads_properties.price",
@@ -431,7 +431,7 @@ class HomeController extends Controller
         });
         $auth = User::where('username', $username)->first();
 
-
+        // dd($auth);
 
         $agent = [
             "id" => $auth->id,

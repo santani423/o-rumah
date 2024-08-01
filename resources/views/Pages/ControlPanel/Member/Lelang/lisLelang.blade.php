@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Lelang">
     @slot('js')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -22,9 +22,11 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
+                @if(Auth::user()->type == 'administrator')
                 <div class="btn-group float-right">
                     <a href="{{route('member.properti.create')}}" class="btn btn-turquoise">Pasang Iklan</a>
                 </div>
+                @endif
                 <h4 class="page-title">Lelang</h4>
             </div>
         </div>

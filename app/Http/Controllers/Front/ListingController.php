@@ -40,31 +40,31 @@ class ListingController extends Controller
         $auth = Auth::user();
         $user = Auth::user();
         
-            $properties = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
-            ->join('media', function ($join) {
+        $properties = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
+        ->join('media', function ($join) {
             $join->on('media.model_id', '=', 'ads.id')
                 ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
-            })
-            ->leftJoin('user_lelang_properties', function ($join) use ($user) {
-                $join->on('user_lelang_properties.ads_id', '=', 'ads.id')
-                    ->where('user_lelang_properties.user_id', '=', $user->id);
-            })
-            ->join('users', 'users.id', '=', 'ads.user_id')
-            ->where(function ($query) use ($user, $searchQuery) {
+        })
+        ->leftJoin('user_lelang_properties', function ($join) use ($user) {
+            $join->on('user_lelang_properties.ads_id', '=', 'ads.id')
+                ->where('user_lelang_properties.user_id', '=', $user->id);
+        })
+        ->join('users', 'users.id', '=', 'ads.user_id')
+        ->where(function ($query) use ($user, $searchQuery) {
             $query->where('users.id', $user->id)
-                    ->orWhere('ads.type', 'lelang');
-            })
-            ->where(function ($query) use ($auth)  {
-            $query->where(function ($subQuery) use ($auth)  {
+                ->orWhere('ads.type', 'lelang');
+        })
+        ->where(function ($query) use ($auth) {
+            $query->where(function ($subQuery) use ($auth) {
                 $subQuery->whereNull('user_lelang_properties.id')
-                            ->where('ads.user_id', $auth->id);
+                    ->where('ads.user_id', $auth->id);
             })
-            ->orWhere(function ($subQuery) use ($auth)  {
+            ->orWhere(function ($subQuery) use ($auth) {
                 $subQuery->whereNotNull('user_lelang_properties.id')
-                            ->where('user_lelang_properties.user_id', $auth->id);
+                    ->where('user_lelang_properties.user_id', $auth->id);
             });
-            })
-            ->select(
+        })
+        ->select(
             "ads_properties.id",
             DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
             "ads.title",
@@ -76,21 +76,23 @@ class ListingController extends Controller
             'media.id as media_id',
             'media.file_name as file_name',
             'user_lelang_properties.id as user_lelang_properties_id',
-            DB::raw("IFNULL(user_lelang_properties.is_active, ads.is_active) as is_active")
-            )
-            ->where(function ($query) use ($searchQuery) {
+            DB::raw("IFNULL(user_lelang_properties.is_active, ads.is_active) as is_active"),
+            DB::raw("IFNULL(user_lelang_properties.created_at, ads.created_at) as created_at")
+        )
+        ->where(function ($query) use ($searchQuery) {
             $query->where('ads.title', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
-            })
-            ->orderBy('ads.id', 'desc')
-            ->get();
+                ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+    
 
 
+            // dd($properties);
             $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
-        // dd($titipAds);
         $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
         return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType'));
         // return Inertia::render('Listing/ListingPage', [

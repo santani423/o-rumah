@@ -19,9 +19,9 @@
 
                         <div class="media">
                             <!-- Menggunakan asset secara dinamis berdasarkan data user jika tersedia -->
-                            <img class="d-flex mr-3 rounded-circle"
+                            <!-- <img class="d-flex mr-3 rounded-circle"
                                 src="{{ asset($pln->avatar ?? 'zenter/vertical/assets/images/users/avatar-6.jpg') }}"
-                                alt="Avatar" height="64" />
+                                alt="Avatar" height="64" /> -->
                             <div class="media-body">
                                 <h5 class="mt-0 font-18">
                                     {{ $pln->name }}

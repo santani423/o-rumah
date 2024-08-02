@@ -39,13 +39,14 @@
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>
             <h4 class="card-title font-20 mt-0 text-primary">{{$price}} </h4>
-            <p class="card-text text-truncate d-block">{{$address}}</p>
+            <p class="card-text text-truncate d-block">@if($address){{$address}}@else <br> @endif</p>
         </div>
-        @if($area)
+       
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-truncate d-block">{{$area}}</li>
+                <li class="list-group-item text-truncate d-block"> @if($area){{$area}} @else - @endif</li>
             </ul>
-        @endif
+
+        
         @if($type == 'property')
         <div class="card-body d-flex justify-content-start p-2">
             <a href="javascript:void(0)" class="card-link d-flex align-items-center mr-2 text-truncate">

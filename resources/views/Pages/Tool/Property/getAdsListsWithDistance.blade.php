@@ -7,12 +7,12 @@
             :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address"
             :linkTujuan="route('property-detail', $ads->slug)" :label="$ads->booster_slug">
             @slot('content')
-            @if (floor($ads->distance) > 0)
+          
                 <div class="card-link d-flex align-items-center mr-3">
-                    <i class="bi bi-geo-alt-fill"></i>
-                    <span class="ml-2">{{ floor($ads->distance) }} Km</span>
+                @if (floor($ads->distance) > 0)  <i class="bi bi-geo-alt-fill"></i>
+                    <span class="ml-2"> {{ floor($ads->distance) }}  Km </span>@else <br>  @endif
                 </div>
-            @endif
+          
             @endslot
         </x-Layout.Item.ProductItem>
         

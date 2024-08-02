@@ -44,6 +44,7 @@ use App\Models\BalachBoosterAds;
 use App\Models\bosterAdsTYpe;
 use App\Models\Kategori;
 use App\Models\SupKategori;
+use App\Models\TitipAds;
 
 class AdminNavController extends Controller
 {
@@ -649,9 +650,118 @@ class AdminNavController extends Controller
     function pengguna($type)
     {
         // dd(99);
-        $users = User::where('is_blocked',0)->get();
+        $users = User::where('is_blocked',0)->where('type',$type)->get();
         $bank = Bank::paginate(10)->items();
         return view('Pages/ControlPanel/Admin/Pengguna/index', compact('users')); 
+    }
+
+
+    function penggunaProperti(Request $request,$id='') {
+       
+        
+        // $properties = AdsProperty::paginate(10)->items();
+        $searchQuery = request()->input('search');
+        // $searchQuery = "Ads 1";
+
+        $auth = User::whereId($id)->first();
+       
+        $user = User::whereId($id)->first();
+        
+        $properties = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
+        ->join('media', function ($join) {
+            $join->on('media.model_id', '=', 'ads.id')
+                ->whereRaw('media.id = (SELECT MIN(id) FROM media WHERE media.model_id = ads.id)');
+        })
+        ->leftJoin('user_lelang_properties', function ($join) use ($user) {
+            $join->on('user_lelang_properties.ads_id', '=', 'ads.id')
+                ->where('user_lelang_properties.user_id', '=', $user->id);
+        })
+        ->join('users', 'users.id', '=', 'ads.user_id')
+        ->where(function ($query) use ($user, $searchQuery) {
+            $query->where('users.id', $user->id)
+                ->orWhere('ads.type', 'lelang');
+        })
+        ->where(function ($query) use ($auth) {
+            $query->where(function ($subQuery) use ($auth) {
+                $subQuery->whereNull('user_lelang_properties.id')
+                    ->where('ads.user_id', $auth->id);
+            })
+            ->orWhere(function ($subQuery) use ($auth) {
+                $subQuery->whereNotNull('user_lelang_properties.id')
+                    ->where('user_lelang_properties.user_id', $auth->id);
+            });
+        })
+        ->select(
+            "ads_properties.id",
+            DB::raw("CONCAT('" . Config::get('app.url') . "/storage/', media.id, '/', media.file_name) AS image_path"),
+            "ads.title",
+            "ads.slug",
+            "users.name as name_user",
+            "ads_properties.*",
+            "ads.status",
+            "ads.id as ads_id",
+            'media.id as media_id',
+            'media.file_name as file_name',
+            'user_lelang_properties.id as user_lelang_properties_id',
+            DB::raw("IFNULL(user_lelang_properties.is_active, ads.is_active) as is_active"),
+            DB::raw("IFNULL(user_lelang_properties.created_at, ads.created_at) as created_at")
+        )
+        ->where(function ($query) use ($searchQuery) {
+            $query->where('ads.title', 'like', '%' . $searchQuery . '%')
+                ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+    
+
+
+            // dd($properties);
+            $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
+        $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
+        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType'));
+    }
+
+    function penggunafood(Request $request,$id)
+    {
+        $user = User::whereId($id)->first();
+
+        if (!$user) {
+            return redirect()->route('home');
+        }
+
+        $filters = $request->all();
+
+         
+
+        $ads = Ads::where('user_id', $user->id)->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')->paginate(100000);
+
+        
+
+        return view('Pages/ControlPanel/Member/Food/index', ['food' => $ads->items(), 'url' => 'member.food.create-listing']); 
+    }
+    function penggunamarchant(Request $request,$id)
+    {
+        $user = User::whereId($id)->first();
+
+        $ads = Ads::where('user_id', $user->id)->join('omerchants', 'omerchants.ads_id', '=', 'ads.id')->paginate(100000);
+        return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing']); 
+    }
+    function detialUser($id) {
+        $user = User::find($id);
+        return view('Pages/ControlPanel/Admin/Pengguna/detialUser', compact('user')); 
+    }
+
+    // Toggle user active status
+    public function toggleActive($id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return back()->with('status', 'User status updated successfully.');
     }
     function penggunaDetail($id)
     {

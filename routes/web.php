@@ -35,6 +35,7 @@ use App\Http\Controllers\Visitor\VisitorKprController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/kirim-email', [MailController::class, 'index']);
 Route::get('/logout', [ProfileController::class, 'logout'])->name('auth.logout');
 Route::get('/teslogin', [ProfileController::class, 'teslogin'])->name('teslogin');
@@ -138,7 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/bank/store', 'bankStore')->name('nav.bank.store');
         Route::get('/bank/edit/{id}', 'bankEdit')->name('nav.bank.edit');
         Route::put('/bank/edit/{id}', 'bankUpdate')->name('nav.bank.update');
-        
+
         Route::get('/typeProperti', 'typeProperti')->name('nav.typeProperti');
 
         Route::get('/ads/control-panel', 'adsControllPanel')->name('nav.ads.control-panel');
@@ -156,20 +157,27 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/banner', 'banner')->name('nav.banner');
         Route::get('/banner/create', 'bannerCreate')->name('nav.banner.create');
-        Route::post('/banner/store', 'bannerStore')->name('nav.banner.store'); 
+        Route::post('/banner/store', 'bannerStore')->name('nav.banner.store');
         Route::put('/banner/updated/{id}', 'bannerUpdate')->name('nav.banner.updated');
         Route::get('/banner/edit/{id}', 'bannerEdit')->name('nav.banner.edit');
 
-        
+
         Route::get('/plans', 'plans')->name('nav.plans');
         Route::get('/website-ads-sections', 'websiteAdsSections')->name('nav.websiteAdsSections');
         Route::get('/settings', 'settings')->name('nav.settings');
-        
+
         Route::get('/kategoriAds', 'kategoriAds')->name('nav.kategoriAds');
         Route::get('/subKategoriAds/{id}', 'subKategoriAds')->name('nav.subKategoriAds');
         Route::put('/subKategoriAds/{id}', 'updateSubKategoriAds')->name('nav.subKategoriAds.update');
 
-        Route::get('/pengguna/user/{type}', 'pengguna')->name('nav.pengguna');
+        Route::get('/pengguna/list/{type}', 'pengguna')->name('nav.pengguna');
+        Route::get('/pengguna/properti/{id}', 'penggunaProperti')->name('nav.pengguna.properti');
+        Route::get('/pengguna/food/{id}', 'penggunafood')->name('nav.pengguna.food');
+        Route::get('/pengguna/marchant/{id}', 'penggunamarchant')->name('nav.pengguna.marchant');
+        Route::get('/pengguna/detail/{id}', 'penggunadetail')->name('nav.pengguna.detail');
+
+        Route::get('/users/{id}', 'detialUser')->name('nav.pengguna.detail');
+        Route::post('/users/{id}/toggle-active', 'toggleActive')->name('users.toggleActive');
 
         Route::prefix('transaksi')->name('transaksi.')->group(function () {
             Route::get('/panding', 'transaksiPanding')->name('panding');
@@ -193,22 +201,17 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/kpr/downloadKprFiles/{id}', 'downloadKprFiles')->name('kpr.downloadKprFiles');
         });
-
-
     });
     Route::controller(KprFileBankController::class)->group(function () {
         Route::post('/admin/kpr/file/bank', 'fileKprBank')->name('admin.kpr.file.bank');
-
     });
     Route::controller(ManagementAdsController::class)->group(function () {
         Route::post('/managementAds/set-actifity', 'setActifity')->name('managementAds.setActifity');
-
     });
 
     Route::controller(BosterAdsController::class)->group(function () {
         Route::post('/boosterAds', 'store')->name('boosterAds.store');
         Route::post('/boosterAds/listing', 'storeListing')->name('boosterAds.storeListing');
-
     });
 
 
@@ -280,33 +283,27 @@ Route::middleware('auth')->group(function () {
     Route::controller(FoodController::class)->group(function () {
         // member
         Route::post('/member/food/store', 'foodStroe')->name('member.food.store');
-
     });
     Route::controller(MarchantsController::class)->group(function () {
         // member
         Route::post('/member/merchants/store', 'merchantsStroe')->name('member.merchants.store');
-
     });
     Route::controller(MemberToolController::class)->group(function () {
         // member
         Route::post('/member/tools/check-unique-title-ads', 'cekUniqueTitleAds')->name('member.tools.checkUniqueTitleAds');
         Route::post('/member/tools/food/se-active', 'foodSetActive')->name('member.tools.food.foodSetActive');
-
     });
     Route::controller(AdBalanceController::class)->group(function () {
         // member
         Route::post('/ad/balace/pin', 'poin')->name('ad.balach.poin');
-
     });
     Route::controller(UserLelangPropertieController::class)->group(function () {
         // member
         Route::post('/ad/takeAuction', 'takeAuction')->name('ad.take.auction');
-
     });
     Route::controller(LinkeAdsController::class)->group(function () {
         // member
         Route::post('/ad/like', 'like')->name('ad.like');
-
     });
 
     Route::post('/payments', [PaymentController::class, 'create'])->name('payments');
@@ -351,7 +348,7 @@ Route::get('/forget-password', [PasswordController::class, 'forgetPassword'])->n
 // Route::post('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');-----
 Route::get('/forget-password-email', [MailController::class, 'forgetPassword'])->name('forget.passwrod.email');
 Route::get('/password-change/{uuid}', [PasswordChangesController::class, 'show'])->name('passwrod.change');
-Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update'); 
+Route::put('/password-change/{uuid}', [PasswordChangesController::class, 'update'])->name('password.change.update');
 Route::get('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCode'])->name('passwrod.verifikasi.code');
 Route::post('/password-verifikasi-code', [PasswordChangesController::class, 'verifikasiCodeTes'])->name('verification.code');
 

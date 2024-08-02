@@ -4,7 +4,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="btn-group float-right">
+                    @if(Auth::user()->type != 'administrator')
                     <a href="{{route('member.food.create-listing')}}" class="btn btn-turquoise">Pasang Iklan</a>
+                    @endif
                 </div>
                 <h4 class="page-title">Food</h4>
             </div>

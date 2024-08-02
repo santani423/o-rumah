@@ -57,6 +57,7 @@ Route::get('/omerchant/kategori/{kategori}', [Front\HomeController::class, 'omer
 Route::get('/lbh', [Front\HomeController::class, 'lawHelper'])->name('law-helper');
 Route::get('/notaris', [Front\HomeController::class, 'notaris'])->name('notaris');
 Route::get('/agen', [Front\HomeController::class, 'agent'])->name('agent');
+Route::post('/agen/search', [Front\HomeController::class, 'agentSearch'])->name('agent.search.page');
 
 // With parameter
 Route::get('/user/{username}', [Front\HomeController::class, 'agentDetail'])->name('agent-detail');

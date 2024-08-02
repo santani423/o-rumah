@@ -1,8 +1,8 @@
-<x-Layout.Horizontal.Master title="LBH">
+<x-Layout.Horizontal.Master title="Agent">
     @slot('js')
 
     <script>
-        $('#userDetailModal').on('show.bs.modal', function (event) {
+        $('#userDetailModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget); // Button that triggered the modal
             var name = button.data('name'); // Extract info from data-* attributes
             var joinedAt = button.data('joinedat');
@@ -139,11 +139,12 @@
             margin: 0 5px;
             /* Mengurangi margin kiri dan kanan */
         }
+
         .rounded-circle {
-        border-radius: 50%;
-        width: 64px;
-        height:  64px;
-    }
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+        }
     </style>
     <style>
         .small {
@@ -156,55 +157,32 @@
     @slot('body')
     <!-- Search Bar -->
     <div class="search-bar d-flex align-items-center mt-3">
-        
-        <div class="location-input flex-grow-1 ml-3">
-            <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-            <input type="text" class="form-control border-0" placeholder="Lokasi, keyword, area, project, developer">
-        </div>
-        <button class="btn btn-success ml-3">
-            <i class="fas fa-search"></i>
-        </button>
+        <form action="{{ route('agent.search.page') }}" method="post" class="d-flex align-items-center w-100">
+            @csrf
+            <div class="location-input flex-grow-1 ml-3">
+                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
+                <input type="text" name="search" class="form-control border-0" placeholder="Nama atau Nama Pengguna" value="{{ request()->input('search') }}">
+            </div>
+            <button type="submit" class="btn btn-success ml-3">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
     </div>
+
     <div class="row mt-3">
         <h2 class="text-center w-100 text-white">Cari Agen</h2> <!-- Judul baru -->
         @foreach ($userLists as $user)
         <x-Layout.Item.UserProfileCard :user="$user">
             @slot('content')
-            <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="card rounded-0 border border-1">
-                                            <div class="card-body text-center pr-2 pl-2">
-                                                <p class="small">Total Properti</p>
-                                                <h6 class="mt-0 font-18">500</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="card rounded-0 border border-1">
-                                            <div class="card-body text-center pr-2 pl-2">
-                                                <p class="small">Terjual / Tersewa</p>
-                                                <h6 class="mt-0 font-18">500</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="card rounded-0 border border-1 pr-0 pl-0 mr-0 ml-0">
-                                            <div class="card-body text-center">
-                                                <p class="small">Harga rata-rata</p>
-                                                <h6 class="mt-0 font-18">500</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <x-Tool.UserPropertyStatistics :userId="$user->id" />
             @endslot
-    </x-Layout.Item.UserProfileCard >
+        </x-Layout.Item.UserProfileCard>
         @endforeach
         <!--end col-->
     </div>
 
     <!-- Modal Detail User -->
-    <div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

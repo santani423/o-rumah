@@ -324,13 +324,28 @@ class HomeController extends Controller
      */
     public function agent(Request $request)
     {
-        $userLists = User::where('is_blocked',0)->where('type','agent')->get();
-        $bannerLists = Banner::active()->where('show_on', 'agent')->get();
-        return view('Pages/Frond/AgenPage', compact('userLists', 'bannerLists'));
-        // return Inertia::render('Front/Pages/AgentPage', [
-        //     'userLists' => $userLists,
-        //     'bannerLists' => $bannerLists,
-        // ]);
+        $userLists = User::where('is_blocked',0)->where('type','agent')->get(); 
+        return view('Pages/Frond/AgenPage', compact('userLists'));
+        
+    }
+
+    public function agentSearch(Request $request)
+    {
+        // Get the search keyword from the request
+        $keyword = $request->input('search');
+
+        // Search for users who are active agents and not blocked
+        $userLists = User::where('is_blocked', 0)
+            ->where('is_active', 1)
+            ->where('type', 'agent')
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                      ->orWhere('username', 'like', '%' . $keyword . '%');
+            })
+            ->get();
+            // dd(99);
+        // Return the search results view
+        return view('Pages/Frond/AgenPage', compact('userLists'));
     }
 
     /**

@@ -324,7 +324,7 @@ class HomeController extends Controller
      */
     public function agent(Request $request)
     {
-        $userLists = User::getAllAgents(paginate: 9, filters: $request->all());
+        $userLists = User::where('is_blocked',0)->where('type','agent')->get();
         $bannerLists = Banner::active()->where('show_on', 'agent')->get();
         return view('Pages/Frond/AgenPage', compact('userLists', 'bannerLists'));
         // return Inertia::render('Front/Pages/AgentPage', [

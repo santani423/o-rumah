@@ -45,10 +45,11 @@ use App\Models\bosterAdsTYpe;
 use App\Models\Kategori;
 use App\Models\SupKategori;
 use App\Models\TitipAds;
-
+use App\Models\UserPropertyStatistics;
+use App\Services\ToolService;
 class AdminNavController extends Controller
 {
-    
+    use ToolService;
     use KodeService;
     function properti()
     {
@@ -749,10 +750,23 @@ class AdminNavController extends Controller
         $ads = Ads::where('user_id', $user->id)->join('omerchants', 'omerchants.ads_id', '=', 'ads.id')->paginate(100000);
         return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing']); 
     }
-    function detialUser($id) {
-        $user = User::find($id);
-        return view('Pages/ControlPanel/Admin/Pengguna/detialUser', compact('user')); 
+    public function detialUser($id)
+{
+    // Ensure the property statistics exist for the user
+    $this->ensureStatisticsExistForAllUsers($id);
+
+    // Use eager loading to load the user along with their property statistics
+    $user = User::with('propertyStatistics')->find($id);
+    $UserPropertyStatistics = UserPropertyStatistics::where('user_id',$id)->first();
+    // Check if the user exists
+    // dd($UserPropertyStatistics);
+    if (!$user) {
+        return redirect()->back()->with('error', 'Pengguna tidak ditemukan.');
     }
+
+    return view('Pages/ControlPanel/Admin/Pengguna/detialUser', compact('user','UserPropertyStatistics'));
+}
+
 
     // Toggle user active status
     public function toggleActive($id)
@@ -763,6 +777,38 @@ class AdminNavController extends Controller
 
         return back()->with('status', 'User status updated successfully.');
     }
+
+    public function updateStatistics(Request $request, $id)
+{
+    $request->validate([
+        'total_properties' => 'required|integer|min:0',
+        'sold_rented_properties' => 'required|integer|min:0',
+        'average_price' => 'required|numeric|min:0',
+    ], [
+        'total_properties.required' => 'Total properti harus diisi.',
+        'total_properties.integer' => 'Total properti harus berupa angka.',
+        'sold_rented_properties.required' => 'Properti terjual/tersewa harus diisi.',
+        'sold_rented_properties.integer' => 'Properti terjual/tersewa harus berupa angka.',
+        'average_price.required' => 'Harga rata-rata harus diisi.',
+        'average_price.numeric' => 'Harga rata-rata harus berupa angka.',
+    ]);
+
+    $user = User::findOrFail($id);
+    $statistics = $user->propertyStatistics;
+
+    if ($statistics) {
+        $statistics->update([
+            'total_properties' => $request->input('total_properties'),
+            'sold_rented_properties' => $request->input('sold_rented_properties'),
+            'average_price' => $request->input('average_price'),
+        ]);
+
+        return back()->with('status', 'Statistik properti pengguna berhasil diperbarui.');
+    }
+
+    return back()->with('status', 'Tidak ada statistik untuk diperbarui pada pengguna ini.');
+}
+
     function penggunaDetail($id)
     {
         $user = User::find($id);

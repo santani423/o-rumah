@@ -8,6 +8,7 @@ use App\Models\AdvertisingPoints;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
 use App\Models\UserClickAdsHistory;
+use App\Models\UserPropertyStatistics;
 
 trait ToolService
 {
@@ -28,4 +29,21 @@ trait ToolService
         return $uniqueCode;
 
     }
+
+    public function ensureStatisticsExistForAllUsers($id)
+{
+    // Check if the user already has a user_property_statistics record
+    $userStatisticsExists = UserPropertyStatistics::where('user_id', $id)->exists();
+
+    // Create a statistics record if none exists
+    if (!$userStatisticsExists) {
+        $userPropertyStatistics = new UserPropertyStatistics();
+        $userPropertyStatistics->user_id = $id;
+        $userPropertyStatistics->total_properties = 0; // Default value
+        $userPropertyStatistics->sold_rented_properties = 0; // Default value
+        $userPropertyStatistics->average_price = 0.00; // Default value
+        $userPropertyStatistics->save();
+    }
+}
+
 }

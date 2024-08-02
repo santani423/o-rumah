@@ -157,4 +157,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->orderBy('created_at', 'desc');
     }
+
+    public function propertyStatistics()
+    {
+        return $this->hasOne(UserPropertyStatistics::class);
+    }
 }

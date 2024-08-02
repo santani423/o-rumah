@@ -178,6 +178,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/users/{id}', 'detialUser')->name('nav.pengguna.detail');
         Route::post('/users/{id}/toggle-active', 'toggleActive')->name('users.toggleActive');
+        Route::put('/users/{id}/update-statistics', 'updateStatistics')->name('users.updateStatistics');
 
         Route::prefix('transaksi')->name('transaksi.')->group(function () {
             Route::get('/panding', 'transaksiPanding')->name('panding');

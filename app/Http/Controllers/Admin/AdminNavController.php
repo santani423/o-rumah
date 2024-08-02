@@ -646,11 +646,12 @@ class AdminNavController extends Controller
     }
 
 
-    function pengguna()
+    function pengguna($type)
     {
-        $user = User::paginate(10)->items();
+        // dd(99);
+        $users = User::where('is_blocked',0)->get();
         $bank = Bank::paginate(10)->items();
-        return Inertia::render('Admin/Page/Pengguna/Index', ['user' => $user, 'bank' => $bank]);
+        return view('Pages/ControlPanel/Admin/Pengguna/index', compact('users')); 
     }
     function penggunaDetail($id)
     {
@@ -1170,4 +1171,5 @@ class AdminNavController extends Controller
         return back()->with('success', 'Sub kategori berhasil diupdate.');
     }
 
+    
 }

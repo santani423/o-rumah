@@ -127,6 +127,25 @@
                         </ul>
                     </li>
                     <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-table"></i><span> Pengguna
+                            </span> <span class="float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.pengguna','agent')}}">Agent</a></li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.banner')}}">Food</a></li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.banner')}}">Marchant</a></li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.banner')}}">LBH</a></li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('admin.nav.banner')}}">Notaris</a></li>
+                        </ul>
+                    </li>
+                    <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-table"></i><span> Setting
                             </span> <span class="float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="list-unstyled">

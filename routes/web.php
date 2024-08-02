@@ -169,6 +169,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/subKategoriAds/{id}', 'subKategoriAds')->name('nav.subKategoriAds');
         Route::put('/subKategoriAds/{id}', 'updateSubKategoriAds')->name('nav.subKategoriAds.update');
 
+        Route::get('/pengguna/user/{type}', 'pengguna')->name('nav.pengguna');
+
         Route::prefix('transaksi')->name('transaksi.')->group(function () {
             Route::get('/panding', 'transaksiPanding')->name('panding');
             Route::get('/approval', 'transaksiProcessing')->name('processing');

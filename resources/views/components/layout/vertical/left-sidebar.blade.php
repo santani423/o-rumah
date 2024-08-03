@@ -133,16 +133,16 @@
                             <li><a href="{{route('admin.nav.pengguna','agent')}}">Agent</a></li>
                         </ul>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('admin.nav.banner')}}">Food</a></li>
+                            <li><a href="{{route('admin.nav.pengguna','food')}}">Food</a></li>
                         </ul>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('admin.nav.banner')}}">Marchant</a></li>
+                            <li><a href="{{route('admin.nav.pengguna','merchant')}}">Marchant</a></li>
                         </ul>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('admin.nav.banner')}}">LBH</a></li>
+                            <li><a href="{{route('admin.nav.pengguna','lbh')}}">LBH</a></li>
                         </ul>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('admin.nav.banner')}}">Notaris</a></li>
+                            <li><a href="{{route('admin.nav.pengguna','notaris')}}">Notaris</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">

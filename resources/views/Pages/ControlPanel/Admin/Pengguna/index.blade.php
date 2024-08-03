@@ -15,7 +15,9 @@
                                     <th>Phone</th>
                                     <th>WhatsApp Phone</th>
                                     <th>Email</th>
+                                    @if(Auth::user()->type != 'food' && Auth::user()->type != 'merchant')
                                     <th>Properti</th> 
+                                    @endif
                                     <th>Food</th>
                                     <th>Marchant</th>
                                     <th>Detail</th>
@@ -30,9 +32,11 @@
                                     <td>{{ $user->phone }}</td>
                                     <td>{{ $user->wa_phone }}</td>
                                     <td>{{ $user->email }}</td>
+                                    @if(Auth::user()->type != 'food' && Auth::user()->type != 'merchant')
                                     <td><a href="{{route('admin.nav.pengguna.properti',$user->id)}}" class="btn btn-success">
                                             Properti
                                         </a></td> 
+                                        @endif
                                     <td><a href="{{route('admin.nav.pengguna.food',$user->id)}}" class="btn btn-success">
                                             Food
                                         </a></td>

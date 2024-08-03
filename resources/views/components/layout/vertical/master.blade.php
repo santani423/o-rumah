@@ -79,7 +79,7 @@
                 </div> <!-- content -->
 
                 <footer class="footer">
-                    © 2019 Zoter by Mannatthemes.
+                    © 2024 O-Rumah
                 </footer>
 
             </div>

@@ -44,7 +44,7 @@
                     <li>
                         <a href="{{route('listing.index')}}" class="waves-effect">
                             <i class="mdi mdi-airplay"></i>
-                            <span> Dashboard </span>
+                            <span> Properti </span>
                         </a>
                     </li>
                     

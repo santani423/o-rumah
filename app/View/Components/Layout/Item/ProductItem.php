@@ -13,7 +13,7 @@ class ProductItem extends Component
      */
     public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label;
 
-    public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property',$label="")
+    public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property',$label="",$labels="")
     { 
         $this->title = $title;
         $this->price = "Rp " . number_format($price, 0, ',', '.');

@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Payment">
     @slot('js')
     <script>
         $(document).ready(function () {

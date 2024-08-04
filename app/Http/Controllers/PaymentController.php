@@ -15,6 +15,7 @@ use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalance;
 use Illuminate\Support\Facades\DB;
 use App\Models\Payment;// Add the missing 'use' statement for the Auth facade at the top of the file
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;// Import the Payment model
 
@@ -24,10 +25,10 @@ class PaymentController extends Controller
     public function __construct()
     {
         // simulasi transaksi
-        // Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
+        Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
 
         // public transaksi
-        Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
+        // Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
         $this->apiInstance = new InvoiceApi();
     }
     function create(Request $request)
@@ -143,6 +144,8 @@ class PaymentController extends Controller
         // Simpan perubahan ke database
         $transaksi->save();
 
+
+
         // Temukan detail rencana transaksi
         $plansTransaksi = PlansTransaksi::where('transaksis_id', $transaksi->id)
             ->join('plans', 'plans.id', '=', 'plans_transaksis.plans_id')
@@ -151,6 +154,7 @@ class PaymentController extends Controller
 
         // Cari atau buat AdBalance berdasarkan user_id dari transaksi
         $adBalance = AdBalance::where(['user_id' => $transaksi->user_id])->first();
+        $user = User::whereId($transaksi->user_id)->first();
 
         if (!$adBalance) {
             $adBalance = new AdBalance();
@@ -163,6 +167,8 @@ class PaymentController extends Controller
             $adBalance->save();
             $previousBalance = $plansTransaksi->max_ads_posted;
             $currentBalance = $plansTransaksi->max_ads_posted;
+
+           
         } else {
 
             $previousBalance = $adBalance->balance;
@@ -171,6 +177,9 @@ class PaymentController extends Controller
             $adBalance->save();
 
         }
+
+        $user->plan_id =  $plansTransaksi->plans_id;
+        $user->save();
         // Buat riwayat perubahan saldo (Advertising Balance History)
         AdvertisingalanceHistories::create([
             'user_id' => $transaksi->user_id,
@@ -180,6 +189,6 @@ class PaymentController extends Controller
             'current_balance' => $currentBalance,
             'description' => 'Top-up balance for advertising campaign.',
         ]);
-        return response()->json(['data' => 'Success']);
+        return response()->json(['data' => 'Success' ]);
     }
 }

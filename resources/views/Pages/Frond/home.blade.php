@@ -199,7 +199,7 @@
 
 
         function loadAds(page) {
-            console.log('dddd',district);
+            // console.log('dddd',district);
             document.getElementById('sampleLocations').innerHTML = '';
             const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
             const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;

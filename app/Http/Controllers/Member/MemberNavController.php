@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\AdvertisingPointsManager;
 use App\Services\PropertyRepository;
 use App\Services\KodeService;
+use App\Services\ToolService;
 
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,7 @@ class MemberNavController extends Controller
     use AdvertisingPointsManager;
     use PropertyRepository;
     use KodeService;
+    use ToolService;
     function plans()
     {
         $plans = DB::table('plans')->orderBy('name', 'asc')
@@ -70,6 +72,7 @@ class MemberNavController extends Controller
         //             });
         //     })
         //     ->paginate(5);
+        $gcu = $this->getOrCreateUserAdBalance($user->id);
 
         $ads = Ads::where('user_id', $user->id)->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')->paginate(100000);
 
@@ -85,7 +88,7 @@ class MemberNavController extends Controller
             }
         ); */
 
-        return view('Pages/ControlPanel/Member/Food/index', ['food' => $ads->items(), 'url' => 'member.food.create-listing']);
+        return view('Pages/ControlPanel/Member/Food/index', ['food' => $ads->items(), 'url' => 'member.food.create-listing','gcu'=>$gcu]);
         // return Inertia::render('Member/Page/FoodAndMarchant/Index', ['ads' => $ads->items(), 'url' => 'member.food.create-listing']);
     }
     function merchants(Request $request)
@@ -93,10 +96,10 @@ class MemberNavController extends Controller
         $user = Auth::user();
 
 
-
+        $gcu = $this->getOrCreateUserAdBalance($user->id);
 
         $ads = Ads::where('user_id', $user->id)->join('omerchants', 'omerchants.ads_id', '=', 'ads.id')->paginate(100000);
-        return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing']);
+        return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing','gcu'=>$gcu]);
         // return Inertia::render('Member/Page/FoodAndMarchant/Index', ['ads' => $ads->items(), 'url' => 'member.merchants.create-listing']);
     }
 

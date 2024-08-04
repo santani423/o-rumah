@@ -26,11 +26,13 @@ use MatanYadaev\EloquentSpatial\Objects\Point;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use App\Services\PropertyRepository;
+use App\Services\ToolService;
 
 class ListingController extends Controller
 {
     use PropertyRepository;
     use AdvertisingPointsManager;
+    use ToolService;
     public function index(Request $request)
     {
         // $properties = AdsProperty::paginate(10)->items();
@@ -94,7 +96,9 @@ class ListingController extends Controller
             // dd($properties);
             $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
         $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
-        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType'));
+       $gcu = $this->getOrCreateUserAdBalance($user->id);
+        // dd($gcu);
+        return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType','gcu'));
         // return Inertia::render('Listing/ListingPage', [
         //     'properties' => $properties->items(),
         //     'pagination' => $properties,

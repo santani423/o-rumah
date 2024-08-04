@@ -6,13 +6,15 @@ use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 use App\Models\UserPropertyStatistics as Ups;
+use App\Services\ToolService;
 
 class UserPropertyStatistics extends Component
 {
+    use ToolService;
     public $userId;
     public $totalProperties;
-    public $soldRentedProperties;
-    public $averagePrice;
+    public $total_sold_properties;
+    public $total_rented_properties;
 
     /**
      * Create a new component instance.
@@ -23,18 +25,20 @@ class UserPropertyStatistics extends Component
     public function __construct($userId)
     {
         $this->userId = $userId;
+     
+        $dataStatisProperti = $this->getPropertyAdStatistics($userId);
 
         // Retrieve the user's property statistics
         $stats = Ups::where('user_id', $userId)->first();
 
+        $this->totalProperties = $dataStatisProperti['active_properties'];
         if ($stats) {
-            $this->totalProperties = $stats->total_properties;
-            $this->soldRentedProperties = $stats->sold_rented_properties;
-            $this->averagePrice = $stats->average_price;
+            $this->total_sold_properties = $stats->total_sold_properties;
+            $this->total_rented_properties = $stats->total_rented_properties;
         } else {
-            $this->totalProperties = 0;
-            $this->soldRentedProperties = 0;
-            $this->averagePrice = 0.00;
+            // $this->totalProperties = 0;
+            $this->total_sold_properties = 0;
+            $this->total_rented_properties = 0;
         }
     }
 

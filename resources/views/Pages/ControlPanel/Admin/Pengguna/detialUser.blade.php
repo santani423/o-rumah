@@ -53,8 +53,8 @@
                         @if ($UserPropertyStatistics)
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Total Properti:</strong> {{ $UserPropertyStatistics->total_properties }}</li>
-                                <li class="list-group-item"><strong>Properti Terjual/Tersewa:</strong> {{ $UserPropertyStatistics->sold_rented_properties }}</li>
-                                <li class="list-group-item"><strong>Harga Rata-rata:</strong> Rp{{ number_format($UserPropertyStatistics->average_price, 2) }}</li>
+                                <li class="list-group-item"><strong>Properti Terjual:</strong> {{ $UserPropertyStatistics->total_sold_properties }}</li>
+                                <li class="list-group-item"><strong>Properti Tersewa:</strong> {{ $UserPropertyStatistics->total_rented_properties }}</li>
                             </ul>
 
                             <!-- Form to Update Property Statistics -->
@@ -66,14 +66,15 @@
                                     <input type="number" class="form-control" id="total_properties" name="total_properties" value="{{ $UserPropertyStatistics->total_properties }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="sold_rented_properties">Properti Terjual/Tersewa</label>
-                                    <input type="number" class="form-control" id="sold_rented_properties" name="sold_rented_properties" value="{{ $UserPropertyStatistics->sold_rented_properties }}">
+                                    <label for="total_sold_properties">Properti Terjual</label>
+                                    <input type="number" class="form-control" id="total_sold_properties" name="total_sold_properties" value="{{ $UserPropertyStatistics->total_sold_properties }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="average_price">Harga Rata-rata</label>
-                                    <input type="number" step="0.01" class="form-control" id="average_price" name="average_price" value="{{ $UserPropertyStatistics->average_price }}">
+                                    <label for="total_rented_properties">Properti Tersewa</label>
+                                    <input type="number" class="form-control" id="total_rented_properties" name="total_rented_properties" value="{{ $UserPropertyStatistics->total_rented_properties }}">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Perbarui Statistik</button>
+                                
+                                <button type="submit" class="btn btn-success">Perbarui Statistik</button>
                             </form>
                         @else
                             <p class="text-center">Tidak ada statistik untuk pengguna ini.</p>

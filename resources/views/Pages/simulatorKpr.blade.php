@@ -27,8 +27,7 @@
 
             function updateUangMukaDanMaksimumKpr() {
                 const harga = parseFloat(hargaInput.value.replace(/[^,\d]/g, '')) || 0;
-                const uangMuka = harga * 0.1;
-                uangMukaInput.value = formatRupiah(uangMuka.toFixed(0).toString(), 'Rp ');
+                const uangMuka = parseFloat(uangMukaInput.value.replace(/[^,\d]/g, '')) || 0;
                 maksimumKprInput.value = formatRupiah((harga - uangMuka).toFixed(0).toString(), 'Rp ');
             }
 
@@ -36,7 +35,7 @@
                 const harga = parseFloat(hargaInput.value.replace(/[^,\d]/g, '')) || 0;
                 const bunga = parseFloat(bungaKprInput.value) || 0;
                 const tahunCicilan = parseInt(tahunCicilanSelect.value) || 0;
-                const uangMuka = harga * 0.1;
+                const uangMuka = parseFloat(uangMukaInput.value.replace(/[^,\d]/g, '')) || 0;
                 const pokokPinjaman = harga - uangMuka;
                 const bungaBulanan = bunga / 100 / 12;
                 const jumlahBulan = tahunCicilan * 12;
@@ -51,6 +50,12 @@
 
             hargaInput.addEventListener('input', function() {
                 formatInputValue(hargaInput);
+                updateUangMukaDanMaksimumKpr();
+                hitungCicilan();
+            });
+
+            uangMukaInput.addEventListener('input', function() {
+                formatInputValue(uangMukaInput);
                 updateUangMukaDanMaksimumKpr();
                 hitungCicilan();
             });
@@ -83,7 +88,7 @@
                             <div class="form-group row mb-3">
                                 <label for="uang-muka" class="col-sm-4 col-form-label text-start">Uang Muka</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="uang-muka" name="uang-muka" readonly required>
+                                    <input type="text" class="form-control" id="uang-muka" name="uang-muka" required>
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
@@ -105,6 +110,7 @@
                                         <option value="10">10 Tahun</option>
                                         <option value="15">15 Tahun</option>
                                         <option value="20">20 Tahun</option>
+                                        <option value="30">30 Tahun</option>
                                     </select>
                                 </div>
                             </div>

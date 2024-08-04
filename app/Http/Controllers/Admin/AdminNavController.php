@@ -780,18 +780,19 @@ class AdminNavController extends Controller
 
     public function updateStatistics(Request $request, $id)
 {
-    $request->validate([
-        'total_properties' => 'required|integer|min:0',
-        'sold_rented_properties' => 'required|integer|min:0',
-        'average_price' => 'required|numeric|min:0',
-    ], [
-        'total_properties.required' => 'Total properti harus diisi.',
-        'total_properties.integer' => 'Total properti harus berupa angka.',
-        'sold_rented_properties.required' => 'Properti terjual/tersewa harus diisi.',
-        'sold_rented_properties.integer' => 'Properti terjual/tersewa harus berupa angka.',
-        'average_price.required' => 'Harga rata-rata harus diisi.',
-        'average_price.numeric' => 'Harga rata-rata harus berupa angka.',
-    ]);
+    // $request->validate([
+    //     'total_properties' => 'required|integer|min:0',
+    //     'total_sold_properties' => 'required|integer|min:0',
+    //     'total_rented_properties' => 'required|integer|min:0',
+    // ], [
+    //     'total_properties.required' => 'Total properti harus diisi.',
+    //     'total_properties.integer' => 'Total properti harus berupa angka.',
+    //     'total_sold_properties.required' => 'Properti terjual/tersewa harus diisi.',
+    //     'total_sold_properties.integer' => 'Properti terjual/tersewa harus berupa angka.',
+    //     'total_rented_properties.required' => 'Harga rata-rata harus diisi.',
+    //     'total_rented_properties.numeric' => 'Harga rata-rata harus berupa angka.',
+    // ]);
+    // dd($request->all());
 
     $user = User::findOrFail($id);
     $statistics = $user->propertyStatistics;
@@ -799,8 +800,8 @@ class AdminNavController extends Controller
     if ($statistics) {
         $statistics->update([
             'total_properties' => $request->input('total_properties'),
-            'sold_rented_properties' => $request->input('sold_rented_properties'),
-            'average_price' => $request->input('average_price'),
+            'total_sold_properties' => $request->input('total_sold_properties'),
+            'total_rented_properties' => $request->input('total_rented_properties'),
         ]);
 
         return back()->with('status', 'Statistik properti pengguna berhasil diperbarui.');
@@ -1172,7 +1173,7 @@ class AdminNavController extends Controller
             "wa_phone" => $user->wa_phone,
             "total_ads" => 100,
             "total_sold" => 50,
-            "average_price" => "$500,000",
+            "total_rented_properties" => "$500,000",
             "image" => $user->image,
         ];
 
@@ -1215,7 +1216,7 @@ class AdminNavController extends Controller
             "wa_phone" => $user->wa_phone,
             "total_ads" => 100,
             "total_sold" => 50,
-            "average_price" => "$500,000",
+            "total_rented_properties" => "$500,000",
             "image" => $user->image,
         ];
         // dd($kpr);

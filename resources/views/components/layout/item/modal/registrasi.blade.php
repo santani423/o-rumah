@@ -106,8 +106,8 @@
                                     <div class="form-check" style="position: absolute; top: 0; right: 0;">
                                         <input class="form-check-input" type="radio" name="pilihanType" id="radioCustomer" value="customer">
                                     </div>
-                                    <h5 class="card-title">Customer</h5>
-                                    <p class="card-text text-center">Kelola dan promosikan properti anda</p>
+                                    <h5 class="card-title">Visitor</h5>
+                                    <p class="card-text text-center">Sebagai Visitor, Anda bisa mengelola dan mempromosikan properti secara efektif.</p>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +166,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="card" onclick="document.getElementById('radioAplikator').checked = true;">
                                 <div class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 100%; position: relative;">
                                     <div class="form-check" style="position: absolute; top: 0; right: 0;">
@@ -176,7 +176,7 @@
                                     <p class="card-text text-center">Membuat dan mengembangkan aplikasi</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-group text-center row m-t-20">
                         <div class="col-6">

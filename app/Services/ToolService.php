@@ -7,6 +7,7 @@ use App\Models\AdBalance;
 use App\Models\AdvertisingPoints;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
+use App\Models\Ads;
 use App\Models\UserClickAdsHistory;
 use App\Models\UserPropertyStatistics;
 
@@ -40,7 +41,7 @@ trait ToolService
             $userPropertyStatistics->user_id = $id;
             $userPropertyStatistics->total_properties = 0; // Default value
             $userPropertyStatistics->sold_rented_properties = 0; // Default value
-            $userPropertyStatistics->average_price = 0.00; // Default value
+            $userPropertyStatistics->total_rented_properties = 0; // Default value
             $userPropertyStatistics->save();
         }
     }
@@ -57,5 +58,30 @@ trait ToolService
         }
 
         return $poin;
+    }
+
+    public function getPropertyAdStatistics($userId)
+    {
+        // Query the ads table to get the required counts
+        $totalProperties = Ads::where('user_id', $userId)
+            ->where('type', 'property')
+            ->count();
+
+        $activeProperties = Ads::where('user_id', $userId)
+            ->where('type', 'property')
+            ->where('is_active', 1)
+            ->count();
+
+        $nonActiveProperties = Ads::where('user_id', $userId)
+            ->where('type', 'property')
+            ->where('is_active', 0)
+            ->count();
+
+        // Return the counts as an array
+        return [
+            'total_properties' => $totalProperties,
+            'active_properties' => $activeProperties,
+            'non_active_properties' => $nonActiveProperties,
+        ];
     }
 }

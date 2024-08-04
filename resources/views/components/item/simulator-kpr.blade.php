@@ -17,7 +17,7 @@
                             <div class="form-group row mb-3">
                                 <label for="uang-muka" class="col-sm-4 col-form-label text-start">Uang Muka</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="uang-muka" name="uang-muka" readonly required>
+                                    <input type="text" class="form-control" id="uang-muka" name="uang-muka"  required>
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
@@ -39,6 +39,7 @@
                                         <option value="10">10 Tahun</option>
                                         <option value="15">15 Tahun</option>
                                         <option value="20">20 Tahun</option>
+                                        <option value="30">30 Tahun</option>
                                     </select>
                                 </div>
                             </div>

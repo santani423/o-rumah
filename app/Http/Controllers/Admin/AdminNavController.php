@@ -535,7 +535,7 @@ class AdminNavController extends Controller
             'office_type' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'details' => 'nullable|string|max:255',
             'is_active' => 'required|boolean',
             'email_kpr' => 'nullable|email|max:255',
@@ -550,7 +550,7 @@ class AdminNavController extends Controller
             if ($bank->image) {
                 Storage::disk('public')->delete($bank->image);
             }
-            $imagePath = $request->file('image')->store('images', 'public');
+            $imagePath = $request->file('image')->store('images/bank', 'public');
         }
 
         // Update bank data in the database

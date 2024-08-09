@@ -148,12 +148,12 @@
     @slot('js')
     <script>
     let currentPage = 1;
-    const perPage = 5;
+    const perPage = 8;
     let latitude = null;
     let longitude = null;
     let isFirstLoad = true; 
     let beliSewa = 'Jual';
-    let typeProperti = null;
+    let typeProperti = false;
     let districtId = null;
     
     function getLocation() {
@@ -193,9 +193,9 @@
     }
     
     function loadAds(page) {
-    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
-    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
+    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 

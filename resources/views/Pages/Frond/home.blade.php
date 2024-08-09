@@ -157,7 +157,8 @@
         let district = null;
         let isFirstLoad = true;
         let beliSewa = 'Jual';
-        let typeProperti = null;
+        let typeProperti = false;
+        let districtId = null;
 
         function getLocation() {
 
@@ -201,9 +202,10 @@
         function loadAds(page) {
             // console.log('dddd',district);
             document.getElementById('sampleLocations').innerHTML = '';
-            const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
-            const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
-
+            // const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
+            const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
+            const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
+    
             document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
             if (isFirstLoad) {
@@ -345,6 +347,7 @@
                             latitude = item.meta.lat;
                             longitude = item.meta.long;
                             district = item.code;
+                            districtId = item.code;
                             loadAds(currentPage)
                             console.log(item.meta); // Menampilkan item.meta di console saat diklik
                         });
@@ -458,13 +461,27 @@
                     <div class="nav-links d-flex justify-content-between">
 
                         <div class="nav-item ml-2">
+                            <a href="https://www.permatabank.com/id/home/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img src="{{asset('assets/company/permata-removebg-preview.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
+                            <a href="https://www.bankmuamalat.co.id/" style="text-decoration: none; color: inherit;">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img src="{{asset('assets/company/muamalat-removebg-preview.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item ml-2">
                             <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
                                 <div class="d-flex flex-column align-items-center">
                                     <img src="{{asset('assets/company/logo-bank-maju-241x100-1.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
                                 </div>
                             </a>
                         </div>
-                        <div class="nav-item ml-2">
+                        <!-- <div class="nav-item ml-2">
                             <a href="https://bankmaju.com/" style="text-decoration: none; color: inherit;">
                                 <div class="d-flex flex-column align-items-center">
                                     <img src="{{asset('assets/company/btn.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
@@ -477,7 +494,7 @@
                                     <img src="{{asset('assets/company/bca.png')}}" alt="Bank Maju Logo" style="height: 80px; width: auto;" class="img-fluid mt-1">
                                 </div>
                             </a>
-                        </div>
+                        </div> -->
 
 
                     </div>

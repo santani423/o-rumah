@@ -97,7 +97,8 @@ trait PropertyRepository
             }
         }
 
-        if ($property_type != null) {
+        if ($property_type != 'false') {
+            // dd($property_type);
             $query->where('ads_properties.property_type', $property_type);
         }
 

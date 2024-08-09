@@ -756,37 +756,37 @@ class HomeController extends Controller
         $bank = Bank::get();
         $bankUmum = Bank::where('type', "umum")
             ->orderBy('province', 'asc')
-            ->get()
-            ->groupBy('province')
-            ->map(function ($items, $province) {
-                return [
-                    'province' => $province,
-                    'banks' => $items->map(function ($item) {
-                        return [
-                            'id' => $item->id,
-                            'name' => $item->name,
-                            'alias_name' => $item->alias_name
-                        ];
-                    })
-                ];
-            });
+            ->get();
+            // ->groupBy('province')
+            // ->map(function ($items, $province) {
+            //     return [
+            //         'province' => $province,
+            //         'banks' => $items->map(function ($item) {
+            //             return [
+            //                 'id' => $item->id,
+            //                 'name' => $item->name,
+            //                 'alias_name' => $item->alias_name
+            //             ];
+            //         })
+            //     ];
+            // });
         $bankBpr = Bank::where('type', "BPR")
             ->orderBy('province', 'asc')
-            ->get()
-            ->groupBy('province')
-            ->map(function ($items, $province) {
-                return [
-                    'province' => $province,
-                    'banks' => $items->map(function ($item) {
-                        return [
-                            'id' => $item->id,
-                            'name' => $item->name,
-                            'alias_name' => $item->alias_name
-                        ];
-                    })
-                ];
-            });
-        // dd($bankBpr);
+            ->get();
+            // ->groupBy('province');
+            // ->map(function ($items, $province) {
+            //     return [
+            //         'province' => $province,
+            //         'banks' => $items->map(function ($item) {
+            //             return [
+            //                 'id' => $item->id,
+            //                 'name' => $item->name,
+            //                 'alias_name' => $item->alias_name
+            //             ];
+            //         })
+            //     ];
+            // });
+        // dd($bankUmum);
         $ads = Ads::where('ads.slug', $slug)
             ->join('ads_properties', 'ads_properties.ads_id', '=', 'ads.id')
             ->select('ads.*', 'ads_properties.*')

@@ -89,12 +89,14 @@ class ToolController extends Controller
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
         $ads_type = $request->input('ads_type');
+        $typeProperti = $request->input('typeProperti');
         $radius = 300; // default radius of 300 if not provided
         $searchQuery = $request->input('searchQuery', '');
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
         $district = $request->input('district');
-        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $ads_type, null, $district);
+        // dd($typeProperti);
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $ads_type,  $typeProperti , $district);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
         // dd($adsLists);

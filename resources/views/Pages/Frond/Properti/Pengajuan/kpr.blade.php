@@ -42,7 +42,7 @@
             }
             var imageUrl = $(state.element).data('image');
             var $state = $(
-                '<span><img src="' + imageUrl + '" class="img-flag" style="width: 50px; height: auto; margin-right: 8px;" /> ' + state.text + '</span>'
+                '<span><img src="' + imageUrl + '" class="img-flag" style="width: 80px; height: auto; margin-right: 8px;" /> ' + state.text + '</span>'
             );
             return $state;
         }

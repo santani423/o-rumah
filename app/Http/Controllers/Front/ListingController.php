@@ -11,6 +11,7 @@ use App\Models\bosterAds;
 use App\Models\Kpr;
 use App\Models\User;
 use App\Models\bosterAdsTYpe;
+use App\Models\Food;
 use App\Models\TitipAds;
 use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
@@ -689,5 +690,78 @@ class ListingController extends Controller
         //     session()->flash('success', 'Iklan berhasil dinonaktifkan!');
         // }
         return back();
+    }
+
+    function viewFood(Request $request,$slug='') {
+        $auth = Auth::user();
+        $ads = Ads::where('ads.slug', $slug)
+        ->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')
+        ->join('id_districts','id_districts.id','=','ofoods.districtId')
+        ->join('id_cities','id_cities.code','=','id_districts.city_code')
+        ->join('id_provinces','id_provinces.code','=','id_cities.province_code')
+        ->select('ads.*', 'ofoods.*', 'ads.id as ads_id','ofoods.id as ofoods_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
+        ->first();
+        // dd($ads);
+        $media = Media::where('model_id', $ads->ads_id)
+        ->select('id', 'disk', 'file_name')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'url' => asset($item->disk . '/' . $item->file_name), // Menggunakan asset helper untuk URL yang benar
+                'id' => $item->id
+            ];
+        });
+        $BosterAds = BosterAds::join('boster_ads_t_ypes','boster_ads_t_ypes.id','=','boster_ads.booster_type_id')
+        ->where('boster_ads.ads_id', $ads->ads_id)
+        ->where('boster_ads.user_id', $auth->id)
+        ->select('boster_ads_t_ypes.title','boster_ads.created_at')
+        ->orderBy('created_at','DESC')
+        ->get();
+    // dd($BosterAds);
+    $auth = User::find($ads->user_id);
+
+    $agent = [
+        "id" => $auth->id,
+        "name" => $auth->name,
+        "joined_at" => $auth->created_at->format('Y-m-d'),
+        "username" => $auth->username,
+        "company_name" => $auth->company_name,
+        "company_image" => $auth->company_image,
+        "phone" => $auth->phone,
+        "wa_phone" => $auth->wa_phone,
+        "total_ads" => 100,
+        "total_sold" => 50,
+        "average_price" => "$500,000",
+        "image" => $auth->image,
+    ];
+    $navLink = $request->navLink;
+
+    $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
+    
+    $latitude = $request->input('latitude');
+    $longitude = $request->input('longitude');
+    $radius = $request->input('radius');
+    $searchQuery = $request->input('searchQuery');
+    $perPage = $request->input('perPage', 10);
+    $page = $request->input('page', 3);
+    $code = $request->input('code', 'PTYHOME');
+    $slug = $request->input('slug');
+
+    $position = $this->getPropertyPosition($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $code, $slug);
+
+       
+    // dd($ads['image']);
+        return view('Pages/ControlPanel/Member/Food/view',compact('ads','navLink','media','bosterAdsType','BosterAds'));
+    }
+
+    function updateAdresFood() {
+        
+    }
+
+    function setMediaUtamaFood(Request $request,$ofoods_id='') {
+        $AdsFood =  Food::whereId($ofoods_id)->first(); 
+        $AdsFood->image = $request->url;
+        $AdsFood->save(); 
+        return back()->with(['navLink' => 'galeri', 'success' => 'Media berhasil diperbarui.']);
     }
 }

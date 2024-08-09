@@ -35,7 +35,7 @@
                  
                 <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
                     :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address" :type="$ads->type" :area="$ads->area"
-                    :linkTujuan="route('listing.control-panel.view.property', ['slug' => $ads->slug])">
+                    :linkTujuan="route('listing.control-panel.view.food', ['slug' => $ads->slug])">
                 </x-Layout.Item.ProductItem>
                 @if($ads->is_active)
                 <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}"> Aktifkan</button>

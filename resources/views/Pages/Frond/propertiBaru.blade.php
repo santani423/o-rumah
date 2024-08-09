@@ -154,6 +154,7 @@
     let isFirstLoad = true; 
     let beliSewa = 'Jual';
     let typeProperti = null;
+    let districtId = null;
     
     function getLocation() {
         if (navigator.geolocation) {
@@ -192,9 +193,9 @@
     }
     
     function loadAds(page) {
-    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
-    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}`;
+    const urlEsklisif = `{{ route('tool.getAdsListsWithDistance.booster.eksklusif') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
+    const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.sundul') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
+    const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}`;
     
     document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
@@ -282,10 +283,12 @@ function appendAds(html, containerId) {
     }
 
     function searchLocation() {
+
+        alert(88);
     // const inputElement = document.querySelector('.location-input input');
     // const locationText = inputElement.value;
     // currentPage = 1;
-    // console.log('Lokasi yang dicari:', locationText);
+    console.log('Lokasi yang dicari:', locationText);
     
     document.getElementById('adsListsWithDistance').innerHTML = '';
     loadAds(currentPage);
@@ -313,6 +316,8 @@ document.querySelector('.btn-success').addEventListener('click', searchLocation)
         loadAds(currentPage);
     }
     function selectPropertyType(propertyTypeId) {
+        console.log('propertyTypeId',propertyTypeId);
+        
         // Lakukan sesuatu dengan ID tipe properti yang dipilih
         typeProperti = propertyTypeId;
         console.log('ID Tipe Properti yang Dipilih:', propertyTypeId);
@@ -359,6 +364,7 @@ loadAds(currentPage);
                         document.getElementById('adsListsWithDistance').innerHTML = '';
                         latitude = item.meta.lat;
                         longitude = item.meta.long;
+                        districtId = item.code;
                         loadAds(currentPage)
                         console.log(item.meta); // Menampilkan item.meta di console saat diklik
                     });

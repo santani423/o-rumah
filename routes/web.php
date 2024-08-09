@@ -92,6 +92,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/control-panel/property/update/{slug}', [Front\ListingController::class, 'updatePropertiTentangProperti'])->name('control-panel.properti.update.tentang-properti');
         Route::put('/control-panel/property/update/media/utama/{ads_properties_id}', [Front\ListingController::class, 'setMediaUtama'])->name('control-panel.properti.set.media.utama');
         Route::put('/control-panel/property/update/media/update/{ads_properties_id}', [Front\ListingController::class, 'setMediaUpdate'])->name('control-panel.properti.set.media.update');
+        
+        Route::get('/control-panel/food/view/{slug}', [Front\ListingController::class, 'viewFood'])->name('control-panel.view.food');
+        Route::get('/control-panel/food/edit/{slug}', [Front\ListingController::class, 'viewFood'])->name('control-panel.food.edit.tentang-food');
+        Route::get('/control-panel/food/adres/edit/{slug}', [Front\ListingController::class, 'updateAdresFood'])->name('control-panel.food.edit.addres');
+        Route::put('/control-panel/food/update/media/utama/{ofoods_id}', [Front\ListingController::class, 'setMediaUtamaFood'])->name('control-panel.food.set.media.utama');
 
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');

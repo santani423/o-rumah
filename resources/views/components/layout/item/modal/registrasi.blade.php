@@ -72,6 +72,13 @@
                             <i class="fa fa-eye-slash toggle-password" data-toggle-target="ulang_password"></i>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="referral_code" class="col-12">Kode Referral (Opsional)</label>
+                        <div class="col-12">
+                            <input class="form-control" type="text" placeholder="Kode Referral" name="referral_code" id="referral_code">
+                            <span id="referral_code-error" class="text-danger"></span>
+                        </div>
+                    </div>
 
                     <div class="form-group text-center row m-t-20">
                         <div class="col-12">

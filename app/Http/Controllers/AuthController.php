@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReferralCode;
+use App\Models\ReferralUsage;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\WhatsAppService;
@@ -99,7 +101,8 @@ class AuthController extends Controller
             'password' => 'required|min:6',
             'pilihanType' => 'required',
             'nama' => 'required|string|max:255',
-            'noWa' => 'required|max:15'
+            'noWa' => 'required|max:15',
+            'referral_code' => 'nullable|string|exists:referral_codes,code',
         ]);
 
         $user = User::create([
@@ -110,7 +113,21 @@ class AuthController extends Controller
             'wa_phone' => $validatedData['noWa'],
             'type' => $validatedData['pilihanType'],
         ]);
-   
+    // Handle referral code usage if a code was provided
+    if (!empty($validatedData['referral_code'])) {
+        // Find the referral by code
+        $referral = ReferralCode::where('code', $validatedData['referral_code'])->first();
+
+        if ($referral) {
+            // Insert into referral_usage table
+            ReferralUsage::insert([
+                'referral_code_id' => $referral->id,
+                'user_id' => $user->id,
+                'created_at' => now(),
+                'reward_granted' => 0, // Default to not granted
+            ]);
+        }
+    }
         $nama = $validatedData['nama'];
         $namaAplikasi = 'O-Rumah';
         $message = "🎉 Halo! $nama 🎉

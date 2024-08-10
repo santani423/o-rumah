@@ -8,8 +8,11 @@ use App\Models\AdvertisingPoints;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
 use App\Models\Ads;
+use App\Models\ReferralCode;
 use App\Models\UserClickAdsHistory;
 use App\Models\UserPropertyStatistics;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 trait ToolService
 {
@@ -83,5 +86,42 @@ trait ToolService
             'active_properties' => $activeProperties,
             'non_active_properties' => $nonActiveProperties,
         ];
+    }
+    
+    public function getOrCreateReferralCode(int $userId): ReferralCode
+    {
+        // Check if a referral code already exists for the user
+        $referralCode = ReferralCode::where('user_id', $userId)->first();
+
+        if ($referralCode) {
+            // Return existing referral code
+            return $referralCode;
+        }
+
+        // Create a new referral code
+        $newReferralCode = new ReferralCode();
+        $newReferralCode->code = $this->generateUniqueCode();
+        $newReferralCode->user_id = $userId;
+        $newReferralCode->expires_at = Carbon::now()->addDays(30); // Set an expiration date if needed
+        $newReferralCode->status = 'active';
+        $newReferralCode->usage_limit = 1; // Default usage limit
+        $newReferralCode->times_used = 0;
+        $newReferralCode->save();
+
+        return $newReferralCode;
+    }
+
+    /**
+     * Generate a unique referral code.
+     *
+     * @return string
+     */
+    protected function generateUniqueCode(): string
+    {
+        do {
+            $code = Str::random(8); // Generate an 8-character random code
+        } while (ReferralCode::where('code', $code)->exists());
+
+        return $code;
     }
 }

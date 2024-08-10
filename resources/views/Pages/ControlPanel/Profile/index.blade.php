@@ -54,10 +54,25 @@
                         <span>Blocked: {{ $user->is_blocked ? 'Yes' : 'No' }}</span>
                     </div>
                     <h6 class="font-14 mt-0">Referral Code</h6>
-                    <p class="font-12">{{ $user->referral_code ?? 'SAMPLE-CODE-123' }}</p>
-                    <!-- QR Code Sample -->
+                    <div class="d-flex align-items-center">
+                        <p class="font-12 mb-0" id="referralCode">{{ $kodeRefer->code ?? 'SAMPLE-CODE-123' }}</p>
+                        <button class="btn btn-link" onclick="copyToClipboard('referralCode')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <p class="font-12 mb-0" id="referralLink">{{ route('referral', $kodeRefer->code) }}</p>
+                        <button class="btn btn-link" onclick="copyToClipboard('referralLink')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- QR Code -->
                     <div class="d-flex justify-content-center mt-3">
-                        <img src="https://via.placeholder.com/100x100?text=QR+Code" alt="QR Code" class="img-fluid qr-code-sample">
+                        <div id="qrCodeContainer"></div>
+                    </div>
+                    <!-- QR Code Download Button -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <a id="downloadQRCode" class="btn btn-primary">Download QR Code</a>
                     </div>
                     <!-- Edit Button -->
                     <div class="d-flex justify-content-center mt-3">
@@ -192,5 +207,53 @@
 
     @slot('js')
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function copyToClipboard(elementId) {
+            var text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard: ' + text);
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Generate QR Code with Logo
+        function generateQRCode() {
+            var referralLink = document.getElementById('referralLink').textContent;
+            var qrCodeContainer = document.getElementById('qrCodeContainer');
+            qrCodeContainer.innerHTML = ''; // Clear previous QR code
+
+            var qrCode = new QRCode(qrCodeContainer, {
+                text: referralLink,
+                width: 200,
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            setTimeout(function() {
+                var qrCanvas = qrCodeContainer.querySelector('canvas');
+                var ctx = qrCanvas.getContext('2d');
+                var img = new Image();
+                img.src = '{{ asset('path/to/logo.png') }}'; // Path to your logo image
+                img.onload = function() {
+                    var logoSize = 40;
+                    ctx.drawImage(img, (qrCanvas.width / 2) - (logoSize / 2), (qrCanvas.height / 2) - (logoSize / 2), logoSize, logoSize);
+
+                    // Download QR Code
+                    var downloadButton = document.getElementById('downloadQRCode');
+                    downloadButton.href = qrCanvas.toDataURL('image/png');
+                    downloadButton.download = 'referral_qr_code.png';
+                };
+            }, 500);
+        }
+
+        // Call generateQRCode on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQRCode();
+        });
+    </script>
     @endslot
 </x-Layout.Vertical.Master>

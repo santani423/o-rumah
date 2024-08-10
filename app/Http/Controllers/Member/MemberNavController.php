@@ -881,9 +881,12 @@ class MemberNavController extends Controller
 
     function profile()
     {
+
         // return view('Pages/Member/Profile/Index');  
         $user = Auth::user();
-        return view('Pages/ControlPanel/Profile/index',compact('user'));
+        $kodeRefer = $this->getOrCreateReferralCode($user->id);
+        // dd($kodeRefer);
+        return view('Pages/ControlPanel/Profile/index',compact('user','kodeRefer'));
     }
     function profileEdit()
     {

@@ -45,6 +45,8 @@ Route::post('/auth/in/registrasi', [AuthController::class, 'inRegistrasi'])->nam
 // Home and coming soon
 Route::get('/', [Front\HomeController::class, 'index'])->name('home');
 Route::get('/Referral/{code}', [Front\HomeController::class, 'Referral'])->name('referral');
+Route::post('/qr-code/upload', [Front\HomeController::class, 'uploadQr'])->name('qr-code.upload');
+
 Route::get('/coming-soon', [Front\HomeController::class, 'comingSoon'])->name('coming-soon');
 Route::get('/about-as', [Front\HomeController::class, 'aboutAs'])->name('aboutAs');
 

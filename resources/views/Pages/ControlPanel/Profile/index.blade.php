@@ -1,8 +1,8 @@
 <x-Layout.Vertical.Master>
     @slot('body')
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center flex-wrap">
         <!-- Profile Card -->
-        <div class="col-md-6 col-lg-6 col-xl-4">
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4 order-1 order-md-1">
             <div class="card">
                 <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->image) }}" alt="User Banner" />
                 <div class="card-body">
@@ -37,25 +37,25 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <span>{{ $user->address }}</span>
                     </div>
-                    <div class="info-item">
+                    <!-- <div class="info-item">
                         <i class="fas fa-clock"></i>
                         <span>Timezone: {{ $user->timezone }}</span>
-                    </div>
-                    <div class="info-item">
+                    </div> -->
+                    <!-- <div class="info-item">
                         <i class="fas fa-user-tag"></i>
                         <span>Type: {{ ucfirst($user->type) }}</span>
-                    </div>
-                    <div class="info-item">
+                    </div> -->
+                    <!-- <div class="info-item">
                         <i class="fas fa-toggle-on"></i>
                         <span>Status: {{ $user->is_active ? 'Active' : 'Inactive' }}</span>
-                    </div>
-                    <div class="info-item">
+                    </div> -->
+                    <!-- <div class="info-item">
                         <i class="fas fa-ban"></i>
                         <span>Blocked: {{ $user->is_blocked ? 'Yes' : 'No' }}</span>
-                    </div>
+                    </div> -->
                     <h6 class="font-14 mt-0">Referral Code</h6>
                     <div class="d-flex align-items-center">
-                        <p class="font-12 mb-0" id="referralCode">{{ $kodeRefer->code ?? 'SAMPLE-CODE-123' }}</p>
+                        <b class="font-12 mb-0" id="referralCode">{{ $kodeRefer->code ?? 'SAMPLE-CODE-123' }}</b>
                         <button class="btn btn-link" onclick="copyToClipboard('referralCode')">
                             <i class="fas fa-copy"></i>
                         </button>
@@ -72,7 +72,7 @@
                     </div>
                     <!-- QR Code Download Button -->
                     <div class="d-flex justify-content-center mt-3">
-                        <a id="downloadQRCode" class="btn btn-primary">Download QR Code</a>
+                        <button id="downloadQRCode" class="btn btn-primary">Download QR Code</button>
                     </div>
                     <!-- Edit Button -->
                     <div class="d-flex justify-content-center mt-3">
@@ -84,7 +84,7 @@
         <!-- end col -->
 
         <!-- Company Card -->
-        <div class="col-md-6 col-lg-6 col-xl-4">
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4 order-2 order-md-2">
             <div class="card">
                 <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->company_image) }}" alt="Company Banner" />
                 <div class="card-body">
@@ -108,9 +108,9 @@
                         <span>{{ $user->bank_number }}</span>
                     </div>
                     <!-- Edit Button -->
-                    <div class="d-flex justify-content-center mt-3">
+                    <!-- <div class="d-flex justify-content-center mt-3">
                         <a href="{{ route('member.profile.edit') }}" class="btn btn-primary">Edit Company</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -206,7 +206,6 @@
     @endslot
 
     @slot('js')
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         function copyToClipboard(elementId) {
@@ -228,31 +227,43 @@
                 text: referralLink,
                 width: 200,
                 height: 200,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
             });
 
+            // Wait until the QR code is generated
             setTimeout(function() {
                 var qrCanvas = qrCodeContainer.querySelector('canvas');
                 var ctx = qrCanvas.getContext('2d');
                 var img = new Image();
-                img.src = '{{ asset('path/to/logo.png') }}'; // Path to your logo image
+                img.src = "{{ asset('path/to/logo.png') }}"; // Path to your logo image
                 img.onload = function() {
                     var logoSize = 40;
                     ctx.drawImage(img, (qrCanvas.width / 2) - (logoSize / 2), (qrCanvas.height / 2) - (logoSize / 2), logoSize, logoSize);
-
-                    // Download QR Code
-                    var downloadButton = document.getElementById('downloadQRCode');
-                    downloadButton.href = qrCanvas.toDataURL('image/png');
-                    downloadButton.download = 'referral_qr_code.png';
                 };
             }, 500);
+        }
+
+        // Trigger download of QR Code as image
+        function downloadQRCode() {
+            var qrCanvas = document.querySelector('#qrCodeContainer canvas');
+            if (qrCanvas) {
+                var link = document.createElement('a');
+                link.href = qrCanvas.toDataURL('image/png');
+                link.download = 'referral_qr_code.png';
+                link.click();
+            } else {
+                alert('QR code not generated yet. Please refresh the page.');
+            }
         }
 
         // Call generateQRCode on page load
         document.addEventListener('DOMContentLoaded', function() {
             generateQRCode();
+
+            // Attach download function to button click
+            document.getElementById('downloadQRCode').addEventListener('click', downloadQRCode);
         });
     </script>
     @endslot

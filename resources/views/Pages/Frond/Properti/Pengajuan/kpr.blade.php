@@ -82,7 +82,7 @@
                                     <option value="">Select</option>
                                     @foreach ($bankUmum as $bk)
                                     <option value="{{ $bk['id'] }}" data-image="{{ asset('storage/' . $bk->image) }}">
-                                        {{ $bk['alias_name'] }}
+                                        <!-- {{ $bk['alias_name'] }} -->
                                     </option>
                                     @endforeach
                                 </select>
@@ -98,7 +98,7 @@
                                     <option value="">Select</option>
                                     @foreach ($bankBpr as $bk)
                                     <option value="{{ $bk['id'] }}" data-image="{{ asset('storage/' . $bk->image) }}">
-                                        {{ $bk['alias_name'] }}
+                                        <!-- {{ $bk['alias_name'] }} -->
                                     </option>
                                     @endforeach
                                 </select>

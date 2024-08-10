@@ -14,23 +14,35 @@ use App\Models\PlansTransaksi;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalance;
 use Illuminate\Support\Facades\DB;
-use App\Models\Payment;// Add the missing 'use' statement for the Auth facade at the top of the file
+use App\Models\Payment; // Add the missing 'use' statement for the Auth facade at the top of the file
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;// Import the Payment model
+use Carbon\Carbon; // Import the Payment model
 
 class PaymentController extends Controller
 {
     var $apiInstance = null;
     public function __construct()
     {
-        // simulasi transaksi
-        Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
+        // Retrieve the Xendit key from the environment variables
+        $xenditKey = env('XENDIT_KEY', 'default_key');
 
-        // public transaksi
-        // Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
+        // Set the Xendit key using the retrieved value
+        Configuration::setXenditKey($xenditKey);
+
+        // Initialize the Invoice API instance
         $this->apiInstance = new InvoiceApi();
     }
+
+    // public function __construct()
+    // {
+    //     // simulasi transaksi
+    //     Configuration::setXenditKey("xnd_development_V7NXvdfuefjPS3BYq3WyquzbQd4ZIo5NF3qXAT2QpncWTKYUNPx80Mm1e2QgbKEe");
+
+    //     // public transaksi
+    //     // Configuration::setXenditKey("xnd_production_86p2nx4F9Rd0x1gVL6w6FMnnfe0oWvsXBVGa1OYMu9qK52MoZLbQNnMkajzRDf7s");
+    //     $this->apiInstance = new InvoiceApi();
+    // }
     function create(Request $request)
     {
 
@@ -167,15 +179,12 @@ class PaymentController extends Controller
             $adBalance->save();
             $previousBalance = $plansTransaksi->max_ads_posted;
             $currentBalance = $plansTransaksi->max_ads_posted;
-
-           
         } else {
 
             $previousBalance = $adBalance->balance;
             $currentBalance = $previousBalance + $plansTransaksi->max_ads_posted;
             $adBalance->balance = $currentBalance;
             $adBalance->save();
-
         }
 
         $user->plan_id =  $plansTransaksi->plans_id;
@@ -189,6 +198,6 @@ class PaymentController extends Controller
             'current_balance' => $currentBalance,
             'description' => 'Top-up balance for advertising campaign.',
         ]);
-        return response()->json(['data' => 'Success' ]);
+        return response()->json(['data' => 'Success']);
     }
 }

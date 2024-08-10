@@ -72,11 +72,11 @@
                     </div>
                     <!-- QR Code Download Button -->
                     <div class="d-flex justify-content-center mt-3">
-                        <button id="downloadQRCode" class="btn btn-primary">Download QR Code</button>
+                        <button id="downloadQRCode" class="btn btn-success">Download QR Code</button>
                     </div>
                     <!-- Edit Button -->
                     <div class="d-flex justify-content-center mt-3">
-                        <a href="{{ route('member.profile.edit') }}" class="btn btn-primary">Edit Profile</a>
+                        <a href="{{ route('member.profile.edit') }}" class="btn btn-success">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                     </div>
                     <!-- Edit Button -->
                     <!-- <div class="d-flex justify-content-center mt-3">
-                        <a href="{{ route('member.profile.edit') }}" class="btn btn-primary">Edit Company</a>
+                        <a href="{{ route('member.profile.edit') }}" class="btn btn-success">Edit Company</a>
                     </div> -->
                 </div>
             </div>
@@ -120,12 +120,12 @@
 
     @slot('css')
     <style>
-        .card {
+        /* .card {
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-        }
+        } */
 
         .card-avatar {
             display: flex;
@@ -140,16 +140,16 @@
             border: 2px solid #ddd;
         }
 
-        .card-title {
+        /* .card-title {
             text-align: center;
             font-size: 22px;
             margin: 0;
             color: #333;
             font-weight: bold;
             letter-spacing: 0.5px;
-        }
+        } */
 
-        .info-item {
+        /* .info-item {
             display: flex;
             align-items: center;
             margin-top: 10px;
@@ -165,9 +165,9 @@
         .info-item span {
             font-size: 15px;
             font-weight: 500;
-        }
+        } */
 
-        .font-12 {
+        /* .font-12 {
             font-size: 13px;
             color: #555;
             font-style: italic;
@@ -179,7 +179,7 @@
             font-weight: bold;
             color: #007bff;
             text-transform: uppercase;
-        }
+        } */
 
         .qr-code-sample {
             width: 100px;
@@ -188,7 +188,7 @@
             border-radius: 10px;
         }
 
-        .btn-primary {
+        /* .btn-success {
             background-color: #007bff;
             border-color: #007bff;
             color: white;
@@ -196,12 +196,12 @@
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s ease;
-        }
+        } */
 
-        .btn-primary:hover {
+        /* .btn-primsuccesser {
             background-color: #0056b3;
             border-color: #0056b3;
-        }
+        } */
     </style>
     @endslot
 

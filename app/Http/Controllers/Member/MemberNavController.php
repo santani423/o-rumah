@@ -885,6 +885,12 @@ class MemberNavController extends Controller
         $user = Auth::user();
         return view('Pages/ControlPanel/Profile/index',compact('user'));
     }
+    function profileEdit()
+    {
+        return view('Pages/Member/Profile/Index');  
+        // $user = Auth::user();
+        // return view('Pages/ControlPanel/Profile/index',compact('user'));
+    }
 
     function memberProfileStore(Request $request)
     {

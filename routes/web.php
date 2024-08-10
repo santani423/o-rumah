@@ -265,7 +265,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/member/agen/favorit', 'favorit')->name('member.favorit');
         // member profile
         Route::get('/member/profile', 'profile')->name('member.profile');
-        Route::get('/member/profile/edit', 'profile')->name('member.profile.edit');
+        Route::get('/member/profile/edit', 'profileEdit')->name('member.profile.edit');
         Route::post('/member/profile', 'memberProfileStore')->name('member.profile.store');
     });
 

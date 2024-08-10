@@ -4,32 +4,64 @@
         <!-- Profile Card -->
         <div class="col-md-6 col-lg-6 col-xl-4">
             <div class="card">
-                <img class="card-img-top img-fluid" src="{{asset(Auth::user()->image)}}" alt="User Banner" />
+                <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->image) }}" alt="User Banner" />
                 <div class="card-body">
                     <div class="card-avatar">
                         <a class="card-thumbnail card-inner" href="#">
-                            <img class="rounded-circle img-thumbnail img-fluid" src="{{asset(Auth::user()->image)}}" height="64" width="64" alt="{{ $user->name }}" />
+                            <img class="rounded-circle img-thumbnail img-fluid" src="{{ asset(Auth::user()->image) }}" height="64" width="64" alt="{{ $user->name }}" />
                         </a>
                     </div>
                     <h6 class="card-title">{{ $user->name }}</h6>
                     <p class="font-12">{{ $user->bio }}</p>
                     <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <span>{{ $user->username }}</span>
+                    </div>
+                    <div class="info-item">
                         <i class="fas fa-phone"></i>
                         <span>{{ $user->phone }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>{{ $user->wa_phone }}</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-envelope"></i>
                         <span>{{ $user->email }}</span>
                     </div>
                     <div class="info-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Email Verified: {{ $user->email_verified_at ? $user->email_verified_at->format('d M Y') : 'Not Verified' }}</span>
+                    </div>
+                    <div class="info-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <span>{{ $user->address }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Timezone: {{ $user->timezone }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-user-tag"></i>
+                        <span>Type: {{ ucfirst($user->type) }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-toggle-on"></i>
+                        <span>Status: {{ $user->is_active ? 'Active' : 'Inactive' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-ban"></i>
+                        <span>Blocked: {{ $user->is_blocked ? 'Yes' : 'No' }}</span>
                     </div>
                     <h6 class="font-14 mt-0">Referral Code</h6>
                     <p class="font-12">{{ $user->referral_code ?? 'SAMPLE-CODE-123' }}</p>
                     <!-- QR Code Sample -->
                     <div class="d-flex justify-content-center mt-3">
                         <img src="https://via.placeholder.com/100x100?text=QR+Code" alt="QR Code" class="img-fluid qr-code-sample">
+                    </div>
+                    <!-- Edit Button -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="{{ route('member.profile.edit') }}" class="btn btn-primary">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -39,11 +71,11 @@
         <!-- Company Card -->
         <div class="col-md-6 col-lg-6 col-xl-4">
             <div class="card">
-                <img class="card-img-top img-fluid" src="{{asset(Auth::user()->company_image)}}" alt="Company Banner" />
+                <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->company_image) }}" alt="Company Banner" />
                 <div class="card-body">
                     <div class="card-avatar">
                         <a class="card-thumbnail card-inner" href="#">
-                            <img class="rounded-circle img-thumbnail img-fluid" src="{{asset(Auth::user()->company_image)}}" height="64" width="64" alt="{{ $user->company_name }}" />
+                            <img class="rounded-circle img-thumbnail img-fluid" src="{{ asset(Auth::user()->company_image) }}" height="64" width="64" alt="{{ $user->company_name }}" />
                         </a>
                     </div>
                     <h6 class="card-title">{{ $user->company_name }}</h6>
@@ -59,6 +91,10 @@
                     <div class="info-item">
                         <i class="fas fa-credit-card"></i>
                         <span>{{ $user->bank_number }}</span>
+                    </div>
+                    <!-- Edit Button -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="{{ route('member.profile.edit') }}" class="btn btn-primary">Edit Company</a>
                     </div>
                 </div>
             </div>
@@ -135,6 +171,21 @@
             height: 100px;
             border: 1px solid #ddd;
             border-radius: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
         }
     </style>
     @endslot

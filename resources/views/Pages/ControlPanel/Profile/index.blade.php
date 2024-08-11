@@ -4,11 +4,11 @@
         <!-- Profile Card -->
         <div class="col-12 col-md-6 col-lg-6 col-xl-4 order-1 order-md-1">
             <div class="card">
-                <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->image) }}" alt="User Banner" />
+                <img class="card-img-top img-fluid" src="@if(Auth::user()->image){{asset(Auth::user()->image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif" alt="User Banner" />
                 <div class="card-body">
                     <div class="card-avatar">
                         <a class="card-thumbnail card-inner" href="#">
-                            <img class="rounded-circle img-thumbnail img-fluid" src="{{ asset(Auth::user()->image) }}" height="64" width="64" alt="{{ $user->name }}" />
+                            <img class="rounded-circle img-thumbnail img-fluid" src="@if(Auth::user()->image){{asset(Auth::user()->image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif" height="64" width="64" alt="{{ $user->name }}" />
                         </a>
                     </div>
                     <h6 class="card-title">{{ $user->name }}</h6>
@@ -86,11 +86,11 @@
         <!-- Company Card -->
         <div class="col-12 col-md-6 col-lg-6 col-xl-4 order-2 order-md-2">
             <div class="card">
-                <img class="card-img-top img-fluid" src="{{ asset(Auth::user()->company_image) }}" alt="Company Banner" />
+                <img class="card-img-top img-fluid" src="@if(Auth::user()->image){{asset(Auth::user()->company_image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif" alt="Company Banner" />
                 <div class="card-body">
                     <div class="card-avatar">
                         <a class="card-thumbnail card-inner" href="#">
-                            <img class="rounded-circle img-thumbnail img-fluid" src="{{ asset(Auth::user()->company_image) }}" height="64" width="64" alt="{{ $user->company_name }}" />
+                            <img class="rounded-circle img-thumbnail img-fluid" src="@if(Auth::user()->company_image){{asset(Auth::user()->image)}}@else{{ asset('zenter/horizontal/assets/images/users/avatar-1.jpg')}}@endif" height="64" width="64" alt="{{ $user->company_name }}" />
                         </a>
                     </div>
                     <h6 class="card-title">{{ $user->company_name }}</h6>

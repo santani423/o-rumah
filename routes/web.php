@@ -95,8 +95,13 @@ Route::middleware('auth')->group(function () {
         Route::put('/control-panel/property/update/{slug}', [Front\ListingController::class, 'updatePropertiTentangProperti'])->name('control-panel.properti.update.tentang-properti');
         Route::put('/control-panel/property/update/media/utama/{ads_properties_id}', [Front\ListingController::class, 'setMediaUtama'])->name('control-panel.properti.set.media.utama');
         Route::put('/control-panel/property/update/media/update/{ads_properties_id}', [Front\ListingController::class, 'setMediaUpdate'])->name('control-panel.properti.set.media.update');
-        
+
         Route::get('/control-panel/food/view/{slug}', [Front\ListingController::class, 'viewFood'])->name('control-panel.view.food');
+        Route::post('/control-panel/food/{ads_id}/upload-images', [Front\ListingController::class, 'uploadImagesFood'])->name('control-panel.food.upload.images');
+        Route::post('/media/{id}/update', [Front\ListingController::class, 'updateMedia'])->name('media.update');
+        Route::get('/media/{id}/update/addres', [Front\ListingController::class, 'updateAddresFood'])->name('media.adres.food');
+        Route::delete('/media/{id}', [Front\ListingController::class, 'deleteMedia'])->name('media.delete');
+
         Route::get('/control-panel/food/edit/{slug}', [Front\ListingController::class, 'viewFood'])->name('control-panel.food.edit.tentang-food');
         Route::get('/control-panel/food/adres/edit/{slug}', [Front\ListingController::class, 'updateAdresFood'])->name('control-panel.food.edit.addres');
         Route::put('/control-panel/food/update/media/utama/{ofoods_id}', [Front\ListingController::class, 'setMediaUtamaFood'])->name('control-panel.food.set.media.utama');

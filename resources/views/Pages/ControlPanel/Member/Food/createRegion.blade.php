@@ -130,7 +130,7 @@
             </ul>
         </div>
     @endif
-    <x-Layout.Item.PropertyRegionForm :url="route('member.food.store-listing')">
+    <x-Layout.Item.PropertyRegionForm :url="$url? $url:route('member.food.store-listing')">
     </x-Layout.Item.PropertyRegionForm>
     @endslot
 </x-Layout.Vertical.Master>

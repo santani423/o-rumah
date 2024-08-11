@@ -711,6 +711,7 @@ class ListingController extends Controller
                 'id' => $item->id
             ];
         });
+        // dd($media);
         $BosterAds = BosterAds::join('boster_ads_t_ypes','boster_ads_t_ypes.id','=','boster_ads.booster_type_id')
         ->where('boster_ads.ads_id', $ads->ads_id)
         ->where('boster_ads.user_id', $auth->id)
@@ -750,12 +751,115 @@ class ListingController extends Controller
     $position = $this->getPropertyPosition($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $code, $slug);
 
        
-    // dd($ads['image']);
+    // dd($ads);
         return view('Pages/ControlPanel/Member/Food/view',compact('ads','navLink','media','bosterAdsType','BosterAds'));
     }
 
-    function updateAdresFood() {
-        
+    function uploadImagesFood(Request $request, $ads_id)
+    {
+        $images = $request->input('images');
+        $imageUrls = [];
+    
+        foreach ($images as $image) {
+            $image = str_replace('data:image/jpeg;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $fileName = Str::random(10) . '.jpg';
+            $disk = 'images/food/' . $ads_id ;
+            $imageName =$disk. '/' . $fileName;
+    
+            // Save image to storage
+            Storage::disk('public')->put($imageName, base64_decode($image));
+    
+            // Get image URL
+            $imageUrl = Storage::url($imageName);
+            $imageUrls[] = $imageUrl;
+    
+            // Save image details to the database
+            Media::create([
+                'model_type' => 'App\\Models\\YourModel', // Adjust to your actual model type
+                'model_id' => $ads_id,
+                'uuid' => (string) Str::uuid(),
+                'collection_name' => 'default', // Adjust if you have specific collections
+                'name' => pathinfo($fileName, PATHINFO_FILENAME),
+                'file_name' => $fileName,
+                'mime_type' => 'image/jpeg',
+                'disk' => 'storage/'.$disk,
+                'conversions_disk' => 'public', // Adjust if you have different conversion disks
+                'size' => Storage::disk('public')->size($imageName),
+                'manipulations' => json_encode([]), // Default manipulations
+                'custom_properties' => json_encode([]), // Default custom properties
+                'generated_conversions' => json_encode([]), // Default conversions
+                'responsive_images' => json_encode([]), // Default responsive images
+            ]);
+        }
+        session()->flash('success', 'Images uploaded successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Images uploaded successfully.',
+            'urls' => $imageUrls
+        ]);
+    }
+    
+    public function updateMedia(Request $request, $id)
+    {
+        $media = Media::findOrFail($id);
+        $newImage = $request->file('media');
+
+        $disk = str_replace('storage/', '', $media->disk);
+        // Delete the old image
+        Storage::disk('public')->delete($disk. '/' . $media->file_name);
+
+        // Process and store new image
+        $fileName = Str::random(10) . '.jpg';
+        $imageName = $disk . '/' . $fileName;
+
+        // Save new image to storage
+        Storage::disk('public')->put($imageName, file_get_contents($newImage));
+
+        // Update media record
+        $media->update([
+            'name' => pathinfo($fileName, PATHINFO_FILENAME),
+            'file_name' => $fileName,
+            'disk' => 'storage/'.$disk,
+            'size' => Storage::disk('public')->size($imageName),
+        ]);
+
+        return back()->with('success', 'Media updated successfully');
+    }
+
+    public function deleteMedia($id)
+    {
+        $media = Media::findOrFail($id);
+
+        // Delete image from storage
+        Storage::disk('public')->delete('images/food/' . $media->model_id . '/' . $media->file_name);
+
+        // Delete media record
+        $media->delete();
+
+        return back()->with('success', 'Media deleted successfully');
+    }
+    function updateAdresFood($slug) {
+        return view('Pages/ControlPanel/Member/Food/createRegion', [
+            'isUpdate' => false,
+            'url' => route('listing.media.adres.food',$slug)
+        ]);
+    }
+
+    function updateAddresFood(Request $request,$slug='') {
+        $ads = Ads::where('slug',$slug)->first();
+        // dd($request->adres);
+        $district = District::whereId($request->districtId)->first();
+        $ofood = Food::where('ads_id',$ads->id)->first();
+        $ofood->district = $district->name;
+        $ofood->districtId = $district->id;
+        $ofood->districtLocation_lat = $request->lat;
+        $ofood->districtLocation_lat = $request->long;
+        $ofood->kawasan = $request->area;
+        $ofood->alamat = $request->alamat;
+        $ofood->save();
+
+        return redirect(route('listing.control-panel.view.food',$ads->slug))->with('success', 'Alamat Berhasil di ubah');
     }
 
     function setMediaUtamaFood(Request $request,$ofoods_id='') {

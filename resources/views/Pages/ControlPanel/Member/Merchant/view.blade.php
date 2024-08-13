@@ -252,7 +252,7 @@
                                 {!! $ads['description'] !!}
                                 <br>
                                 <br>
-                                <a href="{{ route('listing.control-panel.food.edit.tentang-food', $ads['slug']) }}">
+                                <a href="{{ route('listing.control-panel.Merchant.edit', $ads['slug']) }}">
                                     <button class="btn btn-turquoise">Edit</button>
                                 </a>
                             </div>
@@ -388,7 +388,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <a href="{{ route('listing.control-panel.food.edit.addres', $ads['slug']) }}">
+                                <a href="{{ route('listing.control-panel.marchant.edit.addres', $ads['slug']) }}">
                                     <button class="btn btn-turquoise">Edit</button>
                                 </a>
                             </div>

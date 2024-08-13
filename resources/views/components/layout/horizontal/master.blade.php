@@ -92,7 +92,7 @@
 
 
 
-<body class="bg-dark">
+<body class="bg-dark" translate="no">
 
     <!-- Loader -->
     <div id="preloader">

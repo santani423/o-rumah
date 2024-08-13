@@ -102,9 +102,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/media/{id}/update/addres', [Front\ListingController::class, 'updateAddresFood'])->name('media.adres.food');
         Route::delete('/media/{id}', [Front\ListingController::class, 'deleteMedia'])->name('media.delete');
 
-        Route::get('/control-panel/food/edit/{slug}', [Front\ListingController::class, 'viewFood'])->name('control-panel.food.edit.tentang-food');
-        Route::get('/control-panel/food/adres/edit/{slug}', [Front\ListingController::class, 'updateAdresFood'])->name('control-panel.food.edit.addres');
+        Route::get('/control-panel/food/edit/{slug}', [Front\ListingController::class, 'editFood'])->name('control-panel.food.edit.tentang-food');
+        Route::get('/control-panel/food/adres/edit/{slug}', [Front\ListingController::class, 'editAdresFood'])->name('control-panel.food.edit.addres');
+        Route::get('/control-panel/food/adres/update/{slug}', [Front\ListingController::class, 'updateAddresFood'])->name('control-panel.food.update.addres');
+        Route::put('/control-panel/food/update/{slug}', [Front\ListingController::class, 'updateFood'])->name('control-panel.food.update');
         Route::put('/control-panel/food/update/media/utama/{ofoods_id}', [Front\ListingController::class, 'setMediaUtamaFood'])->name('control-panel.food.set.media.utama');
+        
+        Route::get('/control-panel/marchant/edit/{slug}', [Front\ListingController::class, 'viewmarchant'])->name('control-panel.marchant.edit.tentang-marchant');
 
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');

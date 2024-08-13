@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Edit Food">
 
     @slot('css')
     <style>
@@ -168,33 +168,14 @@
                 <!-- <div class="btn-group float-right">
                     <a href="{{route('member.properti.create')}}" class="btn btn-turquoise">Pasang Iklan</a>
                 </div> -->
-                <h4 class="page-title">Tambah Food</h4>
+                <h4 class="page-title">Edit Food</h4>
             </div>
         </div>
         <div class="clearfix"></div>
     </div>
 
     <div class="row">
-        <div class="col-12">
-
-
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title font-20 mt-0">Lokasi</h4>
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <h4 class="card-title font-20 mt-0">{{$data['area']}}</h4>
-                            <p>{{$data['area']}}</p>
-                        </div>
-                        <div class="col-lg-6 text-right">
-                            <a href=" {{route('member.properti.create')}}" class="btn btn-turquoise">Ubah Lokasi</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        
         <div class="col-12">
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -205,43 +186,20 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{route('member.food.store.listing')}}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('listing.control-panel.food.update', $ads['ads_id']) }}" method="post" enctype="multipart/form-data">
 
                 @csrf
-                <input type="hidden" name="district_id" value="{{$data['districtId']}}">
-                <input type="hidden" name="district_name" value="{{$data['district']}}">
-                <input type="hidden" name="lat" value="{{$data['lat']}}">
-                <input type="hidden" name="lng" value="{{$data['lng']}}">
-                <input type="hidden" name="area" value="{{$data['area']}}">
-                <input type="hidden" name="adres" value="{{$data['adres']}}">
+                @method('PUT')
+                
 
 
-                <x-Layout.Item.PropertyAdForm>
-                </x-Layout.Item.PropertyAdForm>
+                <x-Layout.Item.Food.Edit.PropertyAdForm :ads="$ads">
+                </x-Layout.Item.Food.Edit.PropertyAdForm>
 
-                <x-Layout.Item.FormKategoriFood>
-                </x-Layout.Item.FormKategoriFood>
+                <!-- <x-Layout.Item.FormKategoriFood>
+                </x-Layout.Item.FormKategoriFood> -->
 
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title font-20 mt-0">Upload Dokumen</h4>
-                        @error('fileInput')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        <div id="dropzone" class="dropzone" onclick="document.getElementById('fileInput').click();">
-                            <input type="file" id="fileInput" name="fileInput[]" accept="image/*" multiple
-                                style="display: none;">
-                            <p>Drag file ke sini atau klik untuk memilih file</p>
-                        </div>
-                        <div id="preview"></div>
-                        <p>Jumlah gambar yang di-upload: <span id="fileCount">0</span></p>
-
-
-                        <div class="text-right">
-                            <button class="btn btn-turquoise">Simpan</button>
-                        </div>
-                    </div>
-                </div>
+               
         </div>
 
 

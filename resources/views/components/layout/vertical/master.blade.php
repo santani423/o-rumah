@@ -42,7 +42,7 @@
     </head>
 
 
-    <body class="fixed-left">
+    <body class="fixed-left" translate="no">
 
         <!-- Loader -->
         <div id="preloader"><div id="status"><div class="spinner"></div></div></div>

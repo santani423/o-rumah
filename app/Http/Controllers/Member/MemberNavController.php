@@ -188,7 +188,7 @@ class MemberNavController extends Controller
     {
         return view('Pages/ControlPanel/Member/Food/createRegion', [
             'isUpdate' => false,
-            'url' => 'member.food.store-listing'
+            'url' => route('member.food.store-listing')
         ]);
         // return Inertia::render('Member/Page/FoodAndMarchant/Create', );
     }
@@ -196,7 +196,7 @@ class MemberNavController extends Controller
     {
         return view('Pages/ControlPanel/Member/Merchant/createRegion', [
             'isUpdate' => false,
-            'url' => 'member.food.store-listing'
+            'url' => route('member.food.store-listing')
         ]);
     }
 

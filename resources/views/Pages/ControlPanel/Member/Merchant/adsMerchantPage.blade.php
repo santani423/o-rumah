@@ -40,12 +40,17 @@
             margin-right: 10px;
         }
     </style>
+    <!-- Summernote css -->
+    <link href="{{asset('zenter/vertical/assets/plugins/summernote/summernote-bs4.css')}}" rel="stylesheet" />
     @endslot
     @slot('js')
 
     <!--Wysiwig js-->
     <script src="{{asset('zenter/vertical/assets/plugins/tinymce/tinymce.min.js')}}"></script>
     <script src="{{asset('zenter/vertical/assets/pages/editor.init.js')}}"></script>
+     <!--Summernote js-->
+     <script src="{{asset('zenter/vertical/assets/plugins/summernote/summernote-bs4.min.js')}}"></script>
+    <script src="{{asset('zenter/vertical/assets/pages/summernote.init.js')}}"></script>
     <script>
         function formatRupiah(angka, prefix) {
             var number_string = angka.value.replace(/[^,\d]/g, '').toString(),

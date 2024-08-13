@@ -274,7 +274,7 @@
                                                     </a>
                                                 </div>
                                                 @if($ads['image'] != $md['url'])
-                                                    <form action="{{ route('listing.control-panel.food.set.media.utama', $ads['ofoods_id']) }}" method="post">
+                                                    <form action="{{ route('listing.control-panel.food.set.media.utama', $ads['omerchants_id']) }}" method="post">
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" name="url" value="{{ $md['url'] }}">

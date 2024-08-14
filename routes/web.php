@@ -53,7 +53,12 @@ Route::get('/about-as', [Front\HomeController::class, 'aboutAs'])->name('aboutAs
 // Regular routes
 Route::get('/properti', [Front\HomeController::class, 'latest'])->name('latest');
 Route::get('/lelang', [Front\HomeController::class, 'auction'])->name('auction');
+
 Route::get('/ofoods', [Front\HomeController::class, 'ofoods'])->name('ofoods');
+Route::get('/ofoods/listing', [Front\HomeController::class, 'ofoodsListing'])->name('ofoods.listing');
+
+
+
 Route::get('/ofoods/kategori/{kategori}', [Front\HomeController::class, 'ofoodsByKategori'])->name('ofoods.by.kategori');
 Route::get('/omerchant', [Front\HomeController::class, 'omerchant'])->name('omerchant');
 Route::get('/omerchant/kategori/{kategori}', [Front\HomeController::class, 'omerchantByKategori'])->name('omerchant.by.kategori');

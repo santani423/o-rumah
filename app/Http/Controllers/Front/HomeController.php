@@ -37,6 +37,7 @@ use App\Services\ToolService;
 use App\Services\PropertyRepository;
 use Illuminate\Support\Str;
 use App\Services\WhatsAppService;
+use App\Services\FoodService;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -45,6 +46,7 @@ class HomeController extends Controller
     use AdvertisingPointsManager;
     use PropertyRepository;
     use ToolService;
+    use FoodService;
     protected $whatsAppService;
     public function __construct(WhatsAppService $whatsAppService)
     {
@@ -247,6 +249,18 @@ class HomeController extends Controller
         //     'typeLike' => 'food'
         // ]);
     }
+
+
+    function ofoodsListing(Request $request){
+        $pageIndex = $request->input('page', 1); // Mengambil page index, default ke 1
+        $searchTitle = $request->input('search', ''); // Mengambil search title jika ada
+
+        // Mendapatkan list food ads dengan pagination dan pencarian
+        $ads = $this->getFoodAds($pageIndex, $searchTitle);
+        return view('Pages/Frond/Food/OFoodList', compact('ads'));
+    }
+
+
     function ofoodsByKategori(Request $request, $kategori = '')
     {
 

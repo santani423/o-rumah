@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Ads;
 use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +59,45 @@ trait FoodService
             ->paginate($perPage)->items();
 
         return $adsLists;
+    }
+
+   
+    public function getFoodAds($pageIndex = 1, $searchTitle = '')
+    {
+        // Query untuk mencari ads dengan tipe "food"
+        $query = Ads::where('type', 'food')
+            ->where('is_active', 1);
+
+        // Jika ada pencarian berdasarkan title
+        if (!empty($searchTitle)) {
+            $query->where('title', 'like', '%' . $searchTitle . '%');
+        }
+
+        // Pagination dengan 8 data per halaman
+        $ads = $query->paginate(8, ['*'], 'page', $pageIndex);
+
+        // Menambahkan informasi dari tabel ofoods
+        $ads->getCollection()->transform(function ($ad) {
+            $ofood = Food::where('ads_id', $ad->id)->first();
+
+            // Gabungkan data dari tabel ofoods ke dalam model ads
+            if ($ofood) {
+                $ad->district = $ofood->district;
+                $ad->districtId = $ofood->districtId;
+                $ad->districtLocation_lat = $ofood->districtLocation_lat;
+                $ad->districtLocation_long = $ofood->districtLocation_long;
+                $ad->kawasan = $ofood->kawasan;
+                $ad->alamat = $ofood->alamat;
+                $ad->working_days = $ofood->working_days;
+                $ad->image = $ofood->image;
+                $ad->price = $ofood->price;
+                $ad->shop_available = $ofood->shop_available;
+            }
+
+            return $ad;
+        });
+
+        return $ads;
     }
 
 

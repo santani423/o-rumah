@@ -355,7 +355,7 @@ showPosition(currentPage);
             </button>
         </form>
     </div> -->
-    <x-Item.PropertySearchBar beliSewa=false>
+    <x-Item.PropertySearchBar beliSewa=0>
     </x-Item.PropertySearchBar>
     <div class="row mt-3">
         <h2 class="text-center w-100 text-white">Cari Agen</h2> <!-- Judul baru -->

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Ads;
 use App\Models\Merchant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -60,5 +61,41 @@ trait MarchantService
         return $adsLists;
     }
 
+    public function getMarchantAds($pageIndex = 1, $searchTitle = '')
+    {
+        // Query untuk mencari ads dengan tipe "food"
+        $query = Ads::where('type', 'food')
+            ->where('is_active', 1);
 
+        // Jika ada pencarian berdasarkan title
+        if (!empty($searchTitle)) {
+            $query->where('title', 'like', '%' . $searchTitle . '%');
+        }
+
+        // Pagination dengan 8 data per halaman
+        $ads = $query->paginate(8, ['*'], 'page', $pageIndex);
+
+        // Menambahkan informasi dari tabel merchants
+        $ads->getCollection()->transform(function ($ad) {
+            $merchant = Merchant::where('ads_id', $ad->id)->first();
+
+            // Gabungkan data dari tabel merchants ke dalam model ads
+            if ($merchant) {
+                $ad->district = $merchant->district;
+                $ad->districtId = $merchant->districtId;
+                $ad->districtLocation_lat = $merchant->districtLocation_lat;
+                $ad->districtLocation_long = $merchant->districtLocation_long;
+                $ad->kawasan = $merchant->kawasan;
+                $ad->alamat = $merchant->alamat;
+                $ad->working_days = $merchant->working_days;
+                $ad->image = $merchant->image;
+                $ad->price = $merchant->price;
+                $ad->shop_available = $merchant->shop_available;
+            }
+
+            return $ad;
+        });
+
+        return $ads;
+    }
 }

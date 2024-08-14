@@ -38,6 +38,7 @@ use App\Services\PropertyRepository;
 use Illuminate\Support\Str;
 use App\Services\WhatsAppService;
 use App\Services\FoodService;
+use App\Services\MarchantService;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -47,6 +48,7 @@ class HomeController extends Controller
     use PropertyRepository;
     use ToolService;
     use FoodService;
+    use MarchantService;
     protected $whatsAppService;
     public function __construct(WhatsAppService $whatsAppService)
     {
@@ -302,6 +304,19 @@ class HomeController extends Controller
         // dd($kategori);
         return view('Pages/Frond/Marchent/marchentByKategori', compact('kategori'));
     }
+
+    function omerchantListing(Request $request){
+        $pageIndex = $request->input('page', 1); // Mengambil page index, default ke 1
+        $searchTitle = $request->input('search', ''); // Mengambil search title jika ada
+
+        // Mendapatkan list food ads dengan pagination dan pencarian
+        $ads = $this->getMarchantAds($pageIndex, $searchTitle);
+        // return view('Pages/Frond/Food/OFoodList', compact('ads'));
+        $html = view('Pages/Frond/Food/OFoodList', compact('ads'))->render();
+
+    return response()->json(['html' => $html]);
+    }
+
     public function lawHelper(Request $request)
     {
         $userLists = User::getAllLawHelper(paginate: 9, filters: $request->all());

@@ -56,12 +56,14 @@ Route::get('/lelang', [Front\HomeController::class, 'auction'])->name('auction')
 
 Route::get('/ofoods', [Front\HomeController::class, 'ofoods'])->name('ofoods');
 Route::get('/ofoods/listing', [Front\HomeController::class, 'ofoodsListing'])->name('ofoods.listing');
-
-
-
 Route::get('/ofoods/kategori/{kategori}', [Front\HomeController::class, 'ofoodsByKategori'])->name('ofoods.by.kategori');
+
+
+
 Route::get('/omerchant', [Front\HomeController::class, 'omerchant'])->name('omerchant');
 Route::get('/omerchant/kategori/{kategori}', [Front\HomeController::class, 'omerchantByKategori'])->name('omerchant.by.kategori');
+Route::get('/omerchant/listing', [Front\HomeController::class, 'omerchantListing'])->name('omerchant.listing');
+
 Route::get('/lbh', [Front\HomeController::class, 'lawHelper'])->name('law-helper');
 Route::get('/notaris', [Front\HomeController::class, 'notaris'])->name('notaris');
 Route::get('/agen', [Front\HomeController::class, 'agent'])->name('agent');

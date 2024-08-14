@@ -284,11 +284,11 @@ function appendAds(html, containerId) {
 
     function searchLocation() {
 
-        alert(88);
+        // alert(88);
     // const inputElement = document.querySelector('.location-input input');
     // const locationText = inputElement.value;
     // currentPage = 1;
-    console.log('Lokasi yang dicari:', locationText);
+    // console.log('Lokasi yang dicari:', locationText);
     
     document.getElementById('adsListsWithDistance').innerHTML = '';
     loadAds(currentPage);

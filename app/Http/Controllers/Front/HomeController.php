@@ -380,6 +380,23 @@ class HomeController extends Controller
         return view('Pages/Frond/AgenPage', compact('userLists'));
     }
 
+    public function getAgentsByDistrict(Request $request)
+{
+    $districtId = $request->input('district_id');
+
+    // Panggil service untuk mendapatkan daftar agen
+    $agents = $this->findAgentsByDistrictId($districtId);
+
+    // Render view menjadi string
+    $view = view('Pages/Frond/Properti/getAgentsByDistrict', compact('agents'))->render();
+
+    // Kembalikan view sebagai JSON
+    return response()->json([
+        'html' => $view
+    ]);
+}
+
+
     /**
      * Returns the agent detail page.
      *

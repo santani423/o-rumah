@@ -12,11 +12,12 @@ class PropertySearchBar extends Component
     /**
      * Create a new component instance.
      */
-    public $tipeProperti;
-    public function __construct()
+    public $tipeProperti,$beliSewa;
+    public function __construct($beliSewa=true)
     {
         $tipeProperti = PropertyType::orderBy('name','asc')->get();
         $this->tipeProperti = $tipeProperti;
+        $this->beliSewa = $beliSewa;
     }
 
     /**

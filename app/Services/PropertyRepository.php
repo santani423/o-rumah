@@ -11,7 +11,9 @@ use App\Models\AdvertisingPoints;
 use App\Models\AdvertisingalanceHistories;
 use App\Models\AdBalaceControl;
 use App\Models\bosterAdsTYpe;
+use App\Models\User;
 use App\Models\UserClickAdsHistory;
+use App\Models\WilayahKerja;
 use Carbon\Carbon;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Extended\Kecamatan;
@@ -86,11 +88,11 @@ trait PropertyRepository
         // dd($adsType);
 
         if ($adsType != null) {
-            if ($adsType === 'jual' || $adsType === 'Jual' ) {
+            if ($adsType === 'jual' || $adsType === 'Jual') {
                 $query->where(function ($subQuery) {
                     $subQuery->where('ads_properties.ads_type', 'jual')
-                             ->orWhere('ads_properties.ads_type', 'lelang')
-                             ->orWhere('ads_properties.ads_type', 'Lelang');
+                        ->orWhere('ads_properties.ads_type', 'lelang')
+                        ->orWhere('ads_properties.ads_type', 'Lelang');
                 });
             } else {
                 $query->where('ads_properties.ads_type', $adsType);
@@ -105,16 +107,16 @@ trait PropertyRepository
         // dd($query->get());
 
         $adsLists = $query->where(function ($query) use ($searchQuery) {
-                $query->where('ads.title', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
-            })
+            $query->where('ads.title', 'like', '%' . $searchQuery . '%')
+                ->orWhere('users.name', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads_properties.ads_type', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.status', 'like', '%' . $searchQuery . '%')
+                ->orWhere('ads.is_active', 'like', '%' . $searchQuery . '%');
+        })
             ->orderBy('created_at_ads', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
 
-            // dd($adsLists);       
+        // dd($adsLists);       
         // If no results are found, return an empty collection
         // if ($adsLists->isEmpty()) {
         //     $adsLists = collect([]);
@@ -273,5 +275,33 @@ trait PropertyRepository
         });
 
         return $position !== false ? $position + 1 : null;
+    }
+
+
+    public function findAgentsByDistrictId($districtId = null)
+    {
+        // Jika districtId tidak diberikan, tampilkan semua agen dengan paginasi
+        if (is_null($districtId)) {
+            // Tampilkan agen dengan paginasi, 8 agen per halaman
+            $agents = User::where('type', 'agent')
+                ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
+                ->paginate(8);
+
+            return $agents;
+        }
+
+        // Jika districtId diberikan, cari semua wilayah kerja berdasarkan district_id
+        $wilayahKerjas = WilayahKerja::where('district_id', $districtId)->get();
+        // dd($wilayahKerjas);
+        // Ambil user_id dari wilayah kerja yang ditemukan
+        $userIds = $wilayahKerjas->pluck('user_id');
+
+        // Cari user dengan tipe agent yang user_id nya ada di dalam hasil wilayah kerja
+        $agents = User::whereIn('id', $userIds)
+            ->where('type', 'agent')
+            ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
+            ->get();
+
+        return $agents;
     }
 }

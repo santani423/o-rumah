@@ -1,4 +1,5 @@
 
+@if($beliSewa)
 <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="tab-container mb-1">
@@ -7,15 +8,17 @@
                 </div>
             </div>
         </div>
-
+@endif
 
         <!-- Search Bar -->
         <div class="search-bar d-flex align-items-center">
             <div class="dropdown">
+            @if($beliSewa)
                 <button class="btn btn-light dropdown-toggle" type="button" id="propertyTypeDropdown"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-home mr-2"></i>Tipe Properti
                 </button>
+                @endif
                 <div class="dropdown-menu" aria-labelledby="propertyTypeDropdown">
                     @foreach($tipeProperti as $tipe)
                         <p class="dropdown-item"   onclick="selectPropertyType(`{{ $tipe->name }}`)">{{ $tipe->name }}</p>

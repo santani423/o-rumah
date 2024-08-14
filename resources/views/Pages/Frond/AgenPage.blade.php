@@ -1,20 +1,4 @@
 <x-Layout.Horizontal.Master title="Agent">
-    @slot('js')
-
-    <script>
-        $('#userDetailModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var name = button.data('name'); // Extract info from data-* attributes
-            var joinedAt = button.data('joinedat');
-            var companyName = button.data('companyname');
-
-            var modal = $(this);
-            modal.find('#userName').text(name);
-            modal.find('#userJoinedAt').text(joinedAt);
-            modal.find('#userCompanyName').text(companyName);
-        });
-    </script>
-    @endslot
     @slot('css')
     <style>
         /* Tabs */
@@ -34,14 +18,14 @@
             background-color: white;
         }
 
-        #beli-tab {
+        .active {
             color: white;
-            background-color: #2ECC71;
+            background-color: #47C8C5;
         }
 
-        .tab:not(#beli-tab):hover {
-            background-color: #f0f0f0;
-        }
+        /* .tab:not(#beli-tab):hover {
+        background-color: #f0f0f0;
+    } */
 
         /* Search Bar */
         .search-bar {
@@ -49,6 +33,10 @@
             border-radius: 25px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 10px;
+        }
+
+        .btn-success {
+            background-color: #f0f0f0;
         }
 
         .dropdown-toggle {
@@ -72,41 +60,17 @@
             flex-grow: 1;
         }
 
-        .btn-success {
-            background-color: #2ECC71;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-success i {
-            color: white;
-        }
-
-        .btn-success:focus {
-            box-shadow: none;
-        }
-
         .card {
             width: calc(100% - 4px);
-            /* Mengurangi total lebar dengan 2px padding di setiap sisi */
             margin: 2px;
-            /* Padding eksternal untuk card */
         }
 
-        /* Styling for the navbar  */
+        /* Styling for the navbar */
         .nav-container {
             display: flex;
             justify-content: center;
-            /* Menengahkan item-item secara horizontal */
             align-items: center;
-            /* Menengahkan item-item secara vertikal */
             height: 100%;
-            /* Mengatur tinggi container agar penuh */
         }
 
         /* Styling for the navbar links */
@@ -120,43 +84,266 @@
             display: flex;
             justify-content: space-between;
             overflow-x: auto;
-            /* Memungkinkan scrolling horizontal */
             white-space: nowrap;
-            /* Mencegah item dari wrapping ke baris baru */
         }
 
         .nav-item {
             flex: 0 0 auto;
-            /* Mencegah item dari stretching */
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 0 0 auto;
             text-align: center;
         }
 
-        .reduced-margin .card {
-            margin: 0 5px;
-            /* Mengurangi margin kiri dan kanan */
+        /* Carousel */
+        .carousel-item {
+            text-align: center;
         }
 
-        .rounded-circle {
-            border-radius: 50%;
-            width: 64px;
-            height: 64px;
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .carousel-inner {
+            border-radius: 15px;
+            overflow: hidden;
         }
     </style>
     <style>
-        .small {
-            font-size: 0.1em;
-            /* Atau ukuran yang lebih kecil sesuai kebutuhan */
+        .sample-location-item {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .sample-location-item:hover {
+            background-color: #f0f0f0;
         }
     </style>
+    <style>
+        .form-group {
+            margin-bottom: 1em;
+        }
 
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+
+        .location-input {
+            position: relative;
+        }
+
+        #sampleLocations {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background-color: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
     @endslot
+    @slot('js')
+    
+    <script>
+        let currentPage = 1;
+    const perPage = 8;
+    let latitude = null;
+    let longitude = null;
+    let isFirstLoad = true; 
+    let beliSewa = 'Jual';
+    let typeProperti = false;
+    let districtId = null;
+        $('#userDetailModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var name = button.data('name'); // Extract info from data-* attributes
+            var joinedAt = button.data('joinedat');
+            var companyName = button.data('companyname');
+
+            var modal = $(this);
+            modal.find('#userName').text(name);
+            modal.find('#userJoinedAt').text(joinedAt);
+            modal.find('#userCompanyName').text(companyName);
+        });
+    </script>
+    
+    <script>
+        window.onload = function() {
+            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
+        };
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+
+            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+
+            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
+            // $('#adsListsWithDistance').load("{{ route('agent.getAgentsByDistrict') }}" + '?latitude=' + lat + '&longitude=' + long + '&search=' + searchQuery);
+            $.ajax({
+                        url: "{{ route('agent.getAgentsByDistrict') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("location").innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("location").innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("location").innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("location").innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+        $(document).ready(function() {
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault(); // Mencegah form dari submit secara default
+
+                var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+
+                // Mendapatkan lokasi pengguna untuk dimasukkan dalam pencarian
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+
+                    // AJAX request untuk memuat data ke adsListsWithDistance
+                    $.ajax({
+                        url: "{{ route('agent.getAgentsByDistrict') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+ <script>
+        function showSampleLocations(inputValue) {
+            if (inputValue.length < 2) {
+                document.getElementById('sampleLocations').innerHTML = '';
+                return;
+            }
+          
+            const url = `{{route('tool.searchDistricts')}}`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // if you are using Laravel with CSRF protection
+                },
+                body: JSON.stringify({ keyword: inputValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const sampleLocationsDiv = document.getElementById('sampleLocations');
+                sampleLocationsDiv.innerHTML = '';
+
+                data.forEach(item => {
+                    const locationItem = document.createElement('div');
+                    locationItem.textContent = item.name;
+                    locationItem.classList.add('sample-location-item');
+                    
+                    // Tambahkan event listener untuk menangani klik
+                    locationItem.addEventListener('click', () => {
+                    
+                        document.getElementById('searchLok').value = item.name;
+                        document.getElementById('sampleLocations').innerHTML = '';
+                        document.getElementById('adsListsWithDistance').innerHTML = '';
+                        latitude = item.meta.lat;
+                        longitude = item.meta.long;
+                        districtId = item.id;
+                        // showPosition(currentPage)
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+
+                    // AJAX request untuk memuat data ke adsListsWithDistance
+                    $.ajax({
+                        url: "{{ route('agent.getAgentsByDistrict') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            district_id: districtId
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+                });
+                        console.log(item.meta); // Menampilkan item.meta di console saat diklik
+                    });
+                    
+                    sampleLocationsDiv.appendChild(locationItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching location data:', error);
+            });
+
+        }
+        function searchLocation() {
+
+// alert(88);
+// const inputElement = document.querySelector('.location-input input');
+// const locationText = inputElement.value;
+// currentPage = 1;
+console.log('Lokasi yang dicari:', locationText);
+
+document.getElementById('adsListsWithDistance').innerHTML = '';
+showPosition(currentPage);
+
+}
+    </script>
+    @endslot
+
     @slot('body')
     <!-- Search Bar -->
-    <div class="search-bar d-flex align-items-center mt-3">
+    <!-- <div class="search-bar d-flex align-items-center mt-3">
         <form action="{{ route('agent.search.page') }}" method="post" class="d-flex align-items-center w-100">
             @csrf
             <div class="location-input flex-grow-1 ml-3">
@@ -167,19 +354,15 @@
                 <i class="fas fa-search"></i>
             </button>
         </form>
-    </div>
-
+    </div> -->
+    <x-Item.PropertySearchBar beliSewa=false>
+    </x-Item.PropertySearchBar>
     <div class="row mt-3">
         <h2 class="text-center w-100 text-white">Cari Agen</h2> <!-- Judul baru -->
-        @foreach ($userLists as $user)
-        <x-Layout.Item.UserProfileCard :user="$user">
-            @slot('content')
-            <x-Tool.UserPropertyStatistics :userId="$user->id" />
-            @endslot
-        </x-Layout.Item.UserProfileCard>
-        @endforeach
+         
         <!--end col-->
     </div>
+    <div class="row mt-3" id="adsListsWithDistance"></div>
 
     <!-- Modal Detail User -->
     <div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">

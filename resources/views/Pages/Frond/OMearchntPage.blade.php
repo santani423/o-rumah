@@ -231,7 +231,7 @@
                         :linkTujuan="route('omerchant-detail', $ads->slug)">
                     </x-Layout.Item.ProductItem>
 
-                </div><!-- end col -->
+                </div> 
             @endforeach
 
         </div>

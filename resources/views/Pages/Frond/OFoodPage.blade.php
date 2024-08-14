@@ -1,6 +1,6 @@
 <x-Layout.Horizontal.Master>
 
-@slot('css')
+    @slot('css')
     <style>
         /* Tabs */
         .tab-container {
@@ -113,26 +113,45 @@
         }
     </style>
     @endslot
+
     @slot('js')
     <script>
+        window.onload = function() {
+            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
+        };
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
                 document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-
             }
         }
 
         function showPosition(position) {
             var lat = position.coords.latitude;
             var long = position.coords.longitude;
-            document.getElementById("location").innerHTML = "Latitude: " + lat + "<br>Longitude: " + long;
 
-            // Menggunakan load() untuk memuat konten dari URL yang disediakan
-            $('#adsListsWithDistance').load("{{ route('tool.getAdsListsWithDistance') }}" + '?latitude=' + lat + '&longitude=' + long);
+            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+
+            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
+            // $('#adsListsWithDistance').load("{{ route('ofoods.listing') }}" + '?latitude=' + lat + '&longitude=' + long + '&search=' + searchQuery);
+            $.ajax({
+                        url: "{{ route('ofoods.listing') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
         }
-
 
         function showError(error) {
             switch (error.code) {
@@ -150,17 +169,39 @@
                     break;
             }
         }
+        $(document).ready(function() {
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault(); // Mencegah form dari submit secara default
 
-        window.onload = function () {
-            getLocation();
-        };
+                var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
 
-        function linkBanner(link){
-    
-    window.location.href = link;
-}
+                // Mendapatkan lokasi pengguna untuk dimasukkan dalam pencarian
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+
+                    // AJAX request untuk memuat data ke adsListsWithDistance
+                    $.ajax({
+                        url: "{{ route('ofoods.listing') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+                });
+            });
+        });
     </script>
     @endslot
+
     @slot('body')
 
     <div class="row">
@@ -168,15 +209,15 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @foreach ($bannerLists as $key => $bnr)
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key == 0) class="active" @endif>
-                        </li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{$key}}" @if($key==0) class="active" @endif>
+                    </li>
                     @endforeach
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     @foreach ($bannerLists as $key => $bnr)
-                        <div class="carousel-item @if($key == 0) active @endif" onclick="linkBanner(`{{$bnr->url}}`)">
-                            <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
-                        </div>
+                    <div class="carousel-item @if($key == 0) active @endif" onclick="linkBanner(`{{$bnr->url}}`)">
+                        <img class="d-block img-fluid" src="{{asset('storage/' . $bnr->image)}}" alt="First slide">
+                    </div>
                     @endforeach
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -190,57 +231,47 @@
             </div>
         </div>
     </div>
+
     <div class="container mt-5">
         <!-- Search Bar -->
         <div class="search-bar d-flex align-items-center">
-
-            <div class="location-input flex-grow-1 ml-3">
-                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-                <input type="text" class="form-control border-0" placeholder="Lokasi, keyword ">
-            </div>
-            <button class="btn btn-success ml-3">
-                <i class="fas fa-search"></i>
-            </button>
+            <form id="searchForm" class="d-flex flex-grow-1">
+                <div class="location-input flex-grow-1 ml-3">
+                    <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
+                    <input type="text" name="search" class="form-control border-0" placeholder="Lokasi, keyword" value="{{ request('search') }}">
+                </div>
+                <button type="submit" class="btn btn-success ml-3">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
-        <!-- end Slider -->
+
+
+        <!-- Categories -->
         <div class="card mt-2">
             <div class="card-body">
                 <div class="nav-container">
                     <div class="nav-links row">
-                    @foreach ($kategori as $ktg)
+                        @foreach ($kategori as $ktg)
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('ofoods.by.kategori', $ktg->slug) }}" class="text-wrap text-break">
                                 <img src="@if($ktg->gambar) {{asset($ktg->gambar)}} @else {{asset('/assets/icons/homeIconbg6.png')}} @endif" class="menu-icon" alt=""><br>{{ $ktg->nama }}
                             </a>
                         </div>
-                    @endforeach
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
 
-
+        <!-- Recommendations -->
         <div class="row mt-5">
             <div class="col-12">
                 <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
             </div>
-            @foreach($adsLists as $ads)
-                <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
-
-                    <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
-                        :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :type="$ads->type" :lt="$ads->lt" :address="$ads->address"
-                        :linkTujuan="route('ofood-detail', $ads->slug)">
-                        @if (floor($ads->distance) > 0)
-                <div class="card-link d-flex align-items-center mr-3">
-                    <i class="bi bi-geo-alt-fill"></i>
-                    <span class="ml-2">{{ floor($ads->distance) }} Km</span>
-                </div>
-            @endif
-                    </x-Layout.Item.ProductItem>
-
-                </div><!-- end col -->
-            @endforeach
-
+        </div>
+        <div id="adsListsWithDistance" class="row mt-5">
+            <!-- List of food ads will be loaded here -->
         </div>
     </div>
 

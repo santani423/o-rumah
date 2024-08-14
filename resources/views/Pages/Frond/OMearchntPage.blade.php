@@ -114,23 +114,42 @@
     @endslot
     @slot('js')
     <script>
+        window.onload = function() {
+            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
+        };
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
                 document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-
             }
         }
 
         function showPosition(position) {
             var lat = position.coords.latitude;
             var long = position.coords.longitude;
-            // Menggunakan load() untuk memuat konten dari URL yang disediakan
 
-            $('#adsListsWithDistance').load("{{ route('tool.getMarchantListsWithDistance') }}" + '?latitude=' + lat + '&longitude=' + long);
+            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+
+            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
+            // $('#adsListsWithDistance').load("{{ route('ofoods.listing') }}" + '?latitude=' + lat + '&longitude=' + long + '&search=' + searchQuery);
+            $.ajax({
+                        url: "{{ route('omerchant.listing') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
         }
-
 
         function showError(error) {
             switch (error.code) {
@@ -148,14 +167,36 @@
                     break;
             }
         }
+        $(document).ready(function() {
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault(); // Mencegah form dari submit secara default
 
-        window.onload = function () {
-            getLocation();
-        };
-        function linkBanner(link){
-    
-    window.location.href = link;
-}
+                var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+
+                // Mendapatkan lokasi pengguna untuk dimasukkan dalam pencarian
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var long = position.coords.longitude;
+
+                    // AJAX request untuk memuat data ke adsListsWithDistance
+                    $.ajax({
+                        url: "{{ route('omerchant.listing') }}",
+                        type: 'GET',
+                        data: {
+                            latitude: lat,
+                            longitude: long,
+                            search: searchQuery
+                        },
+                        success: function(response) {
+                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+                });
+            });
+        });
     </script>
     @endslot
 
@@ -191,14 +232,15 @@
     <div class="container mt-5">
         <!-- Search Bar -->
         <div class="search-bar d-flex align-items-center">
-
-            <div class="location-input flex-grow-1 ml-3">
-                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-                <input type="text" class="form-control border-0" placeholder="Lokasi, keyword ">
-            </div>
-            <button class="btn btn-success ml-3">
-                <i class="fas fa-search"></i>
-            </button>
+            <form id="searchForm" class="d-flex flex-grow-1">
+                <div class="location-input flex-grow-1 ml-3">
+                    <!-- <i class="fas fa-map-marker-alt mr-2 text-warning"></i> -->
+                    <input type="text" name="search" class="form-control border-0" placeholder="Lokasi, keyword" value="{{ request('search') }}">
+                </div>
+                <button type="submit" class="btn btn-success ml-3">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
         <!-- end Slider -->
         <div class="card mt-2">
@@ -223,17 +265,11 @@
             <div class="col-12">
                 <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
             </div>
-            @foreach($adsLists as $ads)
-                <div class="col-md-6 col-lg-6 col-xl-3 mb-3">
+         
 
-                    <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk"
-                        :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :type="$ads->type" :lt="$ads->lt" :address="$ads->address"
-                        :linkTujuan="route('omerchant-detail', $ads->slug)">
-                    </x-Layout.Item.ProductItem>
-
-                </div> 
-            @endforeach
-
+        </div>
+        <div id="adsListsWithDistance" class="row mt-5">
+            <!-- List of food ads will be loaded here -->
         </div>
     </div>
     @endslot

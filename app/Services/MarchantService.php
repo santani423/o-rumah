@@ -64,7 +64,7 @@ trait MarchantService
     public function getMarchantAds($pageIndex = 1, $searchTitle = '')
     {
         // Query untuk mencari ads dengan tipe "food"
-        $query = Ads::where('type', 'food')
+        $query = Ads::where('type', 'merchant')
             ->where('is_active', 1);
 
         // Jika ada pencarian berdasarkan title

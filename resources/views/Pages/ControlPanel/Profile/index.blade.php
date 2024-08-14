@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Profile">
     @slot('body')
     <div class="d-flex justify-content-center flex-wrap">
         <!-- Profile Card -->

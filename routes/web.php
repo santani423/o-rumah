@@ -114,6 +114,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/control-panel/marchant/edit/{slug}', [Front\ListingController::class, 'editmarchant'])->name('control-panel.Merchant.edit');
         Route::put('/control-panel/marchant/update/{slug}', [Front\ListingController::class, 'updatemarchant'])->name('control-panel.Merchant.update');
 
+
+        Route::get('/control-panel/wilayah-kerja', [Front\ListingController::class, 'wilayahKerja'])->name('control-panel.wilayah-kerja');
+        Route::get('/control-panel/wilayah-kerja/create', [Front\ListingController::class, 'wilayahKerjaCreate'])->name('control-panel.wilayah-kerja.create');
+        Route::get('/control-panel/wilayah-kerja/store', [Front\ListingController::class, 'wilayahKerjaStore'])->name('control-panel.wilayah-kerja.store');
+
         Route::get('/get-district', [Front\ListingController::class, 'getDistrict'])->name('getDistrict');
         Route::get('/create-listing', [Front\ListingController::class, 'create'])->name('create');
         Route::get('/ads-properties', [Front\ListingController::class, 'adsProperties'])->name('adsProperties');

@@ -14,6 +14,7 @@ use App\Models\bosterAdsTYpe;
 use App\Models\Food;
 use App\Models\Merchant;
 use App\Models\TitipAds;
+use App\Models\WilayahKerja;
 use App\Services\AdvertisingPointsManager;
 use Carbon\Carbon;
 use Exception;
@@ -1177,6 +1178,51 @@ class ListingController extends Controller
         //     // Redirect dengan pesan error jika terjadi kesalahan
         //     // return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui iklan.');
         // }
+    }
+
+
+    function wilayahKerja(){
+        $user = Auth::user();
+        $wilayahKerjas = WilayahKerja::where('user_id',$user->id)->get();
+        return view('Pages/Member/WilayahKerja/index',compact('wilayahKerjas'));
+    }
+
+    function wilayahKerjaCreate() {
+        return view('Pages/Member/WilayahKerja/wilayahKerjaStore', [
+            'isUpdate' => false,
+            'url' => route('listing.control-panel.wilayah-kerja.store','99')
+        ]);
+        
+    }
+
+    function wilayahKerjaStore(Request $request){
+         // Validasi input
+         $validatedData = $request->validate([
+            'districtId' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'lat' => 'required|string|max:255',
+            'lng' => 'required|string|max:255',
+            'area' => 'required|string|max:255',
+            'adres' => 'required|string|max:255',
+        ]);
+
+        // Menyimpan data ke dalam database
+        $wilayahKerja = new WilayahKerja();
+        $wilayahKerja->user_id = auth()->user()->id; // atau masukkan ID user yang sesuai
+        $wilayahKerja->district_id = $validatedData['districtId'];
+        $wilayahKerja->district_name = $validatedData['district'];
+        $wilayahKerja->lat = $validatedData['lat'];
+        $wilayahKerja->lng = $validatedData['lng'];
+        $wilayahKerja->area = $validatedData['area'];
+        $wilayahKerja->address = $validatedData['adres'];
+
+        $wilayahKerja->save();
+        return redirect(route('listing.control-panel.wilayah-kerja'))->with('success', 'Berhasil Menambahkan Wilayah Kerja');
+        // Redirect atau response sesuai kebutuhan Anda
+        // return response()->json([
+        //     'message' => 'Data wilayah kerja berhasil ditambahkan',
+        //     'data' => $wilayahKerja
+        // ], 201);
     }
 
   

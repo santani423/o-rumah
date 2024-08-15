@@ -196,7 +196,7 @@ class MemberNavController extends Controller
     {
         return view('Pages/ControlPanel/Member/Merchant/createRegion', [
             'isUpdate' => false,
-            'url' => route('member.food.store-listing')
+            'url' => route('member.merchants.store-listing')
         ]);
     }
 

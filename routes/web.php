@@ -35,6 +35,12 @@ use App\Http\Controllers\Visitor\VisitorKprController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\QRCodeController;
+
+Route::get('/generate-qrcode', [QRCodeController::class, 'generate'])->name('qrcode.generate');
+Route::get('/download-qrcode', [QRCodeController::class, 'download'])->name('qrcode.download');
+Route::get('/generate-with-logo', [QRCodeController::class, 'generateWithLogo'])->name('qrcode.generateWithLogo');
+
 
 Route::get('/kirim-email', [MailController::class, 'index']);
 Route::get('/logout', [ProfileController::class, 'logout'])->name('auth.logout');

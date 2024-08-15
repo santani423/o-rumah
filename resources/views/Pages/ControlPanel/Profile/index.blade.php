@@ -66,14 +66,14 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <!-- QR Code -->
-                    <div class="d-flex justify-content-center mt-3">
+                    
+                    <!-- <div class="d-flex justify-content-center mt-3">
                         <div id="qrCodeContainer"></div>
                     </div>
-                    <!-- QR Code Download Button -->
+                     
                     <div class="d-flex justify-content-center mt-3">
                         <button id="downloadQRCode" class="btn btn-success">Download QR Code</button>
-                    </div>
+                    </div> -->
                     <!-- Edit Button -->
                     <div class="d-flex justify-content-center mt-3">
                         <a href="{{ route('member.profile.edit') }}" class="btn btn-success">Edit Profile</a>

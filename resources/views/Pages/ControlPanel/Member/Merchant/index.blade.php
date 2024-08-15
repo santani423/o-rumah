@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Merchent">
     @slot('body')
     <div class="row">
         <div class="col-sm-12">

@@ -312,7 +312,7 @@ class HomeController extends Controller
         // Mendapatkan list food ads dengan pagination dan pencarian
         $ads = $this->getMarchantAds($pageIndex, $searchTitle);
         // return view('Pages/Frond/Food/OFoodList', compact('ads'));
-        $html = view('Pages/Frond/Food/OFoodList', compact('ads'))->render();
+        $html = view('Pages/Frond/Marchent/omarchantList', compact('ads'))->render();
 
     return response()->json(['html' => $html]);
     }

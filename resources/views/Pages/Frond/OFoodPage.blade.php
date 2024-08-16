@@ -238,7 +238,7 @@
             <form id="searchForm" class="d-flex flex-grow-1">
                 <div class="location-input flex-grow-1 ml-3">
                     <!-- <i class="fas fa-map-marker-alt mr-2 text-warning"></i> -->
-                    <input type="text" name="search" class="form-control border-0" placeholder="Lokasi, keyword" value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control border-0" placeholder="Cari Food" value="{{ request('search') }}">
                 </div>
                 <button type="submit" class="btn btn-success ml-3">
                     <i class="fas fa-search"></i>

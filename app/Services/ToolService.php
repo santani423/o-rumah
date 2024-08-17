@@ -56,7 +56,7 @@ trait ToolService
         if (!$poin) {
             $poin = new AdBalance();
             $poin->user_id = $userId;
-            $poin->balance = 20;
+            $poin->balance = 0;
             $poin->save();
         }
 

@@ -38,6 +38,7 @@ class ListingController extends Controller
     use ToolService;
     public function index(Request $request)
     {
+       
         // $properties = AdsProperty::paginate(10)->items();
         $searchQuery = request()->input('search');
         // $searchQuery = "Ads 1";
@@ -99,6 +100,7 @@ class ListingController extends Controller
             // dd($properties);
             $titipAds = TitipAds::with(['owner', 'receiver','ads'])->where('user_receiver_id',$user->id)->where('status','pending')->get();
         $bosterAdsType = bosterAdsTYpe::where('type','property')->get();
+        // dd(88);
        $gcu = $this->getOrCreateUserAdBalance($user->id);
         // dd($gcu);
         return view('Pages/ControlPanel/Member/Properti/index', compact('properties','titipAds','bosterAdsType','gcu'));

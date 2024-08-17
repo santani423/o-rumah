@@ -102,6 +102,7 @@ Route::get('/properti/{slug}/ajukan-kpr', [Front\HomeController::class, 'kprRegi
 Route::middleware('auth')->group(function () {
     Route::prefix('listing')->name('listing.')->group(function () {
         Route::get('', [Front\ListingController::class, 'index'])->name('index');
+        Route::get('/home', [Front\ListingController::class, 'home'])->name('home');
         Route::get('/control-panel/property/view/{slug}', [Front\ListingController::class, 'viewProperty'])->name('control-panel.view.property');
         Route::get('/control-panel/property/edit/{slug}', [Front\ListingController::class, 'editPropertiTentangProperti'])->name('control-panel.properti.edit.tentang-properti');
         Route::get('/control-panel/addres/edit/{slug}', [Front\ListingController::class, 'editPropertiAddres'])->name('control-panel.properti.edit.addres');

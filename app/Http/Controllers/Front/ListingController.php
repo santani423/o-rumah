@@ -36,6 +36,12 @@ class ListingController extends Controller
     use PropertyRepository;
     use AdvertisingPointsManager;
     use ToolService;
+
+    function home(Request $request){
+        return view('Pages/ControlPanel/Home/index');
+    }
+
+
     public function index(Request $request)
     {
        

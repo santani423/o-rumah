@@ -14,6 +14,7 @@ class PropertyAdForm extends Component
     public $ads;
     public function __construct($ads=[])
     {
+        // dd($ads);
         $this->ads = $ads;
     }
 

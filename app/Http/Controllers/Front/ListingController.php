@@ -705,10 +705,10 @@ class ListingController extends Controller
     function viewFood(Request $request,$slug='') {
         $auth = Auth::user();
         $ads = Ads::where('ads.slug', $slug)
-        ->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')
-        ->join('id_districts','id_districts.id','=','ofoods.districtId')
-        ->join('id_cities','id_cities.code','=','id_districts.city_code')
-        ->join('id_provinces','id_provinces.code','=','id_cities.province_code')
+        ->leftjoin('ofoods', 'ofoods.ads_id', '=', 'ads.id')
+        ->leftjoin('id_districts','id_districts.id','=','ofoods.districtId')
+        ->leftjoin('id_cities','id_cities.code','=','id_districts.city_code')
+        ->leftjoin('id_provinces','id_provinces.code','=','id_cities.province_code')
         ->select('ads.*', 'ofoods.*', 'ads.id as ads_id','ofoods.id as ofoods_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
         ->first();
         // dd($ads);
@@ -1060,11 +1060,11 @@ class ListingController extends Controller
     function editmarchant(Request $request,$slug=''){
         $auth = Auth::user();
         $ads = Ads::where('ads.slug', $slug)
-        ->leftjoin('ofoods', 'ofoods.ads_id', '=', 'ads.id')
-        ->leftjoin('id_districts','id_districts.id','=','ofoods.districtId')
+        ->leftjoin('omerchants', 'omerchants.ads_id', '=', 'ads.id')
+        ->leftjoin('id_districts','id_districts.id','=','omerchants.districtId')
         ->leftjoin('id_cities','id_cities.code','=','id_districts.city_code')
         ->leftjoin('id_provinces','id_provinces.code','=','id_cities.province_code')
-        ->select('ads.*', 'ofoods.*', 'ads.id as ads_id','ofoods.id as ofoods_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
+        ->select('ads.*', 'omerchants.*', 'ads.id as ads_id','omerchants.id as omerchants_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
         ->first();
         // dd($ads);
         $media = Media::where('model_id', $ads->ads_id)

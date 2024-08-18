@@ -162,4 +162,20 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasOne(UserPropertyStatistics::class);
     }
+
+    public function adss()
+    {
+        return $this->hasMany(Ads::class);
+    }
+
+    public function ofoods()
+    {
+        return $this->hasMany(Food::class, 'ads_id', 'id');
+    }
+
+    // Assuming there's a Merchant model too:
+    public function merchants()
+    {
+        return $this->hasMany(Merchant::class, 'ads_id', 'id');
+    }
 }

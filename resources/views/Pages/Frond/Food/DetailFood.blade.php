@@ -1,15 +1,18 @@
 <x-Layout.Horizontal.Master>
 
 
+    @slot('css')
+    <style></style>
+    @endslot
     @slot('js')
     <!-- Magnific popup -->
     <script src="{{asset('zenter/horizontal/assets/plugins/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('zenter/horizontal/assets/pages/lightbox.js')}}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const shareButton = document.querySelector('.btn-instagram.share-button');
             if (shareButton) {
-                shareButton.addEventListener('click', function () {
+                shareButton.addEventListener('click', function() {
                     const url = window.location.href;
                     navigator.clipboard.writeText(url).then(() => {
                         alert('URL telah disalin!');
@@ -21,9 +24,9 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const likeButton = document.getElementById('likeButton');
-            likeButton.addEventListener('click', function () {
+            likeButton.addEventListener('click', function() {
                 const addId = '{{$ads->ads_id}}'; // Pastikan ini adalah ID iklan yang benar
                 const agentId = "{{$agent['id']}}"; // Pastikan ini adalah ID agen yang benar
                 const type = '{{$typeFood}}'; // Pastikan ini adalah tipe yang benar
@@ -36,7 +39,7 @@
                         agentId: agentId,
                         type: type
                     },
-                    success: function (response) {
+                    success: function(response) {
                         // console.log(response);
                         document.getElementById('like-count').innerText = response.countLike;
                         if (response.like) {
@@ -45,7 +48,7 @@
                             likeButton.innerHTML = '<i class="mdi mdi-heart-outline"></i> Favoritkan';
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error('Gagal melakukan aksi:', error);
                     }
                 });
@@ -53,7 +56,7 @@
         });
     </script>
     @endslot
-    @slot('css') 
+    @slot('css')
     <link href="{{asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css')}}" rel="stylesheet"
         type="text/css" />
     @endslot
@@ -66,10 +69,12 @@
                     <div class="text-right">
                         <button type="button" id="likeButton"
                             class="btn btn-secondary m-b-10 m-l-10 waves-effect waves-light">
+                            @if(Auth::user())
                             @if($like)
-                                <i class="mdi mdi-heart"></i> Di Favoritkan
+                            <i class="mdi mdi-heart"></i> Di Favoritkan
                             @else
-                                <i class="mdi mdi-heart-outline"></i> Favoritkan
+                            <i class="mdi mdi-heart-outline"></i> Favoritkan
+                            @endif
                             @endif
                         </button>
                         <button type="button"

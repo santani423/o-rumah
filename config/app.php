@@ -186,4 +186,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'setDevCheting' => env('setDevCheting', false),
+
+
 ];

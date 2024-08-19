@@ -36,6 +36,11 @@ use App\Http\Controllers\Visitor\VisitorKprController;
 |
 */
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\ChatController;
+
+
+Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
 
 Route::get('/generate-qrcode', [QRCodeController::class, 'generate'])->name('qrcode.generate');
 Route::get('/download-qrcode', [QRCodeController::class, 'download'])->name('qrcode.download');

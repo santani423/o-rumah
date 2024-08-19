@@ -24,7 +24,7 @@ class LeftSidebar extends Component
         if (!$poin) {
             $poin = new AdBalance();
             $poin->user_id = Auth::user()->id;
-            $poin->balance = 0;
+            $poin->balance = 20;
             $poin->save();
         }
         $this->poin = $poin;

@@ -31,14 +31,17 @@ class ChatController extends Controller
             $imagePath = $request->file('image')->store('chat_images', 'public');
         }
 
-        // Simpan pesan ke dalam database
+        // // Simpan pesan ke dalam database
         $chat = Chat::create([
-            'user_id' => Auth::id(),
+            'user_id' => [157, 160][array_rand([157, 160])], // Pilih antara 157 atau 160
+            // 'user_id' => Auth::id(), // Uncomment jika ingin menggunakan Auth user_id
             'message' => $request->input('message'),
             'image' => $imagePath,
             'sent_at' => Carbon::now()
         ]);
+        
 
+        // return response()->json('', 201);
         return response()->json($chat, 201);
     }
 }

@@ -143,7 +143,7 @@ document.getElementById('sendMessage').addEventListener('click', function () {
     .then(response => response.json())
     .then(data => {
         // Display sent message in UI
-        displayMessage(data.message, data.image, getCurrentTime());
+        displayMessage(data.message, data.image, getCurrentTime(), data.user_id);
         document.getElementById('chatMessage').value = '';
         document.getElementById('chatImage').value = '';
         document.getElementById('imagePreview').classList.add('d-none');
@@ -152,21 +152,30 @@ document.getElementById('sendMessage').addEventListener('click', function () {
 });
 
 // Display Messages Function
-function displayMessage(message, image, time) {
+function displayMessage(message, image, time, chatId) {
     var chatMessages = document.querySelector('.chat-messages');
     var newMessage = document.createElement('div');
-    newMessage.classList.add('message', 'text-right');
+    
+    // Cek apakah chatId sama dengan 157
+    var isUserMessage = chatId === 157;
+    
+    // Menentukan posisi pesan (kiri atau kanan)
+    newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
+    
     newMessage.innerHTML = `
-        <small class="text-muted d-block text-right">${time}</small>
-        <div class="d-flex align-items-start justify-content-end mb-3">
-            <div class="bg-success text-white rounded p-2">
-                <p class="mb-0"><strong>You:</strong> ${message}</p>
+        <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
+        <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
+            ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
+            <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+                <p class="mb-0"><strong>${isUserMessage ? 'You' : 'Lawan Bicara'}:</strong> ${message}</p>
                 ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
             </div>
-            <img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">
+            ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
         </div>
     `;
     chatMessages.appendChild(newMessage);
+    
+    // Gulir otomatis ke bagian bawah
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
@@ -190,10 +199,22 @@ fetch('/chats')
     .then(response => response.json())
     .then(data => {
         data.forEach(chat => {
-            displayMessage(chat.message, chat.image, chat.sent_at);
+            displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
         });
+        // Gulir otomatis ke bagian bawah setelah pesan dimuat
+        var chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        document.getElementById('chatMessage').value = '';
+        document.getElementById('chatImage').value = '';
+        document.getElementById('imagePreview').classList.add('d-none');
     })
     .catch(error => console.error('Error:', error));
+
+// Auto-scroll ke bawah saat modal dibuka
+$('#devChetingModal').on('shown.bs.modal', function () {
+    var chatMessages = document.querySelector('.chat-messages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+});
 
 function navigateTo(url, isOrder = false) {
     if (isOrder) {
@@ -209,6 +230,7 @@ function navigateTo(url, isOrder = false) {
             },
             success: function(data) {
                 window.location.href = url;
+                
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);

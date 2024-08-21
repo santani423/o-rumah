@@ -42,7 +42,7 @@ class MemberNavController extends Controller
     use ToolService;
     function plans()
     {
-        $plans = DB::table('plans')->orderBy('name', 'asc')
+        $plans = DB::table('plans')->orderBy('sort_order', 'asc')
             ->paginate(10)->items();
         return view('Pages/ControlPanel/Member/Plan/index', ['plans' => $plans]);
     }

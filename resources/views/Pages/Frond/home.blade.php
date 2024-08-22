@@ -418,7 +418,7 @@
                             <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari LBH</a>
+                            <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Law Office</a>
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('notaris') }}"><img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Notaris</a>

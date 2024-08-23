@@ -309,6 +309,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/member/profile', 'profile')->name('member.profile');
         Route::get('/member/profile/edit', 'profileEdit')->name('member.profile.edit');
         Route::post('/member/profile', 'memberProfileStore')->name('member.profile.store');
+
+        Route::get('/member/chat', 'chat')->name('member.chat');
     });
 
     Route::controller(TransaksiController::class)->group(function () {

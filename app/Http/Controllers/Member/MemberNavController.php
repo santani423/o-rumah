@@ -23,6 +23,7 @@ use App\Models\Media;
 use App\Models\KategoriFood;
 use App\Models\KategoriMarchent;
 use App\Models\AdsProperty;
+use App\Models\GroupChat;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -927,5 +928,19 @@ class MemberNavController extends Controller
         $user->save();
         return back()->with('succsess', 'Berhasil Menyimpan Data Pefile');
 
+    }
+
+    function chat(){
+        $user = Auth::user();
+        $groupChats = GroupChat::select('groupchats.id', 'groupchats.user_id', 'groupchats.message', 'groupchats.image', 'groupchats.sent_at', 'groupchats.created_at')
+        ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+        ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
+        ->where('ads.user_id', $user->id) 
+        ->distinct('groupchats.id')
+        ->orderBy('groupchats.created_at', 'asc')
+        ->get();
+        // dd($groupChats);
+        return view('Pages/ControlPanel/Member/Chat/index',compact('groupChats'));
+    // return response()->json($groupChats);
     }
 }

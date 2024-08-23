@@ -177,9 +177,9 @@
                 </li>
                 @endif
                 <li>
-                    <a href="{{route('listing.control-panel.wilayah-kerja')}}" class="waves-effect">
+                    <a href="{{route('member.chat')}}" class="waves-effect">
                         <i class="mdi mdi-map-marker"></i>
-                        <span> Wilayah Kerja </span>
+                        <span> Chat </span>
                     </a>
                 </li>
                 <li>

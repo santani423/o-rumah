@@ -202,13 +202,15 @@
             reader.readAsDataURL(chatImage);
         }
     });
-    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID
-    var adsId = "{{ $ads->ads_id }}"; // Get the ads ID
+    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID 1427
+    var adsId = "{{ $ads->ads_id }}"; // Get the ads ID 177
     // Fetch All Chat Messages on Page Load
-    fetch('/chats?user_id=${userId}&ads_id=${adsId}')
+    
+    fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
         .then(response => response.json())
         .then(data => {
             data.forEach(chat => {
+                 
                 displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
             });
             // Gulir otomatis ke bagian bawah setelah pesan dimuat

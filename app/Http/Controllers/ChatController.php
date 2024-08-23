@@ -15,10 +15,10 @@ class ChatController extends Controller
     public function index(Request $request)
     {
          // Validate the request to ensure user_id and ads_id are provided
-    $this->validate($request, [
-        'user_id' => 'required|exists:users,id',
-        'ads_id' => 'required|exists:listgroupchats,ads_id',
-    ]);
+    // $this->validate($request, [
+    //     'user_id' => 'required|exists:users,id',
+    //     'ads_id' => 'required|exists:listgroupchats,ads_id',
+    // ]);
 
     // Retrieve the user_id and ads_id from the request
     $user_id = $request->input('user_id');
@@ -26,13 +26,13 @@ class ChatController extends Controller
 
     // Query to retrieve chat data based on user_id and ads_id, ordered by created_at in ascending order
     $chats = Chat::select('chats.*')
-        ->join('groupchats', 'chats.id', '=', 'groupchats.id')
-        ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+    ->join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
+        ->join('groupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
         ->where('groupchats.user_id', $user_id)
         ->where('listgroupchats.ads_id', $ads_id)
         ->orderBy('chats.created_at', 'asc') // Order by created_at in ascending order
         ->get();
-
+    // dd($chats);
     // Return the chat data as a JSON response
     return response()->json($chats, 200);
     }

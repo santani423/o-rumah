@@ -15,51 +15,51 @@
                     <!-- Tombol Ajukan KPR dan Lelang -->
                     <div class="col-lg-12 mb-3">
                         @if ($btnKpr)
-                            <a href="{{route('linkKpr', $ads->slug)}}" class="btn btn-success btn-block">
-                                <i class="fa fa-bank"></i> Ajukan KPR
-                            </a>
-                        @endif 
+                        <a href="{{route('linkKpr', $ads->slug)}}" class="btn btn-success btn-block">
+                            <i class="fa fa-bank"></i> Ajukan KPR
+                        </a>
+                        @endif
                         @if ($btnLelang)
-                            <a href="{{ route('auction-link', ['slug' => $ads->slug, 'username' => $agent['username']]) }}"
-                                class="btn btn-success btn-block">
-                                Ajukan Lelang
-                            </a>
+                        <a href="{{ route('auction-link', ['slug' => $ads->slug, 'username' => $agent['username']]) }}"
+                            class="btn btn-success btn-block">
+                            Ajukan Lelang
+                        </a>
                         @endif
                     </div>
                 </div>
                 <div class="row">
                     <!-- Tombol Telepon dan WhatsApp -->
                     @if($agent['phone'])
-                        <div class="col-lg-6 mb-3">
-                            <button class="btn btn-info btn-block" onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
-                                <i class="mdi mdi-phone"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'Telepon' }}
-                            </button>
-                        </div>
+                    <div class="col-lg-6 mb-3">
+                        <button class="btn btn-info btn-block" onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                            <i class="mdi mdi-phone"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'Telepon' }}
+                        </button>
+                    </div>
                     @endif
                     @if($agent['wa_phone'])
-                        @php 
-                            $wa_phone = (strpos($agent['wa_phone'], '08') === 0) 
-                                        ? '+62' . substr($agent['wa_phone'], 1) 
-                                        : $agent['wa_phone'];
-                        @endphp
-                        <div class="col-lg-6 mb-3">
-                            <button class="btn btn-success btn-block" 
-                                    onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'true' : 'false' }})">
-                                {!! $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
-                            </button>
-                        </div>
+                    @php
+                    $wa_phone = (strpos($agent['wa_phone'], '08') === 0)
+                    ? '+62' . substr($agent['wa_phone'], 1)
+                    : $agent['wa_phone'];
+                    @endphp
+                    <div class="col-lg-6 mb-3">
+                        <button class="btn btn-success btn-block"
+                            onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'true' : 'false' }})">
+                            {!! $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
+                        </button>
+                    </div>
                     @endif
                 </div>
 
                 <!-- Tombol Modal Jika setDevCheting true -->
                 @if(config('app.setDevCheting') === true)
-                    <div class="row">
-                        <div class="col-lg-12 mb-3">
-                            <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#devChetingModal">
-                                <i class="fa fa-warning"></i> Development Mode
-                            </button>
-                        </div>
+                <div class="row">
+                    <div class="col-lg-12 mb-3">
+                        <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#devChetingModal">
+                            <i class="fa fa-warning"></i> Development Mode
+                        </button>
                     </div>
+                </div>
                 @endif
             </div>
         </div>
@@ -91,6 +91,8 @@
                                 </label>
                                 <input type="file" id="chatImage" class="d-none" accept="image/*">
                             </div>
+                            <!-- Hidden input for ads_id -->
+                            <input type="hidden" id="adsId" value="{{ $ads->ads_id }}">
                             <!-- Text Input and Send Button -->
                             <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
                             <div class="input-group-append">
@@ -112,57 +114,64 @@
 @endif
 
 <script>
-// Function to get current time in HH:MM AM/PM format
-function getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
-    return `${hours}:${minutes} ${ampm}`;
-}
-
-// Handle Send Message
-document.getElementById('sendMessage').addEventListener('click', function () {
-    var message = document.getElementById('chatMessage').value;
-    var chatImage = document.getElementById('chatImage').files[0];
-
-    var formData = new FormData();
-    formData.append('message', message);
-    if (chatImage) {
-        formData.append('image', chatImage);
+    // Function to get current time in HH:MM AM/PM format
+    function getCurrentTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+        return `${hours}:${minutes} ${ampm}`;
     }
 
-    fetch('/chats', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Display sent message in UI
-        displayMessage(data.message, data.image, getCurrentTime(), data.user_id);
-        document.getElementById('chatMessage').value = '';
-        document.getElementById('chatImage').value = '';
-        document.getElementById('imagePreview').classList.add('d-none');
-    })
-    .catch(error => console.error('Error:', error));
-});
+    // Handle Send Message
+    // Handle Send Message
+    document.getElementById('sendMessage').addEventListener('click', function() {
+        var message = document.getElementById('chatMessage').value;
+        var chatImage = document.getElementById('chatImage').files[0];
+        var adsId = document.getElementById('adsId').value;
 
-// Display Messages Function
-function displayMessage(message, image, time, chatId) {
-    var chatMessages = document.querySelector('.chat-messages');
-    var newMessage = document.createElement('div');
-    
-    // Cek apakah chatId sama dengan 157
-    var isUserMessage = chatId === 157;
-    
-    // Menentukan posisi pesan (kiri atau kanan)
-    newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
-    
-    newMessage.innerHTML = `
+        var formData = new FormData();
+        formData.append('message', message);
+        formData.append('ads_id', adsId); // Include the ads_id
+        if (chatImage) {
+            formData.append('image', chatImage);
+        }
+
+        fetch('/chats', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('data',data);
+                
+                // Display sent message in UI
+                displayMessage(data.message, data.image, getCurrentTime(), data.user_id);
+                document.getElementById('chatMessage').value = '';
+                document.getElementById('chatImage').value = '';
+                document.getElementById('imagePreview').classList.add('d-none');
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+
+    // Display Messages Function
+    function displayMessage(message, image, time, chatId) {
+        var chatMessages = document.querySelector('.chat-messages');
+        var newMessage = document.createElement('div');
+
+        // Cek apakah chatId sama dengan 157
+        var isUserMessage = chatId == "{{Auth::user()->id}}";
+        console.log('isUserMessage auth', "{{Auth::user()->id}}")
+        console.log('isUserMessage chatId', chatId)
+        // Menentukan posisi pesan (kiri atau kanan)
+        newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
+
+        newMessage.innerHTML = `
         <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
         <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
             ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
@@ -173,72 +182,73 @@ function displayMessage(message, image, time, chatId) {
             ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
         </div>
     `;
-    chatMessages.appendChild(newMessage);
-    
-    // Gulir otomatis ke bagian bawah
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+        chatMessages.appendChild(newMessage);
 
-// Image Preview Functionality
-document.getElementById('chatImage').addEventListener('change', function () {
-    var chatImage = this.files[0];
-
-    if (chatImage && chatImage.type.startsWith('image/')) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = e.target.result;
-            imagePreview.classList.remove('d-none');
-        };
-        reader.readAsDataURL(chatImage);
+        // Gulir otomatis ke bagian bawah
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-});
 
-// Fetch All Chat Messages on Page Load
-fetch('/chats')
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(chat => {
-            displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
-        });
-        // Gulir otomatis ke bagian bawah setelah pesan dimuat
+    // Image Preview Functionality
+    document.getElementById('chatImage').addEventListener('change', function() {
+        var chatImage = this.files[0];
+
+        if (chatImage && chatImage.type.startsWith('image/')) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(chatImage);
+        }
+    });
+    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID
+    var adsId = "{{ $ads->ads_id }}"; // Get the ads ID
+    // Fetch All Chat Messages on Page Load
+    fetch('/chats?user_id=${userId}&ads_id=${adsId}')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(chat => {
+                displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
+            });
+            // Gulir otomatis ke bagian bawah setelah pesan dimuat
+            var chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            document.getElementById('chatMessage').value = '';
+            document.getElementById('chatImage').value = '';
+            document.getElementById('imagePreview').classList.add('d-none');
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Auto-scroll ke bawah saat modal dibuka
+    $('#devChetingModal').on('shown.bs.modal', function() {
         var chatMessages = document.querySelector('.chat-messages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        document.getElementById('chatMessage').value = '';
-        document.getElementById('chatImage').value = '';
-        document.getElementById('imagePreview').classList.add('d-none');
-    })
-    .catch(error => console.error('Error:', error));
+    });
 
-// Auto-scroll ke bawah saat modal dibuka
-$('#devChetingModal').on('shown.bs.modal', function () {
-    var chatMessages = document.querySelector('.chat-messages');
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-});
+    function navigateTo(url, isOrder = false) {
+        if (isOrder) {
+            $.ajax({
+                url: '{{ route("order") }}',
+                type: 'get',
+                data: {
+                    adsId: "{{$ads->ads_id}}"
+                },
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                success: function(data) {
+                    window.location.href = url;
 
-function navigateTo(url, isOrder = false) {
-    if (isOrder) {
-        $.ajax({
-            url: '{{ route("order") }}',
-            type: 'get',
-            data: {
-                adsId : "{{$ads->ads_id}}"
-            },
-            contentType: 'application/json',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            success: function(data) {
-                window.location.href = url;
-                
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            }
-        });
-    } else {
-        window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        } else {
+            window.location.href = url;
+        }
     }
-}
 </script>

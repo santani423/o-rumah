@@ -22,6 +22,7 @@ use App\Models\AdBalaceControl;
 use App\Models\UserClickAdsHistory;
 use App\Models\LinkeAds;
 use App\Models\KprFileBank;
+use App\Models\ListGroupChat;
 use ZipArchive;
 use Carbon\Carbon;
 use App\Models\WebsiteAdsSection;
@@ -543,7 +544,7 @@ class HomeController extends Controller
     public function ofoodDetail(Request $request, $slug)
     {
 
-
+        
         $ads = Ads::where('ads.slug', $slug)
             ->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')
             ->select('ads.*', 'ofoods.*', 'ads.id as ads_id')

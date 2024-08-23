@@ -40,6 +40,7 @@ use App\Http\Controllers\ChatController;
 
 
 Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+Route::get('/chats/getGroupChats', [ChatController::class, 'getGroupChats'])->name('chats.getGroupChats');
 Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
 
 Route::get('/generate-qrcode', [QRCodeController::class, 'generate'])->name('qrcode.generate');

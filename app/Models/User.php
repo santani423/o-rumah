@@ -11,6 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+use App\Models\GroupChat;
+use App\Models\ListGroupChat;
+
 class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
@@ -177,5 +180,21 @@ class User extends Authenticatable implements HasMedia
     public function merchants()
     {
         return $this->hasMany(Merchant::class, 'ads_id', 'id');
+    }
+
+     /**
+     * Relationship with GroupChat model.
+     */
+    public function groupChats()
+    {
+        return $this->hasMany(GroupChat::class);
+    }
+
+    /**
+     * Relationship with ListGroupChat model.
+     */
+    public function listGroupChats()
+    {
+        return $this->hasMany(ListGroupChat::class);
     }
 }

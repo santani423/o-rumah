@@ -36,8 +36,8 @@
                                                 No Image
                                             @endif
                                         </td>
-                                        <td>{{ $chat->sent_at }}</td>
-                                        <td>{{ $chat->created_at }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($chat->sent_at)->format('Y-m-d H:i') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($chat->created_at)->format('Y-m-d H:i') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -89,7 +89,7 @@ class MemberNavController extends Controller
             }
         ); */
 
-        return view('Pages/ControlPanel/Member/Food/index', ['food' => $ads->items(), 'url' => 'member.food.create-listing','gcu'=>$gcu]);
+        return view('Pages/ControlPanel/Member/Food/index', ['food' => $ads->items(), 'url' => 'member.food.create-listing', 'gcu' => $gcu]);
         // return Inertia::render('Member/Page/FoodAndMarchant/Index', ['ads' => $ads->items(), 'url' => 'member.food.create-listing']);
     }
     function merchants(Request $request)
@@ -100,7 +100,7 @@ class MemberNavController extends Controller
         $gcu = $this->getOrCreateUserAdBalance($user->id);
 
         $ads = Ads::where('user_id', $user->id)->join('omerchants', 'omerchants.ads_id', '=', 'ads.id')->paginate(100000);
-        return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing','gcu'=>$gcu]);
+        return view('Pages/ControlPanel/Member/Merchant/index', ['merchant' => $ads->items(), 'url' => 'member.food.create-listing', 'gcu' => $gcu]);
         // return Inertia::render('Member/Page/FoodAndMarchant/Index', ['ads' => $ads->items(), 'url' => 'member.merchants.create-listing']);
     }
 
@@ -312,14 +312,14 @@ class MemberNavController extends Controller
         }
         $merchnt->image = $media->disk . '/' . $media->file_name;
         $merchnt->save();
-        if($request->subkategori){
+        if ($request->subkategori) {
             foreach ($request->subkategori as $key => $subkategori) {
 
                 $KategoriMarchent = new KategoriMarchent();
                 $KategoriMarchent->kategori_id = $subkategori;
                 $KategoriMarchent->marchent_id = $merchnt->id;
                 $KategoriMarchent->save();
-            } 
+            }
         }
         $this->manageAdvertisingPoints($request, $ads, $user, 'ABC012');
         return redirect(route('member.merchants'))->with('success', 'Food berhasil disimpan.');
@@ -436,7 +436,7 @@ class MemberNavController extends Controller
         }
         $food->image = $media->disk . '/' . $media->file_name;
         $food->save();
-        if($request->subkategori){
+        if ($request->subkategori) {
 
             foreach ($request->subkategori as $key => $subkategori) {
 
@@ -495,7 +495,7 @@ class MemberNavController extends Controller
             })
             ->orderBy('ads.id', 'desc')
             ->paginate(10);
-            // dd($properties);
+        // dd($properties);
         $adControll = AdBalaceControl::where('code', 'ABC008')->first();
 
         // dd($properties->items());
@@ -602,7 +602,6 @@ class MemberNavController extends Controller
         // dd($pengajuanKpr);
 
         return Inertia::render('Member/Page/Pengajuan/Agen/ListKaprVisitor', compact('pengajuanKpr'));
-
     }
 
 
@@ -719,7 +718,7 @@ class MemberNavController extends Controller
             'jkm' => 'nullable|integer',
             'furniture_condition' => 'nullable|string|max:255',
             'house_facility' => 'nullable',
-            'other_facility' => 'nullable', 
+            'other_facility' => 'nullable',
         ], [
             // 'fileInput.*.file' => 'File harus berupa file.',
             // 'fileInput.*.mimes' => 'File harus berformat: pdf, doc, docx, jpg, jpeg, png.',
@@ -760,7 +759,7 @@ class MemberNavController extends Controller
             'video.string' => 'Link video harus berupa string.',
             'video.max' => 'Link video tidak boleh lebih dari 255 karakter.',
         ]);
-    
+
         $user = Auth::user();
         $ads = new Ads();
         $ads->title = $request->title;
@@ -776,7 +775,7 @@ class MemberNavController extends Controller
         $ads->uuid = $this->KodeIklan('property', $request->ads_type, $ads->created_at, Ads::whereMonth('created_at', Carbon::now()->month)->count());
         $ads->save();
         $hargaInt = (int) preg_replace('/\D/', '', $request->price);
-    
+
         $AdsProperty = new AdsProperty();
         $AdsProperty->ads_id = $ads->id;
         $AdsProperty->district_id = $request->district_id;
@@ -805,12 +804,12 @@ class MemberNavController extends Controller
         $AdsProperty->save();
         $AdsProperty->uuid = Str::uuid() . '-' . str_pad(AdsProperty::whereMonth('created_at', Carbon::now()->month)->count(), 5, '0', STR_PAD_LEFT);
         $AdsProperty->save();
-    
+
         // if ($request->hasFile('fileInput')) {
         //     foreach ($request->file('fileInput') as $image) {
         //         $path = $image->store('/images/properti/property/' . $ads->id, 'public');
         //         $imageUrl = Storage::url($path);
-    
+
         //         $media = new Media();
         //         $media->model_type = 'App\\Models\\Food';
         //         $media->model_id = $ads->id;
@@ -829,56 +828,56 @@ class MemberNavController extends Controller
         //     $AdsProperty->image = $media->disk . '/' . $media->file_name;
         //     $AdsProperty->save();
         // }
-    
+
         $this->manageAdvertisingPoints($request, $ads, $user, 'ABC009');
-    
-        return response()->json(['message' => 'Listing berhasil disimpan.', 'data' => $ads, 'property' => $AdsProperty,'request'=>$request->all(),'house_facility'=>$request->house_facility]);
+
+        return response()->json(['message' => 'Listing berhasil disimpan.', 'data' => $ads, 'property' => $AdsProperty, 'request' => $request->all(), 'house_facility' => $request->house_facility]);
     }
-    
+
 
     function propertiStoreListingUpload(Request $request)
-{
-    $resizedPhotos = $request->input('resized_photos', []);
-    $uploadedFiles = [];
+    {
+        $resizedPhotos = $request->input('resized_photos', []);
+        $uploadedFiles = [];
 
-    foreach ($resizedPhotos as $index => $resizedPhoto) {
-        $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
-        $nameImg = 'photo_' . time() . rand(1, 9999999999) . '_' . $index . '.jpg';
-        $disk = 'public/images/properti/property';
-        $filename = $disk . '/' . $nameImg;
+        foreach ($resizedPhotos as $index => $resizedPhoto) {
+            $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $resizedPhoto));
+            $nameImg = 'photo_' . time() . rand(1, 9999999999) . '_' . $index . '.jpg';
+            $disk = 'public/images/properti/property';
+            $filename = $disk . '/' . $nameImg;
 
-        Storage::put($filename, $decodedImage);
-        $url = Storage::url($filename);
+            Storage::put($filename, $decodedImage);
+            $url = Storage::url($filename);
 
-        $uploadedFiles[] = $url;
-        
-        $ads = Ads::find($request->ads_id);
-        $AdsProperty = AdsProperty::where('ads_id', $ads->id)->first();
+            $uploadedFiles[] = $url;
 
-        $media = new Media();
-        $media->model_type = 'App\\Models\\property';
-        $media->model_id = $ads->id;
-        $media->collection_name = 'images';
-        $media->name = $nameImg;    
-        $media->file_name = $nameImg;
-        $media->manipulations = '[]';
-        $media->custom_properties = '[]';
-        $media->generated_conversions = '[]';
-        $media->responsive_images = '[]';
-        $media->mime_type = 'image/jpeg';
-        $media->disk = str_replace("public", "storage", $disk);
-        $media->size = strlen($decodedImage);
-        $media->save();
+            $ads = Ads::find($request->ads_id);
+            $AdsProperty = AdsProperty::where('ads_id', $ads->id)->first();
 
-        $AdsProperty->image = $url;
-        $AdsProperty->save();
+            $media = new Media();
+            $media->model_type = 'App\\Models\\property';
+            $media->model_id = $ads->id;
+            $media->collection_name = 'images';
+            $media->name = $nameImg;
+            $media->file_name = $nameImg;
+            $media->manipulations = '[]';
+            $media->custom_properties = '[]';
+            $media->generated_conversions = '[]';
+            $media->responsive_images = '[]';
+            $media->mime_type = 'image/jpeg';
+            $media->disk = str_replace("public", "storage", $disk);
+            $media->size = strlen($decodedImage);
+            $media->save();
+
+            $AdsProperty->image = $url;
+            $AdsProperty->save();
+        }
+
+        return response()->json([
+            'message' => 'Images uploaded successfully',
+            'uploaded_files' => $uploadedFiles,
+        ]);
     }
-
-    return response()->json([
-        'message' => 'Images uploaded successfully',
-        'uploaded_files' => $uploadedFiles,
-    ]);
-}
 
     function profile()
     {
@@ -887,11 +886,11 @@ class MemberNavController extends Controller
         $user = Auth::user();
         $kodeRefer = $this->getOrCreateReferralCode($user->id);
         // dd($kodeRefer);
-        return view('Pages/ControlPanel/Profile/index',compact('user','kodeRefer'));
+        return view('Pages/ControlPanel/Profile/index', compact('user', 'kodeRefer'));
     }
     function profileEdit()
     {
-        return view('Pages/Member/Profile/Index');  
+        return view('Pages/Member/Profile/Index');
         // $user = Auth::user();
         // return view('Pages/ControlPanel/Profile/index',compact('user'));
     }
@@ -923,24 +922,34 @@ class MemberNavController extends Controller
             $user->company_image = Storage::url($path);
             $user->save(); // Menyimpan perubahan pada user
         }
-        
-        
+
+
         $user->save();
         return back()->with('succsess', 'Berhasil Menyimpan Data Pefile');
-
     }
 
-    function chat(){
+    function chat()
+    {
         $user = Auth::user();
-        $groupChats = GroupChat::select('groupchats.id', 'groupchats.user_id', 'groupchats.message', 'groupchats.image', 'groupchats.sent_at', 'groupchats.created_at')
-        ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
-        ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
-        ->where('ads.user_id', $user->id) 
-        ->distinct('groupchats.id')
-        ->orderBy('groupchats.created_at', 'asc')
-        ->get();
-        // dd($groupChats);
-        return view('Pages/ControlPanel/Member/Chat/index',compact('groupChats'));
-    // return response()->json($groupChats);
+
+        $groupChats = GroupChat::select(
+            'groupchats.id as groupchat_id',
+            'groupchats.user_id',
+            'groupchats.message',
+            'groupchats.image',
+            'groupchats.sent_at',
+            'groupchats.created_at',
+            'ads.id as ads_id', // Alias untuk ads.id
+            'ads.title',         // Contoh kolom lain dari tabel ads
+            'ads.description'    // Contoh kolom lain dari tabel ads
+        )
+            ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+            ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
+            ->where('ads.user_id', $user->id)
+            ->distinct('groupchats.id')
+            ->orderBy('groupchats.created_at', 'asc')
+            ->get();
+
+        return view('Pages/ControlPanel/Member/Chat/index', compact('groupChats'));
     }
 }

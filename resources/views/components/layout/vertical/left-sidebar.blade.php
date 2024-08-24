@@ -49,7 +49,9 @@
                     </a>
                 </li>
                 @else
-                @if(Auth::user()->type != 'administrator')
+                <x-Item.LinkTopUpComponent :planId="Auth::user()->plan_id">
+                </x-Item.LinkTopUpComponent>
+                @endif
                 @if(Auth::user()->type == 'agen' || Auth::user()->type == 'agent' || Auth::user()->type == 'notaris' || Auth::user()->type == 'lbh')
                 <li>
                     <a href="{{route('listing.index')}}" class="waves-effect">
@@ -65,9 +67,7 @@
                 </li>
                 @endif
                
-                <x-Item.LinkTopUpComponent :planId="Auth::user()->plan_id">
-                </x-Item.LinkTopUpComponent>
-                @endif
+              
                 <li>
                     <a href="{{route('member.food')}}" class="waves-effect">
                         <i class="mdi mdi-food-fork-drink"></i>

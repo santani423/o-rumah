@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-lg-12 mb-3">
                         <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#devChetingModal">
-                            <i class="fa fa-warning"></i> Development Mode
+                            <i class="fa fa-warning"></i> Chat
                         </button>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="devChetingModalLabel">Development Mode - Chat</h5>
+                <h5 class="modal-title" id="devChetingModalLabel">  Chat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -114,6 +114,11 @@
 @endif
 
 <script>
+    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID
+    var adsId = "{{ $ads->ads_id }}"; // Get the ads ID
+    var isUserAtBottom = true; // Flag to determine if user is at the bottom of the chat container
+    var intervalId;
+
     // Function to get current time in HH:MM AM/PM format
     function getCurrentTime() {
         const now = new Date();
@@ -124,7 +129,25 @@
         return `${hours}:${minutes} ${ampm}`;
     }
 
-    // Handle Send Message
+    // Function to fetch chat messages and update the UI
+    function fetchChatMessages() {
+        fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
+            .then(response => response.json())
+            .then(data => {
+                const chatMessages = document.querySelector('.chat-messages');
+                chatMessages.innerHTML = ''; // Clear current chat messages
+                data.forEach(chat => {
+                    displayMessage(chat.message, chat.image, chat.sent_at,chat.user_id,chat.name,chat.profile);
+                });
+                
+                // Scroll to the bottom only if the user is at the bottom
+                if (isUserAtBottom) {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     // Handle Send Message
     document.getElementById('sendMessage').addEventListener('click', function() {
         var message = document.getElementById('chatMessage').value;
@@ -147,10 +170,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('data',data);
-                
-                // Display sent message in UI
-                displayMessage(data.message, data.image, getCurrentTime(), data.user_id);
+                displayMessage(data.message, data.image, getCurrentTime(), data.user_id,data.name,data.profile);
                 document.getElementById('chatMessage').value = '';
                 document.getElementById('chatImage').value = '';
                 document.getElementById('imagePreview').classList.add('d-none');
@@ -158,34 +178,28 @@
             .catch(error => console.error('Error:', error));
     });
 
-
     // Display Messages Function
-    function displayMessage(message, image, time, chatId) {
+    function displayMessage(message, image, time, chatId,name,profile) {
         var chatMessages = document.querySelector('.chat-messages');
         var newMessage = document.createElement('div');
 
-        // Cek apakah chatId sama dengan 157
-        var isUserMessage = chatId == "{{Auth::user()->id}}";
-        console.log('isUserMessage auth', "{{Auth::user()->id}}")
-        console.log('isUserMessage chatId', chatId)
-        // Menentukan posisi pesan (kiri atau kanan)
+        // Check if chatId is equal to the current user ID
+        var isUserMessage = chatId == "{{ Auth::user()->id }}";
+        // Determine message position (left or right)
         newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
-
+        var profileImage = profile ? profile : 'path/to/default-avatar.jpg';
         newMessage.innerHTML = `
-        <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
-        <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
-            ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
-            <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
-                <p class="mb-0"><strong>${isUserMessage ? 'You' : 'Lawan Bicara'}:</strong> ${message}</p>
-                ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
+            <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
+            <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
+                ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
+                <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+                    <p class="mb-0"><strong>${isUserMessage ? 'You' : name}:</strong> ${message}</p>
+                    ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
+                </div>
+                ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
             </div>
-            ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
-        </div>
-    `;
+        `;
         chatMessages.appendChild(newMessage);
-
-        // Gulir otomatis ke bagian bawah
-        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     // Image Preview Functionality
@@ -202,31 +216,43 @@
             reader.readAsDataURL(chatImage);
         }
     });
-    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID 1427
-    var adsId = "{{ $ads->ads_id }}"; // Get the ads ID 177
-    // Fetch All Chat Messages on Page Load
-    
-    fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(chat => {
-                 
-                displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
-            });
-            // Gulir otomatis ke bagian bawah setelah pesan dimuat
-            var chatMessages = document.querySelector('.chat-messages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            document.getElementById('chatMessage').value = '';
-            document.getElementById('chatImage').value = '';
-            document.getElementById('imagePreview').classList.add('d-none');
-        })
-        .catch(error => console.error('Error:', error));
 
-    // Auto-scroll ke bawah saat modal dibuka
+    // Function to start fetching chat messages periodically
+    function startFetching() {
+        intervalId = setInterval(fetchChatMessages, 3000);
+    }
+
+    // Function to stop fetching chat messages
+    function stopFetching() {
+        clearInterval(intervalId);
+    }
+
+    // Auto-fetch chat messages every 3 seconds
+    startFetching();
+
+    // Scroll event listener to handle user scrolling
+    document.querySelector('.chat-messages').addEventListener('scroll', function() {
+        var chatMessages = document.querySelector('.chat-messages');
+        var isScrolledToBottom = chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight;
+        
+        // Update the flag and control fetching based on scroll position
+        if (isScrolledToBottom) {
+            isUserAtBottom = true;
+            startFetching();
+        } else {
+            isUserAtBottom = false;
+            stopFetching();
+        }
+    });
+
+    // Auto-scroll to bottom when modal opens
     $('#devChetingModal').on('shown.bs.modal', function() {
         var chatMessages = document.querySelector('.chat-messages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
+
+    // Fetch All Chat Messages on Page Load
+    fetchChatMessages();
 
     function navigateTo(url, isOrder = false) {
         if (isOrder) {
@@ -242,7 +268,6 @@
                 },
                 success: function(data) {
                     window.location.href = url;
-
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
@@ -254,3 +279,4 @@
         }
     }
 </script>
+

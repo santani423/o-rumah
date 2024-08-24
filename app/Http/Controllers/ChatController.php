@@ -13,29 +13,22 @@ class ChatController extends Controller
 {
     // Ambil semua pesan chat
     public function index(Request $request)
-    {
-         // Validate the request to ensure user_id and ads_id are provided
-    // $this->validate($request, [
-    //     'user_id' => 'required|exists:users,id',
-    //     'ads_id' => 'required|exists:listgroupchats,ads_id',
-    // ]);
-
-    // Retrieve the user_id and ads_id from the request
-    $user_id = $request->input('user_id');
+{
     $ads_id = $request->input('ads_id');
 
-    // Query to retrieve chat data based on user_id and ads_id, ordered by created_at in ascending order
-    $chats = Chat::select('chats.*')
-    ->join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
+    // Query to retrieve chat data along with user data based on ads_id, ordered by created_at in ascending order
+    $chats = Chat::select('chats.*', 'users.id as user_id', 'users.name', 'users.image as profile') // Select additional user fields
+        ->join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
         ->join('groupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
-        ->where('groupchats.user_id', $user_id)
+        ->join('users', 'users.id', '=', 'listgroupchats.user_id')
         ->where('listgroupchats.ads_id', $ads_id)
         ->orderBy('chats.created_at', 'asc') // Order by created_at in ascending order
         ->get();
-    // dd($chats);
+
     // Return the chat data as a JSON response
     return response()->json($chats, 200);
-    }
+}
+
 
     // Simpan pesan baru
     public function store(Request $request)

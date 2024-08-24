@@ -20,6 +20,7 @@
                                     <th>Image</th>
                                     <th>Sent At</th>
                                     <th>Created At</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,17 +37,24 @@
                                                 No Image
                                             @endif
                                         </td>
-                                        <td>{{ \Carbon\Carbon::parse($chat->sent_at)->format('Y-m-d H:i') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($chat->created_at)->format('Y-m-d H:i') }}</td>
+                                        <td>{{ $chat->sent_at }}</td>
+                                        <td>{{ $chat->created_at }}</td>
+                                        <td>
+                                            <!-- Button to trigger the modal -->
+                                            <button 
+                                                class="btn btn-primary openChatModal" 
+                                                data-toggle="modal" 
+                                                data-target="#devChetingModal" 
+                                                data-user-id="{{ $chat->user_id }}" 
+                                                data-ads-id="{{ $chat->ads_id }}">
+                                                Open Chat
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     @endif
-                    <!-- Button to trigger the modal -->
-                    <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#devChetingModal">
-                        <i class="fa fa-warning"></i> Development Mode
-                    </button>
                 </div>
             </div>
         </div>
@@ -54,52 +62,54 @@
 
     <!-- Modal HTML -->
     <div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="devChetingModalLabel">Development Mode - Chat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="chat-container">
-                    <div class="chat-messages p-3" style="height: 400px; overflow-y: scroll; background-color: #f7f7f7; border: 1px solid #ddd;">
-                        <!-- Chat Messages Placeholder -->
-                    </div>
-                    <div class="chat-input mt-3">
-                        <form id="chatForm" class="d-flex align-items-center">
-                            <!-- Image Input with Upload Icon -->
-                            <div class="input-group-prepend">
-                                <label for="chatImage" class="btn btn-secondary">
-                                    <i class="fa fa-upload"></i>
-                                </label>
-                                <input type="file" id="chatImage" class="d-none" accept="image/*">
-                            </div>
-                            <!-- Hidden input for ads_id -->
-                            <input type="hidden" id="adsId" value="1335">
-                            <!-- Text Input and Send Button -->
-                            <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
-                            <div class="input-group-append">
-                                <button class="btn btn-success ml-2" type="button" id="sendMessage">Send</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="preview mt-3">
-                        <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="devChetingModalLabel">  Chat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-container">
+                        <div class="chat-messages p-3" style="height: 400px; overflow-y: scroll; background-color: #f7f7f7; border: 1px solid #ddd;">
+                            <!-- Chat Messages Placeholder -->
+                        </div>
+                        <div class="chat-input mt-3">
+                            <form id="chatForm" class="d-flex align-items-center">
+                                <!-- Image Input with Upload Icon -->
+                                <div class="input-group-prepend">
+                                    <label for="chatImage" class="btn btn-secondary">
+                                        <i class="fa fa-upload"></i>
+                                    </label>
+                                    <input type="file" id="chatImage" class="d-none" accept="image/*">
+                                </div>
+                                <!-- Hidden input for ads_id -->
+                                <input type="hidden" id="adsId" value="">
+                                <!-- Text Input and Send Button -->
+                                <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success ml-2" type="button" id="sendMessage">Send</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="preview mt-3">
+                            <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
     @endslot
 
     @slot('js')
     <script>
+        let intervalId; // For interval to refresh chat messages
+
         // Function to get current time in HH:MM AM/PM format
         function getCurrentTime() {
             const now = new Date();
@@ -188,58 +198,43 @@
             }
         });
 
-        // var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID
-        var userId = "177"; // Get the authenticated user's ID
-        var adsId = "1335"; // Placeholder for the ads ID
+        // Open Chat Modal and Fetch Messages
+        document.querySelectorAll('.openChatModal').forEach(button => {
+            button.addEventListener('click', function() {
+                var userId = this.getAttribute('data-user-id');
+                var adsId = this.getAttribute('data-ads-id');
 
-        // Fetch All Chat Messages on Page Load
-        fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(chat => {
-                    displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
-                });
+                // Set the adsId in hidden input
+                document.getElementById('adsId').value = adsId;
 
-                // Automatically scroll to the bottom after messages are loaded
-                var chatMessages = document.querySelector('.chat-messages');
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                // Fetch and display chat messages when the modal is opened
+                function fetchMessages(scrollToBottom = false) {  // Adding scrollToBottom parameter
+                    fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const chatMessages = document.querySelector('.chat-messages');
+                            chatMessages.innerHTML = ''; // Clear previous messages
+                            data.forEach(chat => {
+                                displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
+                            });
+                            if (scrollToBottom) {
+                                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
 
-                document.getElementById('chatMessage').value = '';
-                document.getElementById('chatImage').value = '';
-                document.getElementById('imagePreview').classList.add('d-none');
-            })
-            .catch(error => console.error('Error:', error));
+                // Clear previous interval if any
+                clearInterval(intervalId);
 
-        // Auto-scroll to the bottom when the modal is opened
-        $('#devChetingModal').on('shown.bs.modal', function() {
-            var chatMessages = document.querySelector('.chat-messages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+                // Set an interval to fetch messages every 3 seconds without scrolling
+                intervalId = setInterval(() => fetchMessages(false), 3000);
+
+                // Fetch messages initially when modal opens and scroll to bottom
+                fetchMessages(true);
+            });
         });
 
-        function navigateTo(url, isOrder = false) {
-            if (isOrder) {
-                $.ajax({
-                    url: '{{ route("order") }}',
-                    type: 'get',
-                    data: {
-                        adsId: ""
-                    },
-                    contentType: 'application/json',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    success: function(data) {
-                        window.location.href = url;
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again.');
-                    }
-                });
-            } else {
-                window.location.href = url;
-            }
-        }
     </script>
     @endslot
 </x-Layout.Vertical.Master>

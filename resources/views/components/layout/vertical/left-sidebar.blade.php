@@ -41,6 +41,14 @@
         <div id="sidebar-menu">
             <ul>
                 <li class="menu-title">Menu</li>
+                @if(Auth::user()->plan_id == null || Auth::user()->plan_id == '')
+                <li>
+                    <a href="{{route('member.plans')}}" class="waves-effect">
+                        <i class="far fa-paper-plane"></i>
+                        <span> Member Plan  </span>
+                    </a>
+                </li>
+                @else
                 @if(Auth::user()->type != 'administrator')
                 @if(Auth::user()->type == 'agen' || Auth::user()->type == 'agent' || Auth::user()->type == 'notaris' || Auth::user()->type == 'lbh')
                 <li>
@@ -56,14 +64,7 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->plan_id == null || Auth::user()->plan_id == '')
-                <li>
-                    <a href="{{route('member.plans')}}" class="waves-effect">
-                        <i class="far fa-paper-plane"></i>
-                        <span> Member Plan  </span>
-                    </a>
-                </li>
-                @else
+               
                 <x-Item.LinkTopUpComponent :planId="Auth::user()->plan_id">
                 </x-Item.LinkTopUpComponent>
                 @endif

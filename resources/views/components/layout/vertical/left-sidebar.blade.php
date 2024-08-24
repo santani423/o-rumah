@@ -177,12 +177,14 @@
                     </a>
                 </li>
                 @endif
+                @if(config('app.setDevCheting') === true)
                 <li>
                     <a href="{{route('member.chat')}}" class="waves-effect">
                         <i class="mdi mdi-map-marker"></i>
                         <span> Chat </span>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{ route('logout') }}" class="waves-effect">
                         <i class="mdi mdi-logout"></i>

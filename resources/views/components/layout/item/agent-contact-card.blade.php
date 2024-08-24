@@ -184,7 +184,7 @@
         var newMessage = document.createElement('div');
 
         // Check if chatId is equal to the current user ID
-        var isUserMessage = chatId == "{{ Auth::user()->id }}";
+        var isUserMessage = chatId == "{{ Auth::user()?->id }}";
         // Determine message position (left or right)
         newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
         var profileImage = profile ? profile : 'path/to/default-avatar.jpg';

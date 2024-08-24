@@ -114,7 +114,7 @@
 @endif
 
 <script>
-    var userId = "{{ Auth::user()->id }}"; // Get the authenticated user's ID
+    var userId = "{{ Auth::user()?->id }}"; // Get the authenticated user's ID
     var adsId = "{{ $ads->ads_id }}"; // Get the ads ID
     var isUserAtBottom = true; // Flag to determine if user is at the bottom of the chat container
     var intervalId;

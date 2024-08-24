@@ -95,7 +95,7 @@
                         <span> Riwayat Transaksi </span>
                     </a>
                 </li>
-                @endif
+            
                 @if(Auth::user()->type == 'administrator')
                 <li>
                     <a href="{{route('admin.nav.lelang')}}" class="waves-effect">

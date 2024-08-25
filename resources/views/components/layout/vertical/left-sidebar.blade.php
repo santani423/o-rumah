@@ -180,7 +180,7 @@
                 @if(config('app.setDevCheting') === true)
                 <li>
                     <a href="{{route('member.chat')}}" class="waves-effect">
-                        <i class="mdi mdi-map-marker"></i>
+                        <i class="mdi mdi-message"></i>
                         <span> Chat </span>
                     </a>
                 </li>

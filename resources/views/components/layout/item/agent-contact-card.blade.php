@@ -31,7 +31,8 @@
                     <!-- Tombol Telepon dan WhatsApp -->
                     @if($agent['phone'])
                     <div class="col-lg-6 mb-3">
-                        <button class="btn btn-info btn-block" onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                        <button class="btn btn-info btn-block"
+                            onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
                             <i class="mdi mdi-phone"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'Telepon' }}
                         </button>
                     </div>
@@ -60,6 +61,10 @@
                         </button>
                     </div>
                 </div>
+                <button type="button"  class="btn btn-warning btn-block"  data-toggle="modal" data-animation="bounce" data-target=".loginDanRegistrasi"
+        >
+        Login / Registrasi
+    </button>
                 @endif
             </div>
         </div>
@@ -68,11 +73,12 @@
 
 <!-- Modal -->
 @if(config('app.setDevCheting') === true)
-<div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel" aria-hidden="true">
+<div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="devChetingModalLabel">  Chat</h5>
+                <h5 class="modal-title" id="devChetingModalLabel"> Chat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -83,7 +89,7 @@
                         <!-- Chat Messages Placeholder -->
                     </div>
                     <div class="chat-input mt-3">
-                        <form id="chatForm" class="d-flex align-items-center">
+                        <form id="chatForm" class="d-flex align-items-center" enctype="multipart/form-data">
                             <!-- Image Input with Upload Icon -->
                             <div class="input-group-prepend">
                                 <label for="chatImage" class="btn btn-secondary">
@@ -96,12 +102,18 @@
                             <!-- Text Input and Send Button -->
                             <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
                             <div class="input-group-append">
-                                <button class="btn btn-success ml-2" type="button" id="sendMessage">Send</button>
+                                <button class="btn btn-success ml-2" type="button" id="sendMessage">
+                                    <span id="sendButtonText"><i class="fa fa-paper-plane"></i> Send</span>
+                                    <span id="sendButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
                             </div>
                         </form>
+
                     </div>
                     <div class="preview mt-3">
-                        <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
+                        <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none"
+                            style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
                     </div>
                 </div>
             </div>
@@ -119,6 +131,30 @@
     var isUserAtBottom = true; // Flag to determine if user is at the bottom of the chat container
     var intervalId;
 
+    // Function to check if user is logged in and show notification if not
+    function checkUserLoggedIn() {
+        if (!userId) { // If user is not logged in
+            alert('Anda harus login untuk mengakses fitur chat.'); // Show alert
+            return false; // Prevent modal from opening
+        }
+        return true; // Allow modal to open if logged in
+    }
+
+    // Modify the event listener for the Chat button
+    document.querySelector('.btn-warning[data-toggle="modal"]').addEventListener('click', function (event) {
+        if (!checkUserLoggedIn()) {
+            event.preventDefault(); // Prevent the modal from opening
+        }
+    });
+
+    // Auto-scroll to bottom when modal opens, only if user is logged in
+    $('#devChetingModal').on('shown.bs.modal', function () {
+        if (checkUserLoggedIn()) {
+            var chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+
     // Function to get current time in HH:MM AM/PM format
     function getCurrentTime() {
         const now = new Date();
@@ -134,12 +170,14 @@
         fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
             .then(response => response.json())
             .then(data => {
+                console.log('qwertydata', data);
+
                 const chatMessages = document.querySelector('.chat-messages');
                 chatMessages.innerHTML = ''; // Clear current chat messages
                 data.forEach(chat => {
-                    displayMessage(chat.message, chat.image, chat.sent_at,chat.user_id,chat.name,chat.profile);
+                    displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id, chat.name, chat.profile);
                 });
-                
+
                 // Scroll to the bottom only if the user is at the bottom
                 if (isUserAtBottom) {
                     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -149,16 +187,47 @@
     }
 
     // Handle Send Message
-    document.getElementById('sendMessage').addEventListener('click', function() {
+    document.getElementById('sendMessage').addEventListener('click', sendMessage);
+
+    // Add event listener for Enter keypress
+    document.getElementById('chatMessage').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevent the default behavior of Enter key
+            sendMessage();
+        }
+    });
+
+    function toggleSpinner(show) {
+        const sendButtonSpinner = document.getElementById('sendButtonSpinner');
+        const sendButtonText = document.getElementById('sendButtonText');
+
+        if (show) {
+            sendButtonSpinner.classList.remove('d-none');
+            sendButtonText.classList.add('d-none');
+        } else {
+            sendButtonSpinner.classList.add('d-none');
+            sendButtonText.classList.remove('d-none');
+        }
+    }
+
+    // Function to handle sending the message
+    function sendMessage() {
         var message = document.getElementById('chatMessage').value;
         var chatImage = document.getElementById('chatImage').files[0];
         var adsId = document.getElementById('adsId').value;
 
+        if (message.trim() === '' && !chatImage) {
+            return; // Don't send empty message if no image is attached
+        }
+
+        toggleSpinner(true); // Show spinner
+
         var formData = new FormData();
         formData.append('message', message);
         formData.append('ads_id', adsId); // Include the ads_id
+
         if (chatImage) {
-            formData.append('image', chatImage);
+            formData.append('image', chatImage); // Attach image if exists
         }
 
         fetch('/chats', {
@@ -170,16 +239,19 @@
             })
             .then(response => response.json())
             .then(data => {
-                displayMessage(data.message, data.image, getCurrentTime(), data.user_id,data.name,data.profile);
+                displayMessage(data.message, data.image, getCurrentTime(), data.user_id, data.name, data.profile);
                 document.getElementById('chatMessage').value = '';
-                document.getElementById('chatImage').value = '';
-                document.getElementById('imagePreview').classList.add('d-none');
+                document.getElementById('chatImage').value = ''; // Reset file input
+                document.getElementById('imagePreview').classList.add('d-none'); // Hide preview
             })
-            .catch(error => console.error('Error:', error));
-    });
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                toggleSpinner(false); // Hide spinner
+            });
+    }
 
     // Display Messages Function
-    function displayMessage(message, image, time, chatId,name,profile) {
+    function displayMessage(message, image, time, chatId, name, profile) {
         var chatMessages = document.querySelector('.chat-messages');
         var newMessage = document.createElement('div');
 
@@ -187,28 +259,33 @@
         var isUserMessage = chatId == "{{ Auth::user()?->id }}";
         // Determine message position (left or right)
         newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
-        var profileImage = profile ? profile : 'path/to/default-avatar.jpg';
+        var profileImage = profile ? "{{route('home')}}/" + profile : 'path/to/default-avatar.jpg';
+
+        // Only display message if it is not null or empty, otherwise leave it blank
+        var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'You' : name}:</strong> ${message}</p>` : '';
+
         newMessage.innerHTML = `
             <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
             <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
                 ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
                 <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
-                    <p class="mb-0"><strong>${isUserMessage ? 'You' : name}:</strong> ${message}</p>
+                    ${messageContent}
                     ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
                 </div>
                 ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
             </div>
         `;
+
         chatMessages.appendChild(newMessage);
     }
 
     // Image Preview Functionality
-    document.getElementById('chatImage').addEventListener('change', function() {
+    document.getElementById('chatImage').addEventListener('change', function () {
         var chatImage = this.files[0];
 
         if (chatImage && chatImage.type.startsWith('image/')) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var imagePreview = document.getElementById('imagePreview');
                 imagePreview.src = e.target.result;
                 imagePreview.classList.remove('d-none');
@@ -231,10 +308,10 @@
     startFetching();
 
     // Scroll event listener to handle user scrolling
-    document.querySelector('.chat-messages').addEventListener('scroll', function() {
+    document.querySelector('.chat-messages').addEventListener('scroll', function () {
         var chatMessages = document.querySelector('.chat-messages');
         var isScrolledToBottom = chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight;
-        
+
         // Update the flag and control fetching based on scroll position
         if (isScrolledToBottom) {
             isUserAtBottom = true;
@@ -246,7 +323,7 @@
     });
 
     // Auto-scroll to bottom when modal opens
-    $('#devChetingModal').on('shown.bs.modal', function() {
+    $('#devChetingModal').on('shown.bs.modal', function () {
         var chatMessages = document.querySelector('.chat-messages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
@@ -266,10 +343,10 @@
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                success: function(data) {
+                success: function (data) {
                     window.location.href = url;
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error:', error);
                     alert('An error occurred. Please try again.');
                 }
@@ -279,4 +356,3 @@
         }
     }
 </script>
-

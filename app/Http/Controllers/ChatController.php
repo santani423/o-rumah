@@ -24,7 +24,7 @@ class ChatController extends Controller
         ->where('listgroupchats.ads_id', $ads_id)
         ->orderBy('chats.created_at', 'asc') // Order by created_at in ascending order
         ->get();
-
+// dd($chats);
     // Return the chat data as a JSON response
     return response()->json($chats, 200);
 }
@@ -34,23 +34,23 @@ class ChatController extends Controller
     public function store(Request $request)
 {
     // Validate the request
-    $this->validate($request, [
-        'message' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+    // $this->validate($request, [
+    //     'message' => 'nullable|string',
+    //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    // ]);
 
     // Initialize groupchat_id
     $groupchat_id = 0;
-
+    
     // Process image upload if available
     $imagePath = null;
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('chat_images', 'public');
     }
-
+    
     // Get the authenticated user
     $user = Auth::user();
-
+    
     // Check if GroupChat already exists for the given ads_id and user_id
     $cek = ListGroupChat::where('ads_id', $request->input('ads_id'))->where('user_id', $user->id)->first();
     if ($cek) {
@@ -68,7 +68,8 @@ class ChatController extends Controller
         // Also create the ListGroupChat entry since it's a new GroupChat
        
     }
- 
+    
+    return false;
     // Save the message to the Chat model
     $chat = Chat::create([
         'user_id' => $user->id,

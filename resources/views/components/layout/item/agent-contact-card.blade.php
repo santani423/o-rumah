@@ -43,15 +43,15 @@
                     : $agent['wa_phone'];
                     @endphp
                     @if(config('app.setDevCheting') === true)
-                 
-                        <div class="col-lg-12 mb-3">
-                            <button class="btn btn-success btn-block" data-toggle="modal" @if(Auth::user()) data-target="#devChetingModal" @else data-target=".loginDanRegistrasi" @endif>
-                                <i class="fa fa-warning"></i> Chat
-                            </button>
-                        </div>
-                  
 
-                  
+                    <div class="col-lg-12 mb-3">
+                        <button class="btn btn-success btn-block" data-toggle="modal" @if(Auth::user()) data-target="#devChetingModal" @else data-target=".loginDanRegistrasi" @endif>
+                            <i class="fa fa-warning"></i> Chat
+                        </button>
+                    </div>
+
+
+
                     @else
                     <div class="col-lg-12 mb-3">
                         <button class="btn btn-success btn-block"
@@ -228,32 +228,36 @@
     function displayMessage(message, image, time, chatId, name, profile) {
         var chatMessages = document.querySelector('.chat-messages');
         var newMessage = document.createElement('div');
-
+        console.log('name',name);
+        
         // Check if chatId is equal to the current user ID
         var isUserMessage = chatId == "{{ Auth::user()?->id }}";
         // Determine message position (left or right)
         newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
-        var profileImage = profile ? "{{route('home')}}/" + profile : 'path/to/default-avatar.jpg';
+
+        // Construct profile image URL
+        var profileImage = profile ? `{{ route('home') }}${profile}` : `{{ route('home') }}/path/to/default-avatar.jpg`;
+
         console.log('profileImage', profileImage);
-        console.log('profileImage profile', "{{route('home')}}/" + profile);
 
         // Only display message if it is not null or empty, otherwise leave it blank
-        var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'You' : name}:</strong> ${message}</p>` : '';
+        var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'Anda' : name}:</strong> ${message}</p>` : '';
 
         newMessage.innerHTML = `
-        <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
-        <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
-            ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
-            <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
-                ${messageContent}
-                ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
-            </div>
-            ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
+    <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
+    <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
+        ${!isUserMessage ? `<img src="${profileImage}" class="rounded-circle mr-2" height="50" width="50" alt="User">` : ''}
+        <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+            ${messageContent}   
+            ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
         </div>
+        ${isUserMessage ? `<img src="${profileImage}" class="rounded-circle ml-2" height="50" width="50" alt="User">` : ''}
+    </div>
     `;
 
         chatMessages.appendChild(newMessage);
     }
+
 
 
     // Image Preview Functionality

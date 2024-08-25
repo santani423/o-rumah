@@ -4,56 +4,22 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Group Chats</h4>
+                    <h4> Chats</h4>
                 </div>
                 <div class="card-body">
                     @if($groupChats->isEmpty())
-                        <p class="text-center">No group chats available.</p>
+                    <p class="text-center">No group chats available.</p>
                     @else
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User ID</th>
-                                    <th>Ads ID</th>
-                                    <th>Message</th>
-                                    <th>Image</th>
-                                    <th>Sent At</th>
-                                    <th>Created At</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($groupChats as $chat)
-                                    <tr>
-                                        <td>{{ $chat->id }}</td>
-                                        <td>{{ $chat->user_id }}</td>
-                                        <td>{{ $chat->ads_id }}</td>
-                                        <td>{{ $chat->message }}</td>
-                                        <td>
-                                            @if($chat->image)
-                                                <img src="{{ asset('storage/' . $chat->image) }}" alt="Image" width="50">
-                                            @else
-                                                No Image
-                                            @endif
-                                        </td>
-                                        <td>{{ $chat->sent_at }}</td>
-                                        <td>{{ $chat->created_at }}</td>
-                                        <td>
-                                            <!-- Button to trigger the modal -->
-                                            <button 
-                                                class="btn btn-primary openChatModal" 
-                                                data-toggle="modal" 
-                                                data-target="#devChetingModal" 
-                                                data-user-id="{{ $chat->user_id }}" 
-                                                data-ads-id="{{ $chat->ads_id }}">
-                                                Open Chat
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            @foreach($groupChats as $chat)
+                            <tr class="chat-row" data-user-id="{{ $chat->user_id }}" data-ads-id="{{ $chat->ads_id }}">
+                                <td><img src="{{ $chat->image_user }}" class="rounded-circle mr-2" height="50" width="50" alt="User"> <b>{{ $chat->name_user }}</b> </td>
+                                 
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                     @endif
                 </div>
             </div>
@@ -65,7 +31,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="devChetingModalLabel">  Chat</h5>
+                    <h5 class="modal-title" id="devChetingModalLabel"> Chat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -134,53 +100,57 @@
             }
 
             fetch('/chats', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('data', data);
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('data', data);
 
-                // Display sent message in UI
-                displayMessage(data.message, data.image, getCurrentTime(), data.user_id);
-                document.getElementById('chatMessage').value = '';
-                document.getElementById('chatImage').value = '';
-                document.getElementById('imagePreview').classList.add('d-none');
-            })
-            .catch(error => console.error('Error:', error));
+                    // Display sent message in UI
+                    displayMessage(data.message, data.image, getCurrentTime(), data.user_id, data.name, data.profile);
+                    document.getElementById('chatMessage').value = '';
+                    document.getElementById('chatImage').value = '';
+                    document.getElementById('imagePreview').classList.add('d-none');
+                })
+                .catch(error => console.error('Error:', error));
         });
 
         // Display Messages Function
-        function displayMessage(message, image, time, chatId) {
+        function displayMessage(message, image, time, chatId, name, profile) {
             var chatMessages = document.querySelector('.chat-messages');
             var newMessage = document.createElement('div');
+            console.log('name', name);
 
-            // Check if chatId matches the authenticated user's ID
-            var isUserMessage = chatId == "{{ Auth::user()->id }}";
-            console.log('isUserMessage auth', "{{ Auth::user()->id }}")
-            console.log('isUserMessage chatId', chatId)
-
-            // Determine the message position (left or right)
+            // Check if chatId is equal to the current user ID
+            var isUserMessage = chatId == "{{ Auth::user()?->id }}";
+            // Determine message position (left or right)
             newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
 
-            newMessage.innerHTML = `
-                <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
-                <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
-                    ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
-                    <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
-                        <p class="mb-0"><strong>${isUserMessage ? 'You' : 'Lawan Bicara'}:</strong> ${message}</p>
-                        ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
-                    </div>
-                    ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
-                </div>
-            `;
-            chatMessages.appendChild(newMessage);
+            // Construct profile image URL
+            var profileImage = profile ? `{{ route('home') }}${profile}` : `{{ route('home') }}/path/to/default-avatar.jpg`;
 
-            // Automatically scroll to the bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            console.log('profileImage', profileImage);
+
+            // Only display message if it is not null or empty, otherwise leave it blank
+            var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'Anda' : name}:</strong> ${message}</p>` : '';
+
+            newMessage.innerHTML = `
+    <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
+    <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
+        ${!isUserMessage ? `<img src="${profileImage}" class="rounded-circle mr-2" height="50" width="50" alt="User">` : ''}
+        <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+            ${messageContent}   
+            ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
+        </div>
+        ${isUserMessage ? `<img src="${profileImage}" class="rounded-circle ml-2" height="50" width="50" alt="User">` : ''}
+    </div>
+    `;
+
+            chatMessages.appendChild(newMessage);
         }
 
         // Image Preview Functionality
@@ -199,23 +169,26 @@
         });
 
         // Open Chat Modal and Fetch Messages
-        document.querySelectorAll('.openChatModal').forEach(button => {
-            button.addEventListener('click', function() {
+        document.querySelectorAll('.chat-row').forEach(row => {
+            row.addEventListener('click', function() {
                 var userId = this.getAttribute('data-user-id');
                 var adsId = this.getAttribute('data-ads-id');
 
                 // Set the adsId in hidden input
                 document.getElementById('adsId').value = adsId;
 
+                // Show the modal
+                $('#devChetingModal').modal('show');
+
                 // Fetch and display chat messages when the modal is opened
-                function fetchMessages(scrollToBottom = false) {  // Adding scrollToBottom parameter
+                function fetchMessages(scrollToBottom = false) {
                     fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
                         .then(response => response.json())
                         .then(data => {
                             const chatMessages = document.querySelector('.chat-messages');
                             chatMessages.innerHTML = ''; // Clear previous messages
                             data.forEach(chat => {
-                                displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id);
+                                displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id, chat.name, chat.profile);
                             });
                             if (scrollToBottom) {
                                 chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
@@ -234,7 +207,6 @@
                 fetchMessages(true);
             });
         });
-
     </script>
     @endslot
 </x-Layout.Vertical.Master>

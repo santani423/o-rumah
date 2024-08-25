@@ -939,10 +939,15 @@ class MemberNavController extends Controller
             'groupchats.image',
             'groupchats.sent_at',
             'groupchats.created_at',
+
+            'users.name as name_user',
+            'users.image as image_user',
+
             'ads.id as ads_id', // Alias untuk ads.id
             'ads.title',         // Contoh kolom lain dari tabel ads
             'ads.description'    // Contoh kolom lain dari tabel ads
         )
+            ->join('users', 'users.id', '=', 'groupchats.user_id')
             ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
             ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
             ->where('ads.user_id', $user->id)

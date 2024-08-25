@@ -69,7 +69,7 @@ class ChatController extends Controller
        
     }
     
-    return false;
+    // return false;
     // Save the message to the Chat model
     $chat = Chat::create([
         'user_id' => $user->id,

@@ -31,8 +31,7 @@
                     <!-- Tombol Telepon dan WhatsApp -->
                     @if($agent['phone'])
                     <div class="col-lg-6 mb-3">
-                        <button class="btn btn-info btn-block"
-                            onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
+                        <button class="btn btn-info btn-block" onclick="navigateTo('tel:{{$agent['phone']}}', {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'true' : 'false' }})">
                             <i class="mdi mdi-phone"></i> {{ $ads->type == 'food' || $ads->type == 'marchant' ? 'order' : 'Telepon' }}
                         </button>
                     </div>
@@ -43,29 +42,29 @@
                     ? '+62' . substr($agent['wa_phone'], 1)
                     : $agent['wa_phone'];
                     @endphp
-                    <div class="col-lg-6 mb-3">
+                    @if(config('app.setDevCheting') === true)
+                 
+                        <div class="col-lg-12 mb-3">
+                            <button class="btn btn-success btn-block" data-toggle="modal" @if(Auth::user()) data-target="#devChetingModal" @else data-target=".loginDanRegistrasi" @endif>
+                                <i class="fa fa-warning"></i> Chat
+                            </button>
+                        </div>
+                  
+
+                  
+                    @else
+                    <div class="col-lg-12 mb-3">
                         <button class="btn btn-success btn-block"
                             onclick="navigateTo('https://wa.me/{{$wa_phone}}', {{ $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'true' : 'false' }})">
                             {!! $ads->type == 'food' || $ads->type == 'marchant' || $ads->type == 'merchant' ? 'order' : '<i class="mdi mdi-whatsapp"></i> WhatsApp' !!}
                         </button>
                     </div>
                     @endif
+                    @endif
                 </div>
 
                 <!-- Tombol Modal Jika setDevCheting true -->
-                @if(config('app.setDevCheting') === true)
-                <div class="row">
-                    <div class="col-lg-12 mb-3">
-                        <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#devChetingModal">
-                            <i class="fa fa-warning"></i> Chat
-                        </button>
-                    </div>
-                </div>
-                <button type="button"  class="btn btn-warning btn-block"  data-toggle="modal" data-animation="bounce" data-target=".loginDanRegistrasi"
-        >
-        Login / Registrasi
-    </button>
-                @endif
+
             </div>
         </div>
     </div><!--end col-->
@@ -73,8 +72,7 @@
 
 <!-- Modal -->
 @if(config('app.setDevCheting') === true)
-<div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -104,16 +102,14 @@
                             <div class="input-group-append">
                                 <button class="btn btn-success ml-2" type="button" id="sendMessage">
                                     <span id="sendButtonText"><i class="fa fa-paper-plane"></i> Send</span>
-                                    <span id="sendButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status"
-                                        aria-hidden="true"></span>
+                                    <span id="sendButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </form>
 
                     </div>
                     <div class="preview mt-3">
-                        <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none"
-                            style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
+                        <img id="imagePreview" src="#" alt="Preview Image" class="img-fluid d-none" style="max-width: 200px; border: 1px solid #ddd; padding: 5px;">
                     </div>
                 </div>
             </div>
@@ -130,30 +126,6 @@
     var adsId = "{{ $ads->ads_id }}"; // Get the ads ID
     var isUserAtBottom = true; // Flag to determine if user is at the bottom of the chat container
     var intervalId;
-
-    // Function to check if user is logged in and show notification if not
-    function checkUserLoggedIn() {
-        if (!userId) { // If user is not logged in
-            alert('Anda harus login untuk mengakses fitur chat.'); // Show alert
-            return false; // Prevent modal from opening
-        }
-        return true; // Allow modal to open if logged in
-    }
-
-    // Modify the event listener for the Chat button
-    document.querySelector('.btn-warning[data-toggle="modal"]').addEventListener('click', function (event) {
-        if (!checkUserLoggedIn()) {
-            event.preventDefault(); // Prevent the modal from opening
-        }
-    });
-
-    // Auto-scroll to bottom when modal opens, only if user is logged in
-    $('#devChetingModal').on('shown.bs.modal', function () {
-        if (checkUserLoggedIn()) {
-            var chatMessages = document.querySelector('.chat-messages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    });
 
     // Function to get current time in HH:MM AM/PM format
     function getCurrentTime() {
@@ -190,7 +162,7 @@
     document.getElementById('sendMessage').addEventListener('click', sendMessage);
 
     // Add event listener for Enter keypress
-    document.getElementById('chatMessage').addEventListener('keypress', function (e) {
+    document.getElementById('chatMessage').addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault(); // Prevent the default behavior of Enter key
             sendMessage();
@@ -210,6 +182,7 @@
         }
     }
 
+    // Function to handle sending the message
     // Function to handle sending the message
     function sendMessage() {
         var message = document.getElementById('chatMessage').value;
@@ -250,6 +223,7 @@
             });
     }
 
+
     // Display Messages Function
     function displayMessage(message, image, time, chatId, name, profile) {
         var chatMessages = document.querySelector('.chat-messages');
@@ -260,32 +234,35 @@
         // Determine message position (left or right)
         newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
         var profileImage = profile ? "{{route('home')}}/" + profile : 'path/to/default-avatar.jpg';
+        console.log('profileImage', profileImage);
+        console.log('profileImage profile', "{{route('home')}}/" + profile);
 
         // Only display message if it is not null or empty, otherwise leave it blank
         var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'You' : name}:</strong> ${message}</p>` : '';
 
         newMessage.innerHTML = `
-            <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
-            <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
-                ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
-                <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
-                    ${messageContent}
-                    ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
-                </div>
-                ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
+        <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
+        <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
+            ${!isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle mr-2" alt="User">' : ''}
+            <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+                ${messageContent}
+                ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
             </div>
-        `;
+            ${isUserMessage ? '<img src="https://via.placeholder.com/40" class="rounded-circle ml-2" alt="User">' : ''}
+        </div>
+    `;
 
         chatMessages.appendChild(newMessage);
     }
 
+
     // Image Preview Functionality
-    document.getElementById('chatImage').addEventListener('change', function () {
+    document.getElementById('chatImage').addEventListener('change', function() {
         var chatImage = this.files[0];
 
         if (chatImage && chatImage.type.startsWith('image/')) {
             var reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 var imagePreview = document.getElementById('imagePreview');
                 imagePreview.src = e.target.result;
                 imagePreview.classList.remove('d-none');
@@ -308,7 +285,7 @@
     startFetching();
 
     // Scroll event listener to handle user scrolling
-    document.querySelector('.chat-messages').addEventListener('scroll', function () {
+    document.querySelector('.chat-messages').addEventListener('scroll', function() {
         var chatMessages = document.querySelector('.chat-messages');
         var isScrolledToBottom = chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight;
 
@@ -323,7 +300,7 @@
     });
 
     // Auto-scroll to bottom when modal opens
-    $('#devChetingModal').on('shown.bs.modal', function () {
+    $('#devChetingModal').on('shown.bs.modal', function() {
         var chatMessages = document.querySelector('.chat-messages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
@@ -343,10 +320,10 @@
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                success: function (data) {
+                success: function(data) {
                     window.location.href = url;
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error:', error);
                     alert('An error occurred. Please try again.');
                 }

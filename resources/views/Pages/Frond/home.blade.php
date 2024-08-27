@@ -205,7 +205,7 @@
             // const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
             const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
             const url = `{{ route('tool.getAdsListsWithDistance') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;
-    
+
             document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
 
             if (isFirstLoad) {
@@ -334,7 +334,7 @@
                     sampleLocationsDiv.innerHTML = '';
 
                     data.forEach(item => {
-                        console.log('item jj',item);
+                        console.log('item jj', item);
                         const locationItem = document.createElement('div');
                         locationItem.textContent = item.name;
                         locationItem.classList.add('sample-location-item');
@@ -434,7 +434,21 @@
                 </div>
             </div>
         </div>
-
+        <div class="row row-cols-1 row-cols-md-2 g-4 mb-2">
+            @foreach($typePengajuan as $type)
+            <div class="col-md-6 mb-2">
+                <!-- Tambahkan hyperlink ke card -->
+                <a href="{{ route('type_pengajuans.show', $type->slug) }}" class="card-link">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $type->name }}</h5>
+                            <p class="card-text">{{ $type->description }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
         <!-- end wrapper -->
         <div id="adsListsWithDistance" class="row mt-1"></div>
         <div class="row mt-1">

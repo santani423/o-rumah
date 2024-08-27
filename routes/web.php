@@ -37,7 +37,10 @@ use App\Http\Controllers\Visitor\VisitorKprController;
 */
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\PengajuanController;
 
+Route::get('/pengajuan/{slug}', [PengajuanController::class, 'index'])->name('type_pengajuans.show');
+Route::post('/pengajuan/{slug}', [PengajuanController::class, 'store'])->name('type_pengajuans.store');
 
 Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
 Route::get('/chats/getGroupChats', [ChatController::class, 'getGroupChats'])->name('chats.getGroupChats');

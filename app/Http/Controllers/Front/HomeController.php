@@ -23,6 +23,7 @@ use App\Models\UserClickAdsHistory;
 use App\Models\LinkeAds;
 use App\Models\KprFileBank;
 use App\Models\ListGroupChat;
+use App\Models\TypePengajuan;
 use ZipArchive;
 use Carbon\Carbon;
 use App\Models\WebsiteAdsSection;
@@ -84,7 +85,8 @@ class HomeController extends Controller
         $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery);
         $tipeProperti = PropertyType::orderBy('name','asc')->get();
         // dd($bannerLists);
-        return view('Pages/Frond/home', compact('bannerLists', 'adsLists','tipeProperti'));
+        $typePengajuan = TypePengajuan::orderBy('urutan')->get();
+        return view('Pages/Frond/home', compact('bannerLists', 'adsLists','tipeProperti','typePengajuan'));
         // return Inertia::render('Front/Pages/HomePage', [
         //     'bannerLists' => $bannerLists,
         //     // 'latestAdsLists' => $latestAdsLists,

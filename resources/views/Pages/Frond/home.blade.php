@@ -428,7 +428,7 @@
                         </div>
                         <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
                             <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
-                            <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2"><img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt=""><br>Estate</a>
+                            <a href="https://estate.o-rumah.com/login"><img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt=""><br>Estate</a>
                         </div>
                     </div>
                 </div>

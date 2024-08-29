@@ -1,7 +1,5 @@
-
 <x-Layout.Horizontal.Master>
     @slot('css')
-   
     <!-- Dropzone css -->
     <link href="{{asset('zenter/horizontal/assets/plugins/dropzone/dist/dropzone.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('zenter/horizontal/assets/plugins/dropify/css/dropify.min.css')}}" rel="stylesheet" />
@@ -17,16 +15,12 @@
 
     <script>
         $(document).ready(function() {
-            $('#bankUmumSelect').select2({
+            $('#bankUmumSelect, #bankBPRSelect, #jenisPinjamanSelect, #jenisJaminanSelect').select2({
                 templateResult: formatState,
                 templateSelection: formatState,
-                escapeMarkup: function(markup) { return markup; },
-                minimumResultsForSearch: -1 // Disable search
-            });
-            $('#bankBPRSelect').select2({
-                templateResult: formatState,
-                templateSelection: formatState,
-                escapeMarkup: function(markup) { return markup; },
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
                 minimumResultsForSearch: -1 // Disable search
             });
 
@@ -51,20 +45,30 @@
             if (!state.id) {
                 return state.text;
             }
+
             var imageUrl = $(state.element).data('image');
-            var $state = $(
-                '<span><img src="' + imageUrl + '" class="img-flag" style="width: 80px; height: auto; margin-right: 8px;" /> ' + state.text + '</span>'
-            );
+            var $state;
+
+            if (imageUrl) {
+                $state = $(
+                    '<span><img src="' + imageUrl + '" class="img-flag" style="width: 80px; height: auto; margin-right: 8px;" /> ' + state.text + '</span>'
+                );
+            } else {
+                $state = $(
+                    '<span>' + state.text + '</span>'
+                );
+            }
+
             return $state;
         }
     </script>
     @endslot
     @slot('body')
-    
+
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title font-20 mt-0">Dokument Pengajuan KPR</h3>
-            <p class="card-text">Silahkan lengkapi seluruh dokumen untuk pengajuan KPR</p>
+            <h3 class="card-title font-20 mt-0">Dokument Pengajuan {{$typePengajuan->name}}</h3>
+            <p class="card-text">Silahkan lengkapi seluruh dokumen untuk pengajuan {{$typePengajuan->name}}</p>
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -78,14 +82,47 @@
             <form action="{{ route('type_pengajuans.store',$slug) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
+                    <!-- Select Jenis Pinjaman -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-0">
+                            <label class="mb-2 pb-1">Jenis Pinjaman</label>
+                            <select class="select2 form-control mb-3 custom-select" name="jenisPinjaman" id="jenisPinjamanSelect">
+                                <option value="">Pilih Jenis Pinjaman</option>
+                                @foreach ($jenisPinjaman as $jp)
+                                <option value="{{ $jp->id }}">{{ $jp->nama }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('jenisPinjaman'))
+                            <span class="error">{{ $errors->first('jenisPinjaman') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Select Jenis Jaminan -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-0">
+                            <label class="mb-2 pb-1">Jenis Jaminan</label>
+                            <select class="select2 form-control mb-3 custom-select" name="jenisJaminan" id="jenisJaminanSelect">
+                                <option value="">Pilih Jenis Jaminan</option>
+                                @foreach ($jenisJaminan as $jj)
+                                <option value="{{ $jj->id }}">{{ $jj->nama }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('jenisJaminan'))
+                            <span class="error">{{ $errors->first('jenisJaminan') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Select Bank Umum -->
                     <div class="col-md-6">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Bank Umum</label>
                             <select class="select2 form-control mb-3 custom-select" name="bankUmum" id="bankUmumSelect">
-                                <option value="">Select</option>
+                                <option value="">Pilih Bank Umum</option>
                                 @foreach ($bankUmum as $bk)
-                                <option value="{{ $bk['id'] }}" data-image="{{ asset('storage/' . $bk->image) }}">
-                                    <!-- {{ $bk['alias_name'] }} -->
+                                <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">
+                                    {{ $bk->alias_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -94,14 +131,16 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Select Bank BPR -->
                     <div class="col-md-6">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Bank BPR</label>
                             <select class="select2 form-control mb-3 custom-select" name="bankBpr" id="bankBPRSelect">
-                                <option value="">Select</option>
+                                <option value="">Pilih Bank BPR</option>
                                 @foreach ($bankBpr as $bk)
-                                <option value="{{ $bk['id'] }}" data-image="{{ asset('storage/' . $bk->image) }}">
-                                    <!-- {{ $bk['alias_name'] }} -->
+                                <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">
+                                    {{ $bk->alias_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -111,6 +150,10 @@
                         </div>
                     </div>
 
+                   
+                    <!-- Other form fields... -->
+
+                    <!-- Status Pernikahan -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Status Pernikahan</label>
@@ -138,7 +181,7 @@
                         </div>
                     </div>
 
-                    <!-- Rest of your form fields -->
+                    <!-- Nama Lengkap -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Nama Lengkap</label>
@@ -148,6 +191,8 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Email -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Email</label>
@@ -157,28 +202,32 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-12">
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label class="control-label">Pekerjaan</label>
-                                </div>
-                                <div class="col-md-9">
-                                    @foreach ($job as $key => $jb)
-                                    <div class="form-check-inline my-1" style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="pekerjaan{{$key}}" name="pekerjaan" class="custom-control-input" value="{{$jb->id}}">
-                                            <label class="custom-control-label" for="pekerjaan{{$key}}">{{$jb->title}}</label>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                    @if ($errors->has('pekerjaan'))
-                                    <span class="error">{{ $errors->first('pekerjaan') }}</span>
-                                    @endif
-                                </div>
-                            </div> <!--end row-->
 
-                            <div class="col-md-6"></div>
-                        </div>
+                    <!-- Pekerjaan -->
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="control-label">Pekerjaan</label>
+                            </div>
+                            <div class="col-md-9">
+                                @foreach ($job as $key => $jb)
+                                <div class="form-check-inline my-1" style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="pekerjaan{{$key}}" name="pekerjaan" class="custom-control-input" value="{{$jb->id}}">
+                                        <label class="custom-control-label" for="pekerjaan{{$key}}">{{$jb->title}}</label>
+                                    </div>
+                                </div>
+                                @endforeach
+                                @if ($errors->has('pekerjaan'))
+                                <span class="error">{{ $errors->first('pekerjaan') }}</span>
+                                @endif
+                            </div>
+                        </div> <!--end row-->
+
+                        <div class="col-md-6"></div>
+                    </div>
+
+                    <!-- No Telephone -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">No Telephone</label>
@@ -188,6 +237,28 @@
                             @endif
                         </div>
                     </div>
+                     <!-- Form Upload File Jaminan -->
+                     <div class="col-md-12">
+                        <div class="form-group mb-0">
+                            <label class="mb-2 pb-1">Upload File Jaminan</label>
+                            <input type="file" id="input-file-now2" class="dropify" name="fileJaminan" />
+                            @if ($errors->has('fileJaminan'))
+                            <span class="error">{{ $errors->first('fileJaminan') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Jaminan -->
+                    <!-- <div class="col-md-12">
+                        <div class="form-group mb-0">
+                            <label class="mb-2 pb-1">Jaminan</label>
+                            <input type="file" id="input-file-now2" name="file_jaminan" class="dropify" />
+                            @if ($errors->has('file_jaminan'))
+                            <span class="error">{{ $errors->first('file_jaminan') }}</span>
+                            @endif
+                        </div>
+                    </div> -->
+                    <!-- KTP Pemohon -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">KTP Pemohon Suami/Istri</label>
@@ -197,6 +268,8 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Kartu Keluarga -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Kartu Keluarga</label>
@@ -206,6 +279,8 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Rekening Koran -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Rekening Koran 3 Bulan Terakhir</label>
@@ -215,6 +290,8 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Slip Gaji -->
                     <div class="col-md-12">
                         <div class="form-group mb-0">
                             <label class="mb-2 pb-1">Slip Gaji</label>
@@ -224,6 +301,8 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Agreement -->
                     <div class="col-md-12 bg-light mt-3">
                         <div class="col-md-12 bg-light mt-3">
                             <div class="form-group">
@@ -237,6 +316,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Submit Button -->
                     <div class="col-md-12 mt-3 text-right">
                         <button type="submit" class="btn btn-success waves-effect waves-light">Kirim</button>
                     </div>

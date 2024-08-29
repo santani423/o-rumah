@@ -1,5 +1,7 @@
 <x-Layout.Horizontal.Master>
     @slot('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         /* Tabs */
         .tab-container {
@@ -147,6 +149,38 @@
             overflow-y: auto;
         }
     </style>
+    
+<!-- Tambahkan CSS -->
+<style>
+    .card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .arrow-circle {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border: 2px solid #47C8C5; /* Warna border */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+    }
+
+    .arrow-circle i {
+        color: #47C8C5; /* Warna panah */
+        font-size: 16px;
+    }
+
+    .card-link {
+        text-decoration: none;
+    }
+</style>
     @endslot
     @slot('js')
     <script>
@@ -405,28 +439,28 @@
             <div class="card-body">
                 <div class="nav-container">
                     <div class="nav-links row">
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('latest') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('auction') }}"><img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti Lelang</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('ofoods') }}"><img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt=""><br>O-Foods</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Law Office</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('notaris') }}"><img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Notaris</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('agent') }}"><img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Agen</a>
                         </div>
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
                             <a href="https://estate.o-rumah.com/login"><img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt=""><br>Estate</a>
                         </div>
@@ -435,19 +469,23 @@
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 g-4 mb-2">
-            @foreach($typePengajuan as $type)
-            <div class="col-md-6 mb-2">
-                <!-- Tambahkan hyperlink ke card -->
-                <a href="{{ route('type_pengajuans.show', $type->slug) }}" class="card-link">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $type->name }}</h5>
-                            <p class="card-text">{{ $type->description }}</p>
-                        </div>
-                    </div>
-                </a>
+        @foreach($typePengajuan as $type)
+    <div class="col-md-6 mb-2">
+        <!-- Tambahkan hyperlink ke card -->
+        <a href="{{ route('type_pengajuans.show', $type->slug) }}" class="card-link">
+            <div class="card h-100 position-relative">
+                <div class="card-body">
+                    <h6 class="card-title">{{ $type->name }}</h6>
+                    <p class="card-text">{{ $type->description }}</p>
+                </div>
+                <!-- Tanda panah berbentuk lingkaran -->
+                <div class="arrow-circle">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
             </div>
-            @endforeach
+        </a>
+    </div>
+    @endforeach
         </div>
         <!-- end wrapper -->
         <div id="adsListsWithDistance" class="row mt-1"></div>

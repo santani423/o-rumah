@@ -55,8 +55,8 @@
                      type: 'POST',
                      data: formData, // Send only non-file data
                      success: function(response) {
-                        console.log(response);
-                        
+                         console.log(response);
+
                          // Redirect ke routing yang diinginkan setelah data berhasil disimpan
                          if (response.success) { // pastikan ada flag sukses di response
                              var id = response.pengajuan_id; // ambil id dari response jika ada
@@ -128,7 +128,7 @@
      @slot('body')
      <div class="card">
          <div class="card-body">
-             <h3 class="card-title font-20 mt-0">Dokument Pengajuan {{$typePengajuan->name}}</h3>
+             <h3 class="card-title font-20 mt-0">Dokumen Pengajuan {{$typePengajuan->name}}</h3>
              <p class="card-text">Silahkan lengkapi seluruh dokumen untuk pengajuan {{$typePengajuan->name}}</p>
              @if ($errors->any())
              <div class="alert alert-danger">
@@ -142,9 +142,12 @@
 
              <form id="pengajuanForm" action="{{ route('type_pengajuans.store', $slug) }}" method="post" enctype="multipart/form-data">
                  @csrf
+
                  <div class="row">
-                     <!-- All form fields here... -->
-                     <div class="col-md-6">
+
+                    <div class="col-md-12">                 <div class="row">
+                     <!-- Select Jenis Pinjaman -->
+                     <div class="col col-lg-6 col-sm-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Jenis Pinjaman</label>
                              <select class="select2 form-control mb-3 custom-select" name="jenisPinjaman" id="jenisPinjamanSelect">
@@ -160,7 +163,7 @@
                      </div>
 
                      <!-- Select Jenis Jaminan -->
-                     <div class="col-md-6">
+                     <div class="col col-lg-6 col-sm-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Jenis Jaminan</label>
                              <select class="select2 form-control mb-3 custom-select" name="jenisJaminan" id="jenisJaminanSelect">
@@ -174,6 +177,8 @@
                              @endif
                          </div>
                      </div>
+                 </div>
+</div>
 
                      <!-- Select Bank Umum -->
                      <div class="col-md-6">

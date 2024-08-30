@@ -61,7 +61,7 @@
                          if (response.success) { // pastikan ada flag sukses di response
                              var id = response.pengajuan_id; // ambil id dari response jika ada
                              var slug = response.slug; // ambil slug dari response jika ada
-                             window.location.href = `/pengajuan/show/${id}/${slug}`;
+                             window.location.href = `/pengajuan/${id}/${slug}`;
                          } else {
                              alert('Terjadi kesalahan, data tidak lengkap.');
                          }

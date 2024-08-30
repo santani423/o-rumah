@@ -41,6 +41,7 @@ use App\Http\Controllers\PengajuanController;
 
 Route::get('/pengajuan/{slug}', [PengajuanController::class, 'index'])->name('type_pengajuans.show');
 Route::post('/pengajuan/{slug}', [PengajuanController::class, 'store'])->name('type_pengajuans.store');
+Route::get('/pengajuan/show/{id}/{slug}', [PengajuanController::class, 'show'])->name('type_pengajuans.show');
 
 Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
 Route::get('/chats/getGroupChats', [ChatController::class, 'getGroupChats'])->name('chats.getGroupChats');

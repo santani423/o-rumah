@@ -149,38 +149,94 @@
             overflow-y: auto;
         }
     </style>
-    
-<!-- Tambahkan CSS -->
-<style>
-    .card {
-        position: relative;
-        overflow: hidden;
-    }
 
-    .arrow-circle {
-        position: absolute;
-        top: 50%;
-        right: 20px;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        border: 2px solid #47C8C5; /* Warna border */
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-    }
+    <!-- Tambahkan CSS -->
+    <style>
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
 
-    .arrow-circle i {
-        color: #47C8C5; /* Warna panah */
-        font-size: 16px;
-    }
+        .arrow-circle {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid #47C8C5;
+            /* Warna border */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+        }
 
-    .card-link {
-        text-decoration: none;
-    }
-</style>
+        .arrow-circle i {
+            color: #47C8C5;
+            /* Warna panah */
+            font-size: 16px;
+        }
+
+        .card-link {
+            text-decoration: none;
+        }
+
+        .icon-label {
+            display: inline-block;
+            max-width: 100%;
+            white-space: normal;
+            font-size: 10px;
+            /* Memungkinkan teks untuk dibungkus */
+            overflow: hidden;
+            text-align: center;
+            word-wrap: break-word;
+            /* Memaksa pemotongan kata */
+        }
+
+        .small-card {
+            width: 100%;
+            height: 60%;
+            /* Atur ukuran lebar kartu */
+            /* padding: 10px; */
+            /* Mengurangi padding untuk ukuran yang lebih kompak */
+            margin: 0 auto;
+            /* Rata tengah untuk kolom */
+        }
+
+        .card-body {
+            padding: 5px;
+            /* Mengurangi padding dalam body kartu */
+        }
+
+        .card-title {
+            font-size: 14px;
+            /* Ukuran font lebih kecil untuk judul */
+            margin-bottom: 5px;
+        }
+
+        .card-text {
+            font-size: 12px;
+            /* Ukuran font lebih kecil untuk teks */
+        }
+
+        .arrow-circle {
+            position: absolute;
+            bottom: 10px;
+            /* Posisikan di bawah */
+            right: 10px;
+            /* Posisikan di kanan */
+            font-size: 16px;
+            /* Ukuran ikon lebih kecil */
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
     @endslot
     @slot('js')
     <script>
@@ -440,53 +496,86 @@
                 <div class="nav-container">
                     <div class="nav-links row">
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('latest') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti</a>
+                            <a href="{{ route('latest') }}">
+                                <img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Properti</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('auction') }}"><img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt=""><br>Properti Lelang</a>
+                            <a href="{{ route('auction') }}">
+                                <img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Properti Lelang</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('ofoods') }}"><img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt=""><br>O-Foods</a>
+                            <a href="{{ route('ofoods') }}">
+                                <img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">O-Foods</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('omerchant') }}"><img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt=""><br>O-Merchant</a>
+                            <a href="{{ route('omerchant') }}">
+                                <img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">O-Merchant</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('law-helper') }}"><img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Law Office</a>
+                            <a href="{{ route('agent') }}">
+                                <img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Cari Agen</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('notaris') }}"><img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Notaris</a>
+                            <a href="{{ route('notaris') }}">
+                                <img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Cari Notaris</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <a href="{{ route('agent') }}"><img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt=""><br>Cari Agen</a>
+                            <a href="{{ route('law-helper') }}">
+                                <img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Cari Law Office</span>
+                            </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
-                            <!-- <a href="{{ route('coming-soon') }}"><img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt=""><br>Estate</a> -->
-                            <a href="https://estate.o-rumah.com/login"><img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt=""><br>Estate</a>
+                            <a href="https://estate.o-rumah.com/login">
+                                <img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt="">
+                                <br>
+                                <span class="icon-label">Estate</span>
+                            </a>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 g-4 mb-2">
-        @foreach($typePengajuan as $type)
-    <div class="col-md-6 mb-2">
-        <!-- Tambahkan hyperlink ke card -->
-        <a href="{{ route('type_pengajuans.show', $type->slug) }}" class="card-link">
-            <div class="card h-100 position-relative">
-                <div class="card-body">
-                    <h6 class="card-title">{{ $type->name }}</h6>
-                    <p class="card-text">{{ $type->description }}</p>
-                </div>
-                <!-- Tanda panah berbentuk lingkaran -->
-                <div class="arrow-circle">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
+            @foreach($typePengajuan as $type)
+            <div class="col-md-6 mb-2">
+                <!-- Tambahkan hyperlink ke card -->
+                <a href="{{ route('type_pengajuans.show', $type->slug) }}" class="card-link">
+                    <div class="card small-card h-100 position-relative">
+                        <div class="card-body" style="padding: 0.01;">
+                            <h6 class="card-title">{{ $type->name }}</h6>
+                            <p class="card-text">{{ $type->description }}</p>
+                        </div>
+                        <!-- Tanda panah berbentuk lingkaran -->
+                        <div class="arrow-circle">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
-    </div>
-    @endforeach
+            @endforeach
         </div>
+
         <!-- end wrapper -->
         <div id="adsListsWithDistance" class="row mt-1"></div>
         <div class="row mt-1">

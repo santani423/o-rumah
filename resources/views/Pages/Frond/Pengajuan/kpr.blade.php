@@ -1,17 +1,10 @@
- <x-Layout.Horizontal.Master>
+<x-Layout.Horizontal.Master>
      @slot('css')
      <!-- Dropzone css -->
      <link href="{{ asset('zenter/horizontal/assets/plugins/dropzone/dist/dropzone.css') }}" rel="stylesheet" type="text/css" />
      <link href="{{ asset('zenter/horizontal/assets/plugins/dropify/css/dropify.min.css') }}" rel="stylesheet" />
      <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-     <style>
-    .green-background {
-        background-color: #47C8C5;
-        color: #343a40;
-        border: 2px solid #47C8C5;
-    }
-</style>
      @endslot
 
      @slot('js')
@@ -135,7 +128,7 @@
      @slot('body')
      <div class="card">
          <div class="card-body">
-             <h3 class="card-title font-20 mt-0">Dokumen Pengajuan {{$typePengajuan->name}}</h3>
+             <h3 class="card-title font-20 mt-0">Dokumen  {{$typePengajuan->name}}</h3>
              <p class="card-text">Silahkan lengkapi seluruh dokumen untuk pengajuan {{$typePengajuan->name}}</p>
              @if ($errors->any())
              <div class="alert alert-danger">
@@ -149,9 +142,9 @@
 
              <form id="pengajuanForm" action="{{ route('type_pengajuans.store', $slug) }}" method="post" enctype="multipart/form-data">
                  @csrf
-
+            
                  <div class="row">
-
+    @if($typePengajuan->id == 2)
                     <div class="col-md-12">                 <div class="row">
                      <!-- Select Jenis Pinjaman -->
                      <div class="col col-lg-6 col-sm-6">
@@ -168,7 +161,7 @@
                              @endif
                          </div>
                      </div>
-
+                   
                      <!-- Select Jenis Jaminan -->
                      <div class="col col-lg-6 col-sm-6">
                          <div class="form-group mb-0">
@@ -186,12 +179,15 @@
                      </div>
                  </div>
 </div>
-
+  @else
+                      <input type="hidden"   name="jenisJaminan" class="form-check-input" value="1">
+                      <input type="hidden"   name="jenisPinjaman" class="form-check-input" value="1">
+                @endif
                      <!-- Select Bank Umum -->
                      <div class="col-md-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Bank Umum</label>
-                             <select style="background-color: #47C8C5;" class="select2 form-control mb-3 custom-select green-background" name="bankUmum" >
+                             <select style="background-color: #47C8C5; color:white" class="select2 form-control mb-3 custom-select" name="bankUmum" id="bankUmumSelect">
                                  <option value="">Pilih Bank Umum</option>
                                  @foreach ($bankUmum as $bk)
                                  <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">
@@ -209,7 +205,7 @@
                      <div class="col-md-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Bank BPR</label>
-                             <select style="background-color: #47C8C5;" class="select2 form-control mb-3 custom-select green-background" name="bankBpr" >
+                             <select style="background-color: #47C8C5; color:white" class="select2 form-control mb-3 custom-select" name="bankBpr" id="bankBPRSelect">
                                  <option value="">Pilih Bank BPR</option>
                                  @foreach ($bankBpr as $bk)
                                  <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">

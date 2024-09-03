@@ -5,6 +5,13 @@
      <link href="{{ asset('zenter/horizontal/assets/plugins/dropify/css/dropify.min.css') }}" rel="stylesheet" />
      <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+     <style>
+    .green-background {
+        background-color: #47C8C5;
+        color: #343a40;
+        border: 2px solid #47C8C5;
+    }
+</style>
      @endslot
 
      @slot('js')
@@ -184,7 +191,7 @@
                      <div class="col-md-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Bank Umum</label>
-                             <select class="select2 form-control mb-3 custom-select" name="bankUmum" id="bankUmumSelect">
+                             <select style="background-color: #47C8C5;" class="select2 form-control mb-3 custom-select green-background" name="bankUmum" >
                                  <option value="">Pilih Bank Umum</option>
                                  @foreach ($bankUmum as $bk)
                                  <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">
@@ -202,7 +209,7 @@
                      <div class="col-md-6">
                          <div class="form-group mb-0">
                              <label class="mb-2 pb-1">Bank BPR</label>
-                             <select class="select2 form-control mb-3 custom-select" name="bankBpr" id="bankBPRSelect">
+                             <select style="background-color: #47C8C5;" class="select2 form-control mb-3 custom-select green-background" name="bankBpr" >
                                  <option value="">Pilih Bank BPR</option>
                                  @foreach ($bankBpr as $bk)
                                  <option value="{{ $bk->id }}" data-image="{{ asset('storage/' . $bk->image) }}">

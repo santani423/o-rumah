@@ -322,7 +322,7 @@ class HomeController extends Controller
 
     public function lawHelper(Request $request)
     {
-        $userLists = User::getAllLawHelper(paginate: 9, filters: $request->all());
+        $userLists = User::where('type','lbh')->where('is_blocked',0)->get();
         $bannerLists = Banner::active()->where('show_on', 'law-helper')->get();
         // dd($userLists);
         return view('Pages/Frond/LbhPage', compact('userLists', 'bannerLists'));
@@ -341,8 +341,10 @@ class HomeController extends Controller
      */
     public function notaris(Request $request)
     {
-        $userLists = User::getAllNotaris(paginate: 9, filters: $request->all());
+        // $userLists = User::getAllNotaris(paginate: 9, filters: $request->all());
+        $userLists = User::where('type','notaris')->where('is_blocked',0)->get();
         $bannerLists = Banner::active()->where('show_on', 'notaris')->get();
+        // dd($userLists);
         return view('Pages/Frond/NotarisPage', compact('userLists', 'bannerLists'));
         // return Inertia::render('Front/Pages/NotarisPage', [
         //     'userLists' => $userLists,

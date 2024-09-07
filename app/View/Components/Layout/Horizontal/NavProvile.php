@@ -13,11 +13,12 @@ class NavProvile extends Component
     /**
      * Create a new component instance.
      */
-    public $like;
+    public $like,$unreadMessages;
     public function __construct()
     {
         $user = Auth::user();
         $this->like = LinkeAds::where('user_id', $user->id)->count();
+        $this->unreadMessages  = 9;
     }
 
     /**

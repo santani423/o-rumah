@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Cities;
 use App\Models\Districts;
 use App\Models\Ads;
+use App\Models\Chat;
+use App\Models\GroupChat;
 use App\Models\User;
 use App\Models\UserLelangPropertie;
 use App\Services\AdvertisingPointsManager;
@@ -339,5 +341,31 @@ class ToolController extends Controller
             'message' => 'Images uploaded successfully',
             'uploaded_files' => $uploadedFiles,
         ]);
+    }
+
+    public function getUnreadMessagesCount()
+    {
+        
+
+                           $user = Auth::user();
+
+        $groupChats = GroupChat::join('users', 'users.id', '=', 'groupchats.user_id')
+            ->join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+            ->join('chats', 'chats.id', '=', 'listgroupchats.chat_id')
+            ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
+            ->where('ads.user_id', $user->id)
+            ->where('chats.user_id','!=' ,$user->id)
+            ->where('chats.read_status', 0)   
+            ->count();
+        $groupChats2 = GroupChat::join('listgroupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+            ->join('chats', 'chats.id', '=', 'listgroupchats.chat_id')
+            ->join('ads', 'listgroupchats.ads_id', '=', 'ads.id')
+            ->where('groupchats.user_id', $user->id)
+            ->where('chats.user_id','!=' ,$user->id)
+            ->where('chats.read_status', 0)   
+            ->count();
+            // dd($groupChats);
+  
+        return response()->json(['unreadCount' => $groupChats+$groupChats2]);
     }
 }

@@ -15,7 +15,6 @@
                             @foreach($groupChats as $chat)
                             <tr class="chat-row" data-user-id="{{ $chat->user_id }}" data-ads-id="{{ $chat->ads_id }}">
                                 <td><img src="{{ $chat->image_user }}" class="rounded-circle mr-2" height="50" width="50" alt="User"> <b>{{ $chat->name_user }}</b> </td>
-                                 
                             </tr>
                             @endforeach
                         </tbody>
@@ -26,7 +25,7 @@
         </div>
     </div>
 
-    <!-- Modal HTML -->
+    @if(config('app.setDevCheting') === true)
     <div class="modal fade" id="devChetingModal" tabindex="-1" role="dialog" aria-labelledby="devChetingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -42,20 +41,21 @@
                             <!-- Chat Messages Placeholder -->
                         </div>
                         <div class="chat-input mt-3">
-                            <form id="chatForm" class="d-flex align-items-center">
-                                <!-- Image Input with Upload Icon -->
+                            <form id="chatForm" class="d-flex align-items-center" enctype="multipart/form-data">
                                 <div class="input-group-prepend">
                                     <label for="chatImage" class="btn btn-secondary">
                                         <i class="fa fa-upload"></i>
                                     </label>
                                     <input type="file" id="chatImage" class="d-none" accept="image/*">
                                 </div>
-                                <!-- Hidden input for ads_id -->
                                 <input type="hidden" id="adsId" value="">
-                                <!-- Text Input and Send Button -->
+                                <input type="hidden" id="userId" value="">
                                 <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
                                 <div class="input-group-append">
-                                    <button class="btn btn-success ml-2" type="button" id="sendMessage">Send</button>
+                                    <button class="btn btn-success ml-2" type="button" id="sendMessage">
+                                        <span id="sendButtonText"><i class="fa fa-paper-plane"></i> Send</span>
+                                        <span id="sendButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -70,34 +70,45 @@
             </div>
         </div>
     </div>
+    @endif
     @endslot
 
     @slot('js')
     <script>
-        let intervalId; // For interval to refresh chat messages
+        let intervalId;
 
-        // Function to get current time in HH:MM AM/PM format
         function getCurrentTime() {
             const now = new Date();
             let hours = now.getHours();
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+            hours = hours % 12 || 12;
             return `${hours}:${minutes} ${ampm}`;
         }
 
-        // Handle Send Message
+        function scrollToBottom() {
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
         document.getElementById('sendMessage').addEventListener('click', function() {
             var message = document.getElementById('chatMessage').value;
             var chatImage = document.getElementById('chatImage').files[0];
             var adsId = document.getElementById('adsId').value;
+            var userId = document.getElementById('userId').value;
 
             var formData = new FormData();
             formData.append('message', message);
-            formData.append('ads_id', adsId); // Include the ads_id
+            formData.append('ads_id', adsId);
+            formData.append('user_id', userId);
             if (chatImage) {
                 formData.append('image', chatImage);
             }
+
+            // Show spinner and disable the send button
+            document.getElementById('sendButtonText').classList.add('d-none');
+            document.getElementById('sendButtonSpinner').classList.remove('d-none');
+            document.getElementById('sendMessage').disabled = true;
 
             fetch('/chats', {
                     method: 'POST',
@@ -108,34 +119,37 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('data', data);
+                    // Hide spinner and enable the send button
+                    document.getElementById('sendButtonText').classList.remove('d-none');
+                    document.getElementById('sendButtonSpinner').classList.add('d-none');
+                    document.getElementById('sendMessage').disabled = false;
 
-                    // Display sent message in UI
                     displayMessage(data.message, data.image, getCurrentTime(), data.user_id, data.name, data.profile);
                     document.getElementById('chatMessage').value = '';
                     document.getElementById('chatImage').value = '';
                     document.getElementById('imagePreview').classList.add('d-none');
+                    
+                    // Scroll to bottom after message is sent
+                    scrollToBottom();
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors by re-enabling the button
+                    document.getElementById('sendButtonText').classList.remove('d-none');
+                    document.getElementById('sendButtonSpinner').classList.add('d-none');
+                    document.getElementById('sendMessage').disabled = false;
+                });
         });
 
-        // Display Messages Function
         function displayMessage(message, image, time, chatId, name, profile) {
             var chatMessages = document.querySelector('.chat-messages');
             var newMessage = document.createElement('div');
-            console.log('name', name);
 
-            // Check if chatId is equal to the current user ID
             var isUserMessage = chatId == "{{ Auth::user()?->id }}";
-            // Determine message position (left or right)
             newMessage.classList.add('message', isUserMessage ? 'text-right' : 'text-left');
 
-            // Construct profile image URL
             var profileImage = profile ? `{{ route('home') }}${profile}` : `{{ route('home') }}/path/to/default-avatar.jpg`;
 
-            console.log('profileImage', profileImage);
-
-            // Only display message if it is not null or empty, otherwise leave it blank
             var messageContent = message ? `<p class="mb-0"><strong>${isUserMessage ? 'Anda' : name}:</strong> ${message}</p>` : '';
 
             newMessage.innerHTML = `
@@ -153,7 +167,6 @@
             chatMessages.appendChild(newMessage);
         }
 
-        // Image Preview Functionality
         document.getElementById('chatImage').addEventListener('change', function() {
             var chatImage = this.files[0];
 
@@ -168,45 +181,48 @@
             }
         });
 
-        // Open Chat Modal and Fetch Messages
         document.querySelectorAll('.chat-row').forEach(row => {
             row.addEventListener('click', function() {
                 var userId = this.getAttribute('data-user-id');
                 var adsId = this.getAttribute('data-ads-id');
 
-                // Set the adsId in hidden input
                 document.getElementById('adsId').value = adsId;
+                document.getElementById('userId').value = userId;
 
-                // Show the modal
                 $('#devChetingModal').modal('show');
 
-                // Fetch and display chat messages when the modal is opened
                 function fetchMessages(scrollToBottom = false) {
                     fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
                         .then(response => response.json())
                         .then(data => {
                             const chatMessages = document.querySelector('.chat-messages');
-                            chatMessages.innerHTML = ''; // Clear previous messages
+                            chatMessages.innerHTML = '';
                             data.forEach(chat => {
                                 displayMessage(chat.message, chat.image, chat.sent_at, chat.user_id, chat.name, chat.profile);
                             });
                             if (scrollToBottom) {
-                                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
                             }
                         })
                         .catch(error => console.error('Error:', error));
                 }
 
-                // Clear previous interval if any
                 clearInterval(intervalId);
 
-                // Set an interval to fetch messages every 3 seconds without scrolling
                 intervalId = setInterval(() => fetchMessages(false), 3000);
 
-                // Fetch messages initially when modal opens and scroll to bottom
                 fetchMessages(true);
             });
         });
+        
+    // Add event listener to reset adsId and userId to null when modal is closed
+    $('#devChetingModal').on('hidden.bs.modal', function () {
+        document.getElementById('adsId').value = null;
+        document.getElementById('userId').value = null;
+
+        // Clear the interval when the modal is closed
+        clearInterval(intervalId);
+    });
     </script>
     @endslot
 </x-Layout.Vertical.Master>

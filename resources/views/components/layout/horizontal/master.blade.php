@@ -181,6 +181,25 @@
     <script src="{{ asset('zenter/horizontal/assets/js/jquery.nicescroll.js')}}"></script>
 
     {{$js}}
+
+    <script>
+         function fetchUnreadMessagesCount() {
+        $.ajax({
+            url: '/unread-messages-count',
+            method: 'GET',
+            success: function(response) {
+                // Update jumlah pesan yang belum dibaca pada elemen dengan id 'chat-unread-count'
+                $('#chat-unread-count').text(response.unreadCount);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching unread messages count:", error);
+            }
+        });
+    }
+
+    // Panggil fungsi fetchUnreadMessagesCount setiap 3 detik
+    setInterval(fetchUnreadMessagesCount, 3000);
+    </script>
     <!-- App js -->
     <script src="{{ asset('zenter/horizontal/assets/js/app.js')}}"></script>
 </body>

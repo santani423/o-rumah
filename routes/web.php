@@ -413,6 +413,7 @@ Route::get('/upload', function () {
     return view('upload');
 });
 Route::post('/upload', [ToolController::class, 'uploadPhoto'])->name('upload.photo');
+Route::get('/unread-messages-count', [ToolController::class, 'getUnreadMessagesCount'])->name('unread-messages-count');
 
 Route::get('/testing/location', function () {
     return view('testing/location');

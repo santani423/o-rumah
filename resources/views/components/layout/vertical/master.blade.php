@@ -125,6 +125,24 @@
             $(document).ready(function() {
                 $('#datatable2').DataTable();  
             } );
+           
+         function fetchUnreadMessagesCount() {
+        $.ajax({
+            url: '/unread-messages-count',
+            method: 'GET',
+            success: function(response) {
+                // alert('sdf');
+                // Update jumlah pesan yang belum dibaca pada elemen dengan id 'chat-unread-count'
+                $('#chat-unread-count').text(response.unreadCount);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching unread messages count:", error);
+            }
+        });
+    }
+
+    // Panggil fungsi fetchUnreadMessagesCount setiap 3 detik
+    setInterval(fetchUnreadMessagesCount, 3000);
         </script>
 
     </body>

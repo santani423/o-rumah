@@ -15,6 +15,13 @@
         <span class="badge badge-danger noti-icon-badge" id="like-count">{{$like}}</span>
         @endif
     </a>
+    <a class="nav-link dropdown-toggle arrow-none waves-effect" href="{{ route('member.chat') }}" role="button"
+        aria-haspopup="false" aria-expanded="true">
+        <i class="mdi mdi-message-text-outline mt-2" style="font-size: 24px;"></i>
+       
+        <span class="badge badge-danger noti-icon-badge" id="chat-unread-count">0</span>
+    
+    </a>
     <!-- <a class="nav-link dropdown-toggle arrow-none waves-effect" href="#" role="button" aria-haspopup="false"
         aria-expanded="true">
         <i class="mdi mdi-file-send mt-2" style=" font-size: 24px;"></i>

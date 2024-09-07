@@ -97,6 +97,7 @@
                             </div>
                             <!-- Hidden input for ads_id -->
                             <input type="hidden" id="adsId" value="{{ $ads->ads_id }}">
+                            <input type="hidden" id="userId" value="{{ Auth::user()?->id }}">
                             <!-- Text Input and Send Button -->
                             <input type="text" id="chatMessage" class="form-control ml-2" placeholder="Type your message...">
                             <div class="input-group-append">
@@ -142,7 +143,7 @@
         fetch(`/chats?user_id=${userId}&ads_id=${adsId}`)
             .then(response => response.json())
             .then(data => {
-                console.log('qwertydata', data);
+                // console.log('qwertydata', data);
 
                 const chatMessages = document.querySelector('.chat-messages');
                 chatMessages.innerHTML = ''; // Clear current chat messages
@@ -188,6 +189,7 @@
         var message = document.getElementById('chatMessage').value;
         var chatImage = document.getElementById('chatImage').files[0];
         var adsId = document.getElementById('adsId').value;
+        var userId = document.getElementById('userId').value;
 
         if (message.trim() === '' && !chatImage) {
             return; // Don't send empty message if no image is attached
@@ -198,6 +200,7 @@
         var formData = new FormData();
         formData.append('message', message);
         formData.append('ads_id', adsId); // Include the ads_id
+        formData.append('user_id', userId); // Include the ads_id
 
         if (chatImage) {
             formData.append('image', chatImage); // Attach image if exists

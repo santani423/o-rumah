@@ -13,21 +13,36 @@ class ChatController extends Controller
 {
     // Ambil semua pesan chat
     public function index(Request $request)
-{
-    $ads_id = $request->input('ads_id');
-
-    // Query to retrieve chat data along with user data based on ads_id, ordered by created_at in ascending order
-    $chats = Chat::select('chats.*', 'users.id as user_id', 'users.name', 'users.image as profile') // Select additional user fields
-        ->join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
+    {
+        $ads_id = $request->input('ads_id');
+        $user_id = $request->input('user_id');
+        $logged_in_user_id = Auth::id(); // Get the logged-in user ID
+        if ($ads_id != null &&  $user_id != null) {
+              // Update read_status to 1 for chats where the user_id matches the logged-in user
+      $t=  Chat::join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
         ->join('groupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
-        ->join('users', 'users.id', '=', 'listgroupchats.user_id')
         ->where('listgroupchats.ads_id', $ads_id)
-        ->orderBy('chats.created_at', 'asc') // Order by created_at in ascending order
-        ->get();
-// dd($chats);
-    // Return the chat data as a JSON response
-    return response()->json($chats, 200);
-}
+        ->where('groupchats.user_id', $user_id)
+        ->where('chats.user_id','!=', $logged_in_user_id)
+        // dd($t);
+        ->update(['chats.read_status' => 1]);
+        }
+     
+    
+        // Query to retrieve chat data along with user data based on ads_id, ordered by created_at in ascending order
+        $chats = Chat::select('chats.*', 'users.id as user_id', 'users.name', 'users.image as profile') // Select additional user fields
+            ->join('listgroupchats', 'listgroupchats.chat_id', '=', 'chats.id')
+            ->join('groupchats', 'groupchats.id', '=', 'listgroupchats.groupchat_id')
+            ->join('users', 'users.id', '=', 'listgroupchats.user_id')
+            ->where('listgroupchats.ads_id', $ads_id)
+            ->where('groupchats.user_id', $user_id)
+            ->orderBy('chats.created_at', 'asc') // Order by created_at in ascending order
+            ->get();
+    
+        // Return the chat data as a JSON response
+        return response()->json($chats, 200);
+    }
+    
 
 
     // Simpan pesan baru
@@ -52,7 +67,7 @@ class ChatController extends Controller
     $user = Auth::user();
     
     // Check if GroupChat already exists for the given ads_id and user_id
-    $cek = ListGroupChat::where('ads_id', $request->input('ads_id'))->where('user_id', $user->id)->first();
+    $cek = ListGroupChat::where('ads_id', $request->input('ads_id'))->where('user_id', $request->input('user_id'))->first();
     if ($cek) {
         $groupchat_id = $cek->groupchat_id;
     } else {

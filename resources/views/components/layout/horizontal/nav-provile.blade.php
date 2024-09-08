@@ -20,7 +20,7 @@
         aria-haspopup="false" aria-expanded="true">
         <i class="mdi mdi-message-text-outline mt-2" style="font-size: 24px;"></i>
        
-        <span class="badge badge-danger noti-icon-badge" id="chat-unread-count">0</span>
+        <span class="badge badge-danger noti-icon-badge" id="chat-unread-count"></span>
     
     </a>
     @endif

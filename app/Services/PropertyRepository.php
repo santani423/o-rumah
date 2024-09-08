@@ -278,14 +278,15 @@ trait PropertyRepository
     }
 
 
-    public function findAgentsByDistrictId($districtId = null)
+    public function findAgentsByDistrictId($districtId = null,$perPage = 8, $page=0)
     {
         // Jika districtId tidak diberikan, tampilkan semua agen dengan paginasi
         if (is_null($districtId)) {
             // Tampilkan agen dengan paginasi, 8 agen per halaman
             $agents = User::where('type', 'agent')
                 ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
-                ->paginate(8);
+                
+            ->paginate($perPage, ['*'], 'page', $page);
 
             return $agents;
         }

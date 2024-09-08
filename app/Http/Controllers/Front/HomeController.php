@@ -390,10 +390,12 @@ class HomeController extends Controller
     public function getAgentsByDistrict(Request $request)
 {
     $districtId = $request->input('district_id');
+    $page = $request->input('page');
+ 
 
     // Panggil service untuk mendapatkan daftar agen
-    $agents = $this->findAgentsByDistrictId($districtId);
-
+    $agents = $this->findAgentsByDistrictId($districtId,6, $page);
+    // dd($agents);
     // Render view menjadi string
     $view = view('Pages/Frond/Properti/getAgentsByDistrict', compact('agents'))->render();
 

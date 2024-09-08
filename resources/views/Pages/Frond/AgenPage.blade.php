@@ -149,9 +149,8 @@
     </style>
     @endslot
     @slot('js')
-    
     <script>
-        let currentPage = 1;
+    let currentPage = 1;
     const perPage = 8;
     let latitude = null;
     let longitude = null;
@@ -159,186 +158,153 @@
     let beliSewa = 'Jual';
     let typeProperti = false;
     let districtId = null;
-        $('#userDetailModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var name = button.data('name'); // Extract info from data-* attributes
-            var joinedAt = button.data('joinedat');
-            var companyName = button.data('companyname');
 
-            var modal = $(this);
-            modal.find('#userName').text(name);
-            modal.find('#userJoinedAt').text(joinedAt);
-            modal.find('#userCompanyName').text(companyName);
+    // Modal untuk detail user
+    $('#userDetailModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); 
+        var modal = $(this);
+        modal.find('#userName').text(button.data('name'));
+        modal.find('#userJoinedAt').text(button.data('joinedat'));
+        modal.find('#userCompanyName').text(button.data('companyname'));
+    });
+
+    // Fungsi untuk mendapatkan lokasi dan menampilkan data agen saat halaman dimuat
+    window.onload = function() {
+        getLocation();
+    };
+
+    // Fungsi untuk mendapatkan geolocation pengguna
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    }
+
+    // Menampilkan posisi setelah geolocation berhasil
+    function showPosition(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        loadAgents(currentPage); // Memuat agen berdasarkan posisi saat halaman pertama kali dimuat
+    }
+
+    // Fungsi untuk menangani kesalahan saat mendapatkan geolocation
+    function showError(error) {
+        let errorMsg;
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                errorMsg = "User denied the request for Geolocation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                errorMsg = "Location information is unavailable.";
+                break;
+            case error.TIMEOUT:
+                errorMsg = "The request to get user location timed out.";
+                break;
+            case error.UNKNOWN_ERROR:
+                errorMsg = "An unknown error occurred.";
+                break;
+        }
+        console.error(errorMsg);
+    }
+
+    // Fungsi untuk memuat agen berdasarkan lokasi pengguna dan query pencarian
+    function loadAgents(page) {
+        var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+        if (!latitude || !longitude) {
+            console.error('Latitude dan Longitude tidak tersedia.');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('agent.getAgentsByDistrict') }}",
+            type: 'GET',
+            data: {
+                latitude: latitude,
+                longitude: longitude,
+                search: searchQuery,
+                page: page
+            },
+            success: function(response) {
+                if (page === 1) {
+                    $('#adsListsWithDistance').html(response.html); // Load pertama kali
+                } else {
+                    $('#adsListsWithDistance').append(response.html); // Append untuk halaman berikutnya
+                }
+            },
+            error: function(xhr) {
+                console.error('Error:', xhr);
+            }
         });
-    </script>
-    
-    <script>
-        window.onload = function() {
-            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
-        };
+    }
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-            }
+    // Fungsi untuk menampilkan lokasi sampel saat mengetik pencarian lokasi
+    function showSampleLocations(inputValue) {
+        if (inputValue.length < 2) {
+            document.getElementById('sampleLocations').innerHTML = '';
+            return;
         }
 
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
+        fetch(`{{route('tool.searchDistricts')}}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ keyword: inputValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const sampleLocationsDiv = document.getElementById('sampleLocations');
+            sampleLocationsDiv.innerHTML = '';
 
-            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
-
-            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
-            // $('#adsListsWithDistance').load("{{ route('agent.getAgentsByDistrict') }}" + '?latitude=' + lat + '&longitude=' + long + '&search=' + searchQuery);
-            $.ajax({
-                        url: "{{ route('agent.getAgentsByDistrict') }}",
-                        type: 'GET',
-                        data: {
-                            latitude: lat,
-                            longitude: long,
-                            search: searchQuery
-                        },
-                        success: function(response) {
-                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
-                    });
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById("location").innerHTML = "User denied the request for Geolocation."
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById("location").innerHTML = "Location information is unavailable."
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById("location").innerHTML = "The request to get user location timed out."
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById("location").innerHTML = "An unknown error occurred."
-                    break;
-            }
-        }
-        $(document).ready(function() {
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // Mencegah form dari submit secara default
-
-                var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
-
-                // Mendapatkan lokasi pengguna untuk dimasukkan dalam pencarian
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
-
-                    // AJAX request untuk memuat data ke adsListsWithDistance
-                    $.ajax({
-                        url: "{{ route('agent.getAgentsByDistrict') }}",
-                        type: 'GET',
-                        data: {
-                            latitude: lat,
-                            longitude: long,
-                            search: searchQuery
-                        },
-                        success: function(response) {
-                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
-                    });
+            data.forEach(item => {
+                const locationItem = document.createElement('div');
+                locationItem.textContent = item.name;
+                locationItem.classList.add('sample-location-item');
+                
+                locationItem.addEventListener('click', () => {
+                    $('#searchLok').val(item.name);
+                    latitude = item.meta.lat;
+                    longitude = item.meta.long;
+                    districtId = item.id;
+                    sampleLocationsDiv.innerHTML = '';
+                    currentPage = 1;
+                    loadAgents(currentPage); // Memuat agen berdasarkan distrik yang dipilih
                 });
+
+                sampleLocationsDiv.appendChild(locationItem);
             });
+        })
+        .catch(error => {
+            console.error('Error fetching location data:', error);
         });
-    </script>
- <script>
-        function showSampleLocations(inputValue) {
-            if (inputValue.length < 2) {
-                document.getElementById('sampleLocations').innerHTML = '';
-                return;
-            }
-          
-            const url = `{{route('tool.searchDistricts')}}`;
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // if you are using Laravel with CSRF protection
-                },
-                body: JSON.stringify({ keyword: inputValue })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const sampleLocationsDiv = document.getElementById('sampleLocations');
-                sampleLocationsDiv.innerHTML = '';
+    }
 
-                data.forEach(item => {
-                    const locationItem = document.createElement('div');
-                    locationItem.textContent = item.name;
-                    locationItem.classList.add('sample-location-item');
-                    
-                    // Tambahkan event listener untuk menangani klik
-                    locationItem.addEventListener('click', () => {
-                    
-                        document.getElementById('searchLok').value = item.name;
-                        document.getElementById('sampleLocations').innerHTML = '';
-                        document.getElementById('adsListsWithDistance').innerHTML = '';
-                        latitude = item.meta.lat;
-                        longitude = item.meta.long;
-                        districtId = item.id;
-                        // showPosition(currentPage)
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
+    // Fungsi untuk mencari lokasi
+    function searchLocation() {
+        console.log('Lokasi yang dicari:', locationText);
+        $('#adsListsWithDistance').html(''); // Kosongkan daftar agen
+        currentPage = 1;
+        loadAgents(currentPage);
+    }
 
-                    // AJAX request untuk memuat data ke adsListsWithDistance
-                    $.ajax({
-                        url: "{{ route('agent.getAgentsByDistrict') }}",
-                        type: 'GET',
-                        data: {
-                            latitude: lat,
-                            longitude: long,
-                            district_id: districtId
-                        },
-                        success: function(response) {
-                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
-                    });
-                });
-                        console.log(item.meta); // Menampilkan item.meta di console saat diklik
-                    });
-                    
-                    sampleLocationsDiv.appendChild(locationItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching location data:', error);
-            });
+    // Fungsi untuk memuat lebih banyak agen
+    function loadMoreAgents() {
+        currentPage++;
+        loadAgents(currentPage); // Muat halaman berikutnya
+    }
 
-        }
-        function searchLocation() {
+    // Menangani submit dari form pencarian
+    $(document).ready(function() {
+        $('#searchForm').on('submit', function(e) {
+            e.preventDefault(); // Mencegah form submit secara default
+            searchLocation(); // Panggil fungsi pencarian lokasi
+        });
+    });
+</script>
 
-// alert(88);
-// const inputElement = document.querySelector('.location-input input');
-// const locationText = inputElement.value;
-// currentPage = 1;
-console.log('Lokasi yang dicari:', locationText);
-
-document.getElementById('adsListsWithDistance').innerHTML = '';
-showPosition(currentPage);
-
-}
-    </script>
     @endslot
 
     @slot('body')
@@ -363,7 +329,12 @@ showPosition(currentPage);
         <!--end col-->
     </div>
     <div class="row mt-3" id="adsListsWithDistance"></div>
-
+  <!-- Next Button to Load More Agents -->
+  <div class="d-flex justify-content-center mt-3 mb-3">
+        <button id="nextPage" class="btn btn-primary mt-3" onclick="loadMoreAgents()" style="background-color: #47C8C5;
+            border-color: #47C8C5;
+            color: white">Next</button>
+    </div>
     <!-- Modal Detail User -->
     <div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

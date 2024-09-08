@@ -114,90 +114,120 @@
     @endslot
     @slot('js')
     <script>
-        window.onload = function() {
-            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
-        };
+            window.onload = function() {
+                getLocation();
+            };
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else {
+                    document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+                }
             }
-        }
 
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
+            function showPosition(position) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
 
-            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
+                var searchQuery = $('input[name="search"]').val();
 
-            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
-            // $('#adsListsWithDistance').load("{{ route('ofoods.listing') }}" + '?latitude=' + lat + '&longitude=' + long + '&search=' + searchQuery);
-            $.ajax({
-                        url: "{{ route('omerchant.listing') }}",
-                        type: 'GET',
-                        data: {
-                            latitude: lat,
-                            longitude: long,
-                            search: searchQuery
-                        },
-                        success: function(response) {
-                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
+                $.ajax({
+                    url: "{{ route('omerchant.listing') }}",
+                    type: 'GET',
+                    data: {
+                        latitude: lat,
+                        longitude: long,
+                        search: searchQuery
+                    },
+                    success: function(response) {
+                        $('#adsListsWithDistance').html(response.html);
+                    },
+                    error: function(xhr) {
+                        console.error('Error:', xhr);
+                    }
+                });
+            }
+
+            function showError(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        document.getElementById("location").innerHTML = "User denied the request for Geolocation.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        document.getElementById("location").innerHTML = "Location information is unavailable.";
+                        break;
+                    case error.TIMEOUT:
+                        document.getElementById("location").innerHTML = "The request to get user location timed out.";
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        document.getElementById("location").innerHTML = "An unknown error occurred.";
+                        break;
+                }
+            }
+
+            $(document).ready(function() {
+                $('#searchForm').on('submit', function(e) {
+                    e.preventDefault();
+                    var searchQuery = $('input[name="search"]').val();
+
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var long = position.coords.longitude;
+
+                        $.ajax({
+                            url: "{{ route('omerchant.listing') }}",
+                            type: 'GET',
+                            data: {
+                                latitude: lat,
+                                longitude: long,
+                                search: searchQuery
+                            },
+                            success: function(response) {
+                                $('#adsListsWithDistance').html(response.html);
+                            },
+                            error: function(xhr) {
+                                console.error('Error:', xhr);
+                            }
+                        });
                     });
-        }
+                });
 
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById("location").innerHTML = "User denied the request for Geolocation."
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById("location").innerHTML = "Location information is unavailable."
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById("location").innerHTML = "The request to get user location timed out."
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById("location").innerHTML = "An unknown error occurred."
-                    break;
-            }
-        }
-        $(document).ready(function() {
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // Mencegah form dari submit secara default
+                // Load more button
+                $('#loadMore').on('click', function() {
+                    var button = $(this);
+                    var currentPage = button.data('page');
+                    var nextPage = currentPage + 1;
+                    var searchQuery = $('input[name="search"]').val();
 
-                var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
-
-                // Mendapatkan lokasi pengguna untuk dimasukkan dalam pencarian
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
-
-                    // AJAX request untuk memuat data ke adsListsWithDistance
-                    $.ajax({
-                        url: "{{ route('omerchant.listing') }}",
-                        type: 'GET',
-                        data: {
-                            latitude: lat,
-                            longitude: long,
-                            search: searchQuery
-                        },
-                        success: function(response) {
-                            $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
-                        },
-                        error: function(xhr) {
-                            console.error('Error:', xhr);
-                        }
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var long = position.coords.longitude;
+                        $('#spinner').removeClass('d-none');
+                        $.ajax({
+                            url: "{{ route('omerchant.listing') }}",
+                            type: 'GET',
+                            data: {
+                                latitude: lat,
+                                longitude: long,
+                                search: searchQuery,
+                                page: nextPage
+                            },
+                            success: function(response) {
+                                $('#adsListsWithDistance').append(response.html);
+                                button.data('page', nextPage);
+                            },
+                            error: function(xhr) {
+                                console.error('Error:', xhr);
+                            },complete: function() {
+                    // Sembunyikan spinner setelah proses selesai
+                    $('#spinner').addClass('d-none');
+                }
+                        });
                     });
                 });
             });
-        });
-    </script>
+        </script>
     @endslot
 
     @slot('body')
@@ -271,6 +301,12 @@
         <div id="adsListsWithDistance" class="row mt-5">
             <!-- List of food ads will be loaded here -->
         </div>
+        <div class="d-flex justify-content-center mt-3 mb-3">
+       
+                <button id="loadMore" class="btn btn-primary" data-page="1" style="background-color: #47C8C5;
+            border-color: #47C8C5;
+            color: white">Next  <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
+            </div>
     </div>
     @endslot
 </x-Layout.Horizontal.Master>

@@ -95,7 +95,7 @@ trait MarchantService
 
             return $ad;
         });
-
+// dd($ads);
         return $ads;
     }
 }

@@ -34,14 +34,14 @@
                  onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`">
                  @if($label)
                      <div class="label-top-right">{{$label}}</div>
-                @endif
+                @endif 
         </div>
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>
             <h4 class="card-title font-20 mt-0 text-primary">{{$price}} </h4>
             <p class="card-text text-truncate d-block">@if($address){{$address}}@else <br> @endif</p>
         </div>
-       
+ 
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-truncate d-block"> @if($area){{$area}} @else - @endif</li>
             </ul>

@@ -287,6 +287,7 @@ class HomeController extends Controller
             ->where('ads.is_active', 1)
             ->orderBy('ads.created_at', 'desc')
             ->paginate(100000);
+            // dd($adsLists);
 
         // $bannerLists = Banner::active()->where('show_on', 'omerchant')->get();
         $bannerLists = Banner::where('show_on', 'marchent')->orderBy('order', 'asc')->active()->get();
@@ -315,6 +316,7 @@ class HomeController extends Controller
         // Mendapatkan list food ads dengan pagination dan pencarian
         $ads = $this->getMarchantAds($pageIndex, $searchTitle);
         // return view('Pages/Frond/Food/OFoodList', compact('ads'));
+        // dd($ads);
         $html = view('Pages/Frond/Marchent/omarchantList', compact('ads'))->render();
 
     return response()->json(['html' => $html]);

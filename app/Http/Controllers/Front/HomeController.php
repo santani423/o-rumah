@@ -1104,4 +1104,31 @@ $response = $this->whatsAppService->sendMessage($agent->wa_phone, $agentMessage)
     {
         return view('Pages.aboutAs');
     }
+
+    function agentDetailAds($agentId){
+        $bannerLists = Banner::active()->where('show_on', 'homepage')->get();
+        // dd($bannerLists);
+        // $latestAdsLists = Ads::getLatestProperty();
+        // $agentLists = User::getAgents(count: 6);
+        $frontAdsLists = WebsiteAdsSection::query()
+            ->where('slug', 'iklan-homepage-bawah-search')
+            ->first();
+        $propertyTypeLists = PropertyType::query()
+            ->orderBy('id', 'ASC')
+            ->pluck('name', 'name');
+        $isLanding = true;
+
+        debug($propertyTypeLists);
+        $searchQuery = request()->input('search');
+        $latitude = -6.1571072;
+        $longitude = 106.774528;
+        $radius = 300; // radius in kilometers
+
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery);
+        $tipeProperti = PropertyType::orderBy('name','asc')->get();
+        // dd($bannerLists);C:\xampp\htdocs\o-rumah\resources\views\Pages\Frond\DetailAdsPenggua\agent.blade.php
+        $typePengajuan = TypePengajuan::orderBy('urutan')->get();
+        // dd($agentId);
+        return view('Pages/Frond/DetailAdsPenggua/agent', compact('bannerLists', 'adsLists','tipeProperti','typePengajuan','agentId'));
+    }
 }

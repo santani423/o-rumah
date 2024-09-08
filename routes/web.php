@@ -85,6 +85,7 @@ Route::get('/notaris', [Front\HomeController::class, 'notaris'])->name('notaris'
 Route::get('/agen', [Front\HomeController::class, 'agent'])->name('agent');
 Route::post('/agen/search', [Front\HomeController::class, 'agentSearch'])->name('agent.search.page');
 Route::get('/agen/getAgentsByDistrict', [Front\HomeController::class, 'getAgentsByDistrict'])->name('agent.getAgentsByDistrict');
+Route::get('/agen/detailAds/{agentId}', [Front\HomeController::class, 'agentDetailAds'])->name('agentDetailAds');
 
 // With parameter
 Route::get('/user/{username}', [Front\HomeController::class, 'agentDetail'])->name('agent-detail');

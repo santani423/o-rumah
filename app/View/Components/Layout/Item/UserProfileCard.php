@@ -14,11 +14,12 @@ class UserProfileCard extends Component
     /**
      * Create a new component instance.
      */
-    public $user,$content,$dataTarget,$dataStatisProperti;
-    public function __construct($user='',$content='',$dataTarget='userDetailModal')
+    public $user,$content,$dataTarget,$dataStatisProperti,$url;
+    public function __construct($user='',$content='',$dataTarget='userDetailModal',$url=null)
     {
         
         $this->user = $user;
+        $this->url = $url;
         $this->dataTarget = $dataTarget;
         $this->content = $content; 
     }

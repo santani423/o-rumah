@@ -20,8 +20,9 @@ use Laravolt\Indonesia\Models\Extended\Kecamatan;
 
 trait PropertyRepository
 {
-    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $adsType = null, $property_type = null, $district = null)
+    private function getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage = 10, $page = 4, $adsType = null, $property_type = null, $district = null,$agentId=null)
     {
+        // dd($agentId);
         $datadistrict = District::where('code', $district)->first();
         // dd($datadistrict);
         $query = AdsProperty::join('ads', 'ads.id', '=', 'ads_properties.ads_id')
@@ -63,26 +64,33 @@ trait PropertyRepository
                 DB::raw("IFNULL(user_lelang_properties.created_at, ads.created_at) as created_at_ads")
             );
 
+        if ($agentId) {
+            $query->where('ads.user_id', $agentId);
+            // dd($query->get());
+        }
         if ($datadistrict) {
             // dd($query->get());
             $query->where('ads_properties.district_id', $datadistrict->id);
         }
-        if (!is_null($latitude) && !is_null($longitude)) {
-            $query->selectRaw("
-                    (6371 * acos(
-                        cos(radians($latitude))
-                        * cos(radians(ads_properties.lat))
-                        * cos(radians(ads_properties.lng) - radians($longitude))
-                        + sin(radians($latitude))
-                        * sin(radians(ads_properties.lat))
-                    )) AS distance
-                ");
-            // dd(($latitude != null && $longitude != null) );
-            if ($latitude != 'null' && $longitude != 'null') {
-
-                $query->having('distance', '<', $radius);
+        if(!$agentId){
+            if (!is_null($latitude) && !is_null($longitude)) {
+                $query->selectRaw("
+                        (6371 * acos(
+                            cos(radians($latitude))
+                            * cos(radians(ads_properties.lat))
+                            * cos(radians(ads_properties.lng) - radians($longitude))
+                            + sin(radians($latitude))
+                            * sin(radians(ads_properties.lat))
+                        )) AS distance
+                    ");
+                // dd(($latitude != null && $longitude != null) );
+                if ($latitude != 'null' && $longitude != 'null') {
+    
+                    $query->having('distance', '<', $radius);
+                }
             }
         }
+       
 
 
         // dd($adsType);

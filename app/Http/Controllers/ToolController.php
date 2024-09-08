@@ -97,8 +97,9 @@ class ToolController extends Controller
         $perPage = $request->input('perPage', 10);
         $page = $request->input('page', 10);
         $district = $request->input('district');
+        $agentId = $request->input('agentId');
         // dd($typeProperti);
-        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $ads_type,  $typeProperti , $district);
+        $adsLists = $this->getAdsListsWithDistance($latitude, $longitude, $radius, $searchQuery, $perPage, $page, $ads_type,  $typeProperti , $district,$agentId);
         // return response()->json(['adsLists' => $adsLists]);
         // return 'ok';
         // dd($adsLists);

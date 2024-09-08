@@ -114,124 +114,119 @@
     @endslot
     @slot('js')
     <script>
-            window.onload = function() {
-                getLocation();
-            };
+    window.onload = function() {
+        getLocation();
+    };
 
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition, showError);
-                } else {
-                    document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-                }
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, function() {
+                // Jika lokasi tidak ditemukan, gunakan nilai default
+                showPosition(null);
+            });
+        } else {
+            // Geolocation tidak didukung, gunakan nilai default
+            showPosition(null);
+        }
+    }
+
+    function showPosition(position) {
+        var lat = position ? position.coords.latitude : null; // Default ke null jika tidak ada lokasi
+        var long = position ? position.coords.longitude : null; // Default ke null jika tidak ada lokasi
+
+        var searchQuery = $('input[name="search"]').val();
+
+        $.ajax({
+            url: "{{ route('omerchant.listing') }}",
+            type: 'GET',
+            data: {
+                latitude: lat,
+                longitude: long,
+                search: searchQuery
+            },
+            success: function(response) {
+                $('#adsListsWithDistance').html(response.html);
+            },
+            error: function(xhr) {
+                console.error('Error:', xhr);
             }
+        });
+    }
 
-            function showPosition(position) {
-                var lat = position.coords.latitude;
-                var long = position.coords.longitude;
+    $(document).ready(function() {
+        $('#searchForm').on('submit', function(e) {
+            e.preventDefault();
+            var searchQuery = $('input[name="search"]').val();
 
-                var searchQuery = $('input[name="search"]').val();
+            navigator.geolocation.getCurrentPosition(function(position) {
+                showPosition(position);
+            }, function() {
+                // Jika lokasi tidak ditemukan, gunakan nilai default
+                showPosition(null);
+            });
+        });
 
+        // Load more button
+        $('#loadMore').on('click', function() {
+            var button = $(this);
+            var currentPage = button.data('page');
+            var nextPage = currentPage + 1;
+            var searchQuery = $('input[name="search"]').val();
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position ? position.coords.latitude : null;
+                var long = position ? position.coords.longitude : null;
+
+                $('#spinner').removeClass('d-none');
                 $.ajax({
                     url: "{{ route('omerchant.listing') }}",
                     type: 'GET',
                     data: {
                         latitude: lat,
                         longitude: long,
-                        search: searchQuery
+                        search: searchQuery,
+                        page: nextPage
                     },
                     success: function(response) {
-                        $('#adsListsWithDistance').html(response.html);
+                        $('#adsListsWithDistance').append(response.html);
+                        button.data('page', nextPage);
                     },
                     error: function(xhr) {
                         console.error('Error:', xhr);
+                    },complete: function() {
+                        $('#spinner').addClass('d-none');
                     }
                 });
-            }
+            }, function() {
+                // Jika lokasi tidak ditemukan, gunakan nilai default
+                var lat = null;
+                var long = null;
 
-            function showError(error) {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        document.getElementById("location").innerHTML = "User denied the request for Geolocation.";
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        document.getElementById("location").innerHTML = "Location information is unavailable.";
-                        break;
-                    case error.TIMEOUT:
-                        document.getElementById("location").innerHTML = "The request to get user location timed out.";
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        document.getElementById("location").innerHTML = "An unknown error occurred.";
-                        break;
-                }
-            }
-
-            $(document).ready(function() {
-                $('#searchForm').on('submit', function(e) {
-                    e.preventDefault();
-                    var searchQuery = $('input[name="search"]').val();
-
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var lat = position.coords.latitude;
-                        var long = position.coords.longitude;
-                        $('#spinnerSearch').removeClass('d-none');
-                        $.ajax({
-                            url: "{{ route('omerchant.listing') }}",
-                            type: 'GET',
-                            data: {
-                                latitude: lat,
-                                longitude: long,
-                                search: searchQuery
-                            },
-                            success: function(response) {
-                                $('#adsListsWithDistance').html(response.html);
-                            },
-                            error: function(xhr) {
-                                console.error('Error:', xhr);
-                            },complete: function() {
-                    // Sembunyikan spinnerSearch setelah proses selesai
-                    $('#spinnerSearch').addClass('d-none');
-                }
-                        });
-                    });
-                });
-
-                // Load more button
-                $('#loadMore').on('click', function() {
-                    var button = $(this);
-                    var currentPage = button.data('page');
-                    var nextPage = currentPage + 1;
-                    var searchQuery = $('input[name="search"]').val();
-
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var lat = position.coords.latitude;
-                        var long = position.coords.longitude;
-                        $('#spinner').removeClass('d-none');
-                        $.ajax({
-                            url: "{{ route('omerchant.listing') }}",
-                            type: 'GET',
-                            data: {
-                                latitude: lat,
-                                longitude: long,
-                                search: searchQuery,
-                                page: nextPage
-                            },
-                            success: function(response) {
-                                $('#adsListsWithDistance').append(response.html);
-                                button.data('page', nextPage);
-                            },
-                            error: function(xhr) {
-                                console.error('Error:', xhr);
-                            },complete: function() {
-                    // Sembunyikan spinner setelah proses selesai
-                    $('#spinner').addClass('d-none');
-                }
-                        });
-                    });
+                $('#spinner').removeClass('d-none');
+                $.ajax({
+                    url: "{{ route('omerchant.listing') }}",
+                    type: 'GET',
+                    data: {
+                        latitude: lat,
+                        longitude: long,
+                        search: searchQuery,
+                        page: nextPage
+                    },
+                    success: function(response) {
+                        $('#adsListsWithDistance').append(response.html);
+                        button.data('page', nextPage);
+                    },
+                    error: function(xhr) {
+                        console.error('Error:', xhr);
+                    },complete: function() {
+                        $('#spinner').addClass('d-none');
+                    }
                 });
             });
-        </script>
-    @endslot
+        });
+    });
+</script>
+ @endslot
 
     @slot('body')
     <div class="row">

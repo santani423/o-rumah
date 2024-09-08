@@ -116,48 +116,12 @@
 
     @slot('js')
     <script>
-        window.onload = function() {
-            getLocation(); // Mendapatkan lokasi pengguna dan memuat data pertama kali
-        };
+        var currentPage = 1; // Halaman awal
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
+        function loadAds(lat, long, page = 1) {
+            var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
 
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var searchQuery = $('input[name="search"]').val();
-
-            // Memuat konten awal
-            loadAds(lat, long, searchQuery, 1);
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById("location").innerHTML = "User denied the request for Geolocation.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById("location").innerHTML = "Location information is unavailable.";
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById("location").innerHTML = "The request to get user location timed out.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById("location").innerHTML = "An unknown error occurred.";
-                    break;
-            }
-        }
-
-        function loadAds(lat, long, searchQuery, page) {
-            // Tampilkan spinner
-            $('.spinner-border').show();
-
+            // Memuat konten dari URL yang disediakan ke dalam elemen dengan ID adsListsWithDistance
             $.ajax({
                 url: "{{ route('ofoods.listing') }}",
                 type: 'GET',
@@ -165,57 +129,45 @@
                     latitude: lat,
                     longitude: long,
                     search: searchQuery,
-                    page: page
+                    page: page // Kirim informasi halaman ke server
                 },
                 success: function(response) {
-                    // Tambahkan hasil ke konten yang ada
                     if (page === 1) {
-                        $('#adsListsWithDistance').html(response.html);
+                        $('#adsListsWithDistance').html(response.html); // Update content dengan hasil dari server
                     } else {
-                        $('#adsListsWithDistance').append(response.html);
+                        $('#adsListsWithDistance').append(response.html); // Tambahkan hasil baru ke konten lama
                     }
 
-                    // Sembunyikan spinner setelah data dimuat
-                    $('.spinner-border').hide();
+                    // Periksa apakah ada data lagi untuk dimuat
+                    if (!response.hasMorePages) {
+                        // $('#nextButton').hide(); // Sembunyikan tombol jika sudah tidak ada data
+                    }
                 },
                 error: function(xhr) {
                     console.error('Error:', xhr);
-                    // Sembunyikan spinner jika terjadi error
-                    $('.spinner-border').hide();
                 }
             });
         }
 
         $(document).ready(function() {
-            var currentPage = 1; // Halaman saat ini
-
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // Mencegah form dari submit secara default
-
-                var searchQuery = $('input[name="search"]').val();
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
-
-                    // Muat ulang daftar makanan dengan pencarian baru
-                    loadAds(lat, long, searchQuery, 1);
-                    currentPage = 1; // Reset halaman ke 1
-                });
-            });
-
-            $('#loadMore').on('click', function() {
-                var searchQuery = $('input[name="search"]').val();
-                currentPage++; // Tingkatkan halaman
-
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
-
-                    // Muat halaman berikutnya
-                    loadAds(lat, long, searchQuery, currentPage);
-                });
+            // Saat tombol "Next" diklik
+            $('#nextButton').on('click', function() {
+                currentPage++; // Naikkan halaman saat tombol diklik
+                loadAds(0, 0, currentPage); // Muat data halaman berikutnya
             });
         });
+
+        // Saat form pencarian disubmit
+        $('#searchForm').on('submit', function(e) {
+            e.preventDefault(); // Mencegah form dari submit secara default
+            currentPage = 1; // Reset ke halaman pertama
+            loadAds(0, 0, currentPage); // Muat data dari awal sesuai pencarian
+        });
+
+        // Panggil fungsi loadAds saat halaman dimuat pertama kali
+        window.onload = function() {
+            loadAds(0, 0, 1); // Muat data pertama kali
+        };
     </script>
     @endslot
 
@@ -287,19 +239,17 @@
                 <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
             </div>
         </div>
+       
         <div id="adsListsWithDistance" class="row mt-5">
             <!-- List of food ads will be loaded here -->
         </div>
-          <!-- Spinner dan Load More Button -->
-          <div class="d-flex justify-content-center mt-3 mb-3">
-            
-            <button id="loadMore" class="btn btn-success" style="background-color: #47C8C5;
-            border-color: #47C8C5;
-            color: white" data-page="1"><div class="spinner-border text-primary" role="status" >
-                <span class="sr-only">Loading...</span>
-            </div>Next</button>
-        </div>
+        
     </div>
+    <div class="row justify-content-center">
+            <button id="nextButton" class="btn btn-primary btn-next" style="background-color: #47C8C5;
+            border-color: #47C8C5;
+            color: white">Next</button>
+        </div>
 
     @endslot
 </x-Layout.Horizontal.Master>

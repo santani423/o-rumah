@@ -497,56 +497,56 @@
                     <div class="nav-links row">
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('latest') }}">
-                                <img src="{{asset('/assets/icons/homeIcon5-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/properti.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Properti</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('auction') }}">
-                                <img src="{{asset('/assets/icons/homeIcon4-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/lelang.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Properti Lelang</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('ofoods') }}">
-                                <img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/food.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">O-Foods</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('omerchant') }}">
-                                <img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/merchant.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">O-Merchant</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('agent') }}">
-                                <img src="{{asset('/assets/icons/homeIcon1-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/agent.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Cari Agen</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('notaris') }}">
-                                <img src="{{asset('/assets/icons/homeIcon2-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/notaris.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Cari Notaris</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('law-helper') }}">
-                                <img src="{{asset('/assets/icons/homeIcont3-removebg-preview.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/lbh.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Cari Law Office</span>
                             </a>
                         </div>
                         <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="https://www.figma.com/proto/w3cTuo5q9QxTGxAnQWn0pV/EstateManagement?node-id=1-2&t=U78mQ6k2lGi2XtsN-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2">
-                                <img src="{{asset('/assets/icons/foodMarchant/estate.png')}}" class="menu-icon" alt="">
+                                <img src="{{asset('/assets/icons/iconmenu/estate.png')}}" class="menu-icon" alt="">
                                 <br>
                                 <span class="icon-label">Estate</span>
                             </a>

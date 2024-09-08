@@ -174,7 +174,7 @@
                     navigator.geolocation.getCurrentPosition(function(position) {
                         var lat = position.coords.latitude;
                         var long = position.coords.longitude;
-
+                        $('#spinnerSearch').removeClass('d-none');
                         $.ajax({
                             url: "{{ route('omerchant.listing') }}",
                             type: 'GET',
@@ -188,7 +188,10 @@
                             },
                             error: function(xhr) {
                                 console.error('Error:', xhr);
-                            }
+                            },complete: function() {
+                    // Sembunyikan spinnerSearch setelah proses selesai
+                    $('#spinnerSearch').addClass('d-none');
+                }
                         });
                     });
                 });
@@ -267,7 +270,7 @@
                     <!-- <i class="fas fa-map-marker-alt mr-2 text-warning"></i> -->
                     <input type="text" name="search" class="form-control border-0" placeholder="Cari Merchant" value="{{ request('search') }}">
                 </div>
-                <button type="submit" class="btn btn-success ml-3">
+                <button type="submit" class="btn btn-success ml-3"><span id="spinnerSearch" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                     <i class="fas fa-search"></i>
                 </button>
             </form>

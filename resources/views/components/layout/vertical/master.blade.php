@@ -134,9 +134,8 @@
                 // alert('sdf');
                 // Update jumlah pesan yang belum dibaca pada elemen dengan id 'chat-unread-count'
                 if(response.unreadCount > 0){
-
-$('#chat-unread-count').text(response.unreadCount);
-}
+            $('#chat-unread-count').text(response.unreadCount);
+                    }
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching unread messages count:", error);

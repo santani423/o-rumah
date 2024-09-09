@@ -179,6 +179,8 @@
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         } else {
             console.error("Geolocation is not supported by this browser.");
+            // Jika geolocation tidak didukung, tetap memuat data agen
+            loadAgents(currentPage); 
         }
     }
 
@@ -206,23 +208,26 @@
                 errorMsg = "An unknown error occurred.";
                 break;
         }
-        console.error(errorMsg);
+        console.warn(errorMsg);
+
+        // Tetap memuat agen tanpa geolocation
+        loadAgents(currentPage);
     }
 
     // Fungsi untuk memuat agen berdasarkan lokasi pengguna dan query pencarian
     function loadAgents(page) {
         var searchQuery = $('input[name="search"]').val(); // Ambil nilai pencarian
-        if (!latitude || !longitude) {
-            console.error('Latitude dan Longitude tidak tersedia.');
-            return;
-        }
+
+        // Jika latitude dan longitude tidak tersedia, gunakan default atau kosongkan
+        var lat = latitude || null;
+        var long = longitude || null;
 
         $.ajax({
             url: "{{ route('agent.getAgentsByDistrict') }}",
             type: 'GET',
             data: {
-                latitude: latitude,
-                longitude: longitude,
+                latitude: lat,
+                longitude: long,
                 search: searchQuery,
                 page: page
             },
@@ -304,6 +309,7 @@
         });
     });
 </script>
+
 
     @endslot
 

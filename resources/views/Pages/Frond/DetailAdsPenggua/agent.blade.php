@@ -300,15 +300,15 @@
 
             document.getElementById('loadingSpinner').style.display = 'block'; // Show the spinner
             fetch(url)
-                    .then(response => response.text())
-                    .then(data => {
-                        appendAds(data, 'adsListsWithDistance');
-                    })
-                    .catch(error => console.error('Error:', error))
-                    .finally(() => {
-                        document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
-                    });
-            
+                .then(response => response.text())
+                .then(data => {
+                    appendAds(data, 'adsListsWithDistance');
+                })
+                .catch(error => console.error('Error:', error))
+                .finally(() => {
+                    document.getElementById('loadingSpinner').style.display = 'none'; // Hide the spinner
+                });
+
         }
 
         function appendAdsBooster(html, containerId) {
@@ -335,73 +335,44 @@
 
             window.location.href = link;
         }
-
-      
     </script>
     @endslot
     @slot('body')
 
 
 
-    <input type="hidden"  id="searchLok">
-    <div id="sampleLocations" class="mt-2"></div>
+  
 
     <div class="container mt-1">
         <!-- Tabs -->
- 
 
- 
-<div class="row justify-content-center">
-            
- 
+        <input type="hidden" id="searchLok">
+        <div id="sampleLocations" class="mt-2"></div>
 
         
-<!-- <div class="card mt-1">
-    <div class="card-body">
-        <div class="nav-container">
-            <div class="nav-links row">
-                <div class="nav-item col-6 col-md-6 col-lg-6 mb-3">
-                    <a href="{{ route('ofoods') }}">
-                        <img src="{{asset('/assets/icons/homeIconbg6.png')}}" class="menu-icon" alt="">
-                        <br>
-                        <span class="icon-label">O-Foods</span>
-                    </a>
-                </div>
-                <div class="nav-item col-6 col-md-6 col-lg-6 mb-3">
-                    <a href="{{ route('omerchant') }}">
-                        <img src="{{asset('/assets/icons/foodMarchant/merchant.png')}}" class="menu-icon" alt="">
-                        <br>
-                        <span class="icon-label">O-Merchant</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 
-         
 
-        <!-- end wrapper -->
-        <div id="adsListsWithDistance" class="row mt-1"></div>
-        <div class="row mt-1">
-            <div class="col-12 d-flex justify-content-center">
-                <button type="button" class="btn   " style="background-color: #47C8C5;
-            border-color: #47C8C5;
-            color: white" id="nextButton">
-                    Next <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </button>
-            </div>
-            <div class="row mt-3">
+
+
+
+            <!-- end wrapper -->
+            <div id="adsListsWithDistance" class="row mt-1"></div>
+            <div class="row mt-1">
                 <div class="col-12 d-flex justify-content-center">
-
+                    <button type="button" class="btn   " style="background-color: #47C8C5;
+                        border-color: #47C8C5;
+                        color: white" id="nextButton">
+                                    Next <div class="spinner-border text-primary" role="status" id="loadingSpinner" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
                 </div>
+                 
             </div>
-        </div>
 
 
 
+        
     </div>
     @endslot
 

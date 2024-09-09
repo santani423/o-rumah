@@ -2,7 +2,7 @@
     <div class="col m-0">
         <div class="card rounded-0 border border-1">
             <div class="card-body text-center pr-2 pl-2">
-                <p class="small">Total Properti</p>
+                <p class="small">Properti</p>
                 <h6 class="mt-0 font-18">{{ $totalProperties }}</h6>
             </div>
         </div>

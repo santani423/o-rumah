@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col m-0">
         <div class="card rounded-0 border border-1">
             <div class="card-body text-center pr-2 pl-2">
                 <p class="small">Total Properti</p>
@@ -7,7 +7,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col m-0">
         <div class="card rounded-0 border border-1">
             <div class="card-body text-center pr-2 pl-2">
                 <p class="small">Terjual</p>
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col m-0">
         <div class="card rounded-0 border border-1 pr-0 pl-0 mr-0 ml-0">
             <div class="card-body text-center">
                 <p class="small">Tersewa</p>

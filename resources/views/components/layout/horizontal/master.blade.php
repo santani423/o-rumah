@@ -80,7 +80,7 @@
     width: 50px; /* Ganti dengan ukuran yang diinginkan */
     height: 50px; /* Ganti dengan ukuran yang diinginkan */
 }
-
+ 
 </style>
 
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">

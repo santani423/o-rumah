@@ -255,8 +255,9 @@
             if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
-                loadAds(currentPage); // Load ads with latitude and longitude as null
+                
             } else {
+                alert('sdfsdf');
                 document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
                 loadAds(currentPage); // Load ads with latitude and longitude as null
             }
@@ -290,7 +291,7 @@
 
 
         function loadAds(page) {
-            // console.log('dddd',district);
+            console.log('dddd',district);
             document.getElementById('sampleLocations').innerHTML = '';
             // const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&ads_type=${beliSewa}&property_type=${typeProperti}&district=${district}`;
             const urlBooster = `{{ route('tool.getAdsListsWithDistance.booster.home') }}?latitude=${latitude}&longitude=${longitude}&perPage=${perPage}&page=${page}&district=${districtId}&ads_type=${beliSewa}&typeProperti=${typeProperti}`;

@@ -9,7 +9,7 @@
         <div class="card rounded-0">
             <div class="card-body">
                 <div class="media">
-                    <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`" alt="Generic placeholder image" height="64" />
+                    <img class="d-flex mr-3 rounded-circle" src="{{$user['image']}}" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`" alt="Generic placeholder image" height="64" width="64" />
                     <div class="media-body">
                         <h5 class="mt-0 font-18">
                             {{$user['name']}}
@@ -18,14 +18,14 @@
                     </div>
                 </div>
 
-                <!-- Jika ingin menambahkan kolom lain di dalam, harus ada row baru -->
+                <!-- Jika ingin menambahkan kolom lain di dalam, harus ada row baru ok -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card rounded-0">
                             <div class="card-body">
                                 <div class="media">
                                     <img class="d-flex mr-3 rounded-circle" src="{{$user['company_image']}}" onerror="this.onerror=null;this.src=`{{asset('assets/default.png')}}`"
-                                        alt="Generic placeholder image" height="64" />
+                                        alt="Generic placeholder image" height="64" width="64" />
                                     <div class="media-body">
                                         <h5 class="mt-0 font-18 text-center">
                                             {{$user['company_name']}}

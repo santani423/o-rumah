@@ -145,7 +145,10 @@
             border: 1px solid #ccc;
             max-height: 200px;
             overflow-y: auto;
-        }
+        }.small,small {
+    font-size: 70%;
+    font-weight: 400
+}
     </style>
     @endslot
     @slot('js')

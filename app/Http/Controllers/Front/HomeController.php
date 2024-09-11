@@ -76,7 +76,7 @@ class HomeController extends Controller
             ->pluck('name', 'name');
         $isLanding = true;
 
-        debug($propertyTypeLists);
+ 
         $searchQuery = request()->input('search');
         $latitude = -6.1571072;
         $longitude = 106.774528;
@@ -1118,7 +1118,7 @@ $response = $this->whatsAppService->sendMessage($agent->wa_phone, $agentMessage)
             ->pluck('name', 'name');
         $isLanding = true;
 
-        debug($propertyTypeLists);
+ 
         $searchQuery = request()->input('search');
         $latitude = -6.1571072;
         $longitude = 106.774528;

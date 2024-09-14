@@ -5,16 +5,34 @@ namespace App\View\Components\Layout\Item;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-
+use Illuminate\Support\Facades\DB;
 class ProductItem extends Component
 {
     /**
      * Create a new component instance.
      */
-    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label;
+    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label,$totalViews;
 
-    public function __construct($title = "", $image = null, $area = '', $address = '', $linkTujuan = null, $jk = '', $jkm = '', $lb = '', $lt = '', $content = '', $price = 0,$type='property',$label="",$labels="")
+    public function __construct(
+        $title = "", 
+        $image = null, 
+        $area = '', 
+        $address = '', 
+        $linkTujuan = null, 
+        $jk = '', 
+        $jkm = '', 
+        $lb = '', 
+        $lt = '', 
+        $content = '', 
+        $price = 0,
+        $type='property',
+        $label="",
+        $labels="",
+        $adsId=0)
     { 
+        $totalViews = DB::table('advertising_points')->where('ads_id',$adsId)
+        ->sum('advertising_points.views_count');
+         
         $this->title = $title;
         $this->price = "Rp " . number_format($price, 0, ',', '.');
         $this->area = $area;
@@ -28,6 +46,7 @@ class ProductItem extends Component
         $this->type = $type;
         $this->lt = $lt;
         $this->label = $label;
+        $this->totalViews = $totalViews;
     }
 
     /**

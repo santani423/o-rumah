@@ -557,6 +557,13 @@ class HomeController extends Controller
             ->join('ofoods', 'ofoods.ads_id', '=', 'ads.id')
             ->select('ads.*', 'ofoods.*', 'ads.id as ads_id')
             ->first();
+            // dd($ads);
+
+            // $totalViews =  AdvertisingPoints::where('ads_id',$ads->ads_id)->get();
+            // dd($totalViews);
+        // if ($totalViews > 0) {
+        //     dd($totalViews);
+        // }
         // Sample data that can be used with the provided code
         $media = Media::where('model_id', $ads->ads_id)->select('disk', 'file_name')->get()->map(function ($item) {
             return [
@@ -581,7 +588,7 @@ class HomeController extends Controller
             "average_price" => "$500,000",
             "image" => $auth->image,
         ];
-        // $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
+        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
         if (Auth::user()) {
             $like = LinkeAds::where('user_id', Auth::user()->id)
                 ->where('ads_id', $ads->ads_id)
@@ -641,7 +648,7 @@ class HomeController extends Controller
             "average_price" => "$500,000",
             "image" => $auth->image,
         ];
-        // $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
+        $this->manageAdvertisingPoints($request, $ads, $auth, 'ABC007');
         if (Auth::user()) {
             $like = LinkeAds::where('user_id', Auth::user()->id)
                 ->where('ads_id', $ads->ads_id)
@@ -653,14 +660,7 @@ class HomeController extends Controller
         $typeFood = 'marchent';
         return view('Pages/Frond/Food/DetailFood', compact('ads', 'slug', 'agent', 'like', 'typeFood', 'media'));
 
-        // You can use this sample data with the existing code to display images
-        // return Inertia::render('Front/Pages/OMerchantDetailPage', [
-        //     'ads' => $ads,
-        //     'slug' => $slug,
-        //     'agent' => $agent,
-        //     'like' => $like,
-        //     'media' => $media
-        // ]);
+         
     }
 
 

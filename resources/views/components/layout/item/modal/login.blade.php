@@ -79,7 +79,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log('tes login',data);
                 // Hide spinner and enable button
                 loginButtonText.classList.remove('d-none');
                 loginSpinner.classList.add('d-none');

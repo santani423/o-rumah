@@ -34,7 +34,7 @@
         @foreach($merchant as $ads)
         <div class="col-6 col-md-6 col-lg-6 col-xl-3 mb-3">
 
-            <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk" :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address" :type="$ads->type" :area="$ads->area" :linkTujuan="route('listing.control-panel.marchant.view.tentang-marchant', ['slug' => $ads->slug])">
+            <x-Layout.Item.ProductItem :image="$ads->image" :title="$ads->title" :area="$ads->area" :jk="$ads->jk" :price="$ads->price" :jkm="$ads->jkm" :lb="$ads->lb" :lt="$ads->lt" :address="$ads->address" :type="$ads->type" :area="$ads->area" :linkTujuan="route('listing.control-panel.marchant.view.tentang-marchant', ['slug' => $ads->slug])" :adsId="$ads->ads_id">
             </x-Layout.Item.ProductItem>
             @if($ads->is_active)
             <button class="btn btn-turquoise" data-toggle="modal" data-target="#confirmModal" data-ads-id="{{ $ads->ads_id }}" data-is-active="{{ $ads->is_active }}"> Aktifkan</button>

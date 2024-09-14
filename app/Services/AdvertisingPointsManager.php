@@ -15,35 +15,35 @@ trait AdvertisingPointsManager
     {
         $controll = AdBalaceControl::where("code", $code)->first();
         $adBalaces = AdBalance::where('user_id', $auth->id)->first();
-        // dd($controll);
         $AdvertisingPoints = AdvertisingPoints::where('ad_balance_control_id', $controll->id)
-            ->where('ad_balance_id', $adBalaces->id)
-            ->where('views_count', '<', $controll->klik)
-            ->first();
-            
+        ->where('ad_balance_id', $adBalaces->id)
+        ->where('views_count', '<', $controll->klik)
+        ->first();
+        
         if ($adBalaces->balance >= $controll->nilai) {
-
+            
             if (!$AdvertisingPoints) {
                 $AdvertisingPoints = new AdvertisingPoints();
                 $AdvertisingPoints->ad_balance_control_id = $controll->id;
                 $AdvertisingPoints->ad_balance_id = $adBalaces->id;
                 $AdvertisingPoints->title = $auth->name;
                 $AdvertisingPoints->views_count = 1;
+                $AdvertisingPoints->ads_id = $ads->ads_id;
                 $AdvertisingPoints->points_deducted = 0;
-                $AdvertisingPoints->description = $auth->name;
-                $AdvertisingPoints->save();
+                $AdvertisingPoints->description = $auth->name; 
             } else {
                 $AdvertisingPoints->views_count++;
             }
-
+            
             $AdvertisingPoints->save();
-
+            
+            // dd($AdvertisingPoints->views_count);
             if ($controll->klik > 0 && $AdvertisingPoints->views_count >= $controll->klik) {
                 $AdvertisingPoints->points_deducted = $controll->nilai;
                 $AdvertisingPoints->save();
                 $adBalaces->balance -= $controll->nilai;
                 $adBalaces->save();
-
+                // dd(8);
                 $history = new UserClickAdsHistory([
                     'user_id' => $ads->user_id,
                     'ads_id' => $ads->ads_id,

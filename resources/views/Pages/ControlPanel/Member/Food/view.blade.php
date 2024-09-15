@@ -1,4 +1,4 @@
-<x-Layout.Vertical.Master>
+<x-Layout.Vertical.Master title="Control Ads">
     @slot('css')
         <link href="{{ asset('zenter/horizontal/assets/plugins/magnific-popup/magnific-popup.css') }}" rel="stylesheet" type="text/css"/>
         <link href="{{ asset('zenter/horizontal/assets/plugins/dropzone/dist/dropzone.css') }}" rel="stylesheet" type="text/css"/>
@@ -67,6 +67,8 @@
         <script src="{{ asset('zenter/horizontal/assets/plugins/dropify/js/dropify.min.js') }}"></script>
         <script src="{{ asset('zenter/horizontal/assets/pages/upload.init.js') }}"></script>
         <script>
+        let numreportview = 0;
+        let adsId = @json($ads->ads_id);
             document.addEventListener('DOMContentLoaded', function () {
                 // Handle Image Modal
                 $('#imageModal').on('show.bs.modal', function (event) {
@@ -197,7 +199,128 @@
             function setFormMediaId(id){
                 $('#mediaIdValue').val(id);
             }
-        </script>
+        </script> <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+          function vewReport() {
+
+if (numreportview <= 0) {
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = String(today.getMonth() + 1).padStart(2, '0'); // Tambahkan 1 karena bulan dimulai dari 0
+    var day = String(today.getDate()).padStart(2, '0');
+
+    var currentDate = year + '-' + month + '-' + day;
+    reportAds(null,null);
+    numreportview++
+}
+}
+        google.charts.load('current', {
+            'packages': ['line', 'corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        $('#filterForm').on('submit', function(e) {
+            e.preventDefault();
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            reportAds(startDate,endDate);
+
+        });
+
+        function reportAds(startDate,endDate) {
+        
+
+            $.ajax({
+                url: "{{ route('ads.views.filter') }}",
+                type: "GET",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    start_date: startDate,
+                    end_date: endDate,
+                    adsId: adsId
+                },
+                beforeSend: function() {
+                    // Tampilkan spinner saat proses ajax dimulai
+                    $('#spinner').show();
+                },
+                success: function(response) {
+                    updateTable(response);
+                    drawChart(response);
+                },
+                error: function() {
+                    alert('Gagal memuat data');
+                },
+                complete: function() {
+                    // Sembunyikan spinner setelah proses selesai
+                    $('#spinner').hide();
+                }
+            });
+        }
+
+        function updateTable(data) {
+            var tableBody = $('#viewsTable tbody');
+            tableBody.empty(); // Kosongkan tabel sebelum mengisi ulang
+
+            var totalViews = 0; // Variable untuk menyimpan total views
+
+            data.forEach(function(row) {
+                var date = row.date;
+                var views = row.views;
+
+                // Tambahkan views ke totalViews
+                totalViews += views;
+
+                var newRow = '<tr>' +
+                    '<td>' + date + '</td>' +
+                    '<td>' + views + '</td>' +
+                    '</tr>';
+
+                tableBody.append(newRow);
+            });
+
+            // Tambahkan baris total di akhir tabel
+            var totalRow = '<tr>' +
+                '<td><strong>Total</strong></td>' +
+                '<td><strong>' + totalViews + '</strong></td>' +
+                '</tr>';
+
+            tableBody.append(totalRow);
+        }
+
+
+        function drawChart(data) {
+            var chartDiv = document.getElementById('chart_div');
+            var chartData = new google.visualization.DataTable();
+            chartData.addColumn('date', 'Tanggal');
+            chartData.addColumn('number', 'Jumlah View');
+
+            data.forEach(function(row) {
+                var dateParts = row.date.split('-'); // Split 'YYYY-MM-DD'
+                var year = parseInt(dateParts[0]);
+                var month = parseInt(dateParts[1]) - 1;
+                var day = parseInt(dateParts[2]);
+                chartData.addRow([new Date(year, month, day), row.views]);
+            });
+
+            var options = {
+                chart: {
+                    title: 'Laporan Jumlah View Iklan'
+                },
+                width: '100%',
+                height: 500,
+                hAxis: {
+                    format: 'dd MMM yyyy',
+                    title: 'Tanggal'
+                },
+                vAxis: {
+                    title: 'Jumlah View'
+                }
+            };
+
+            var chart = new google.charts.Line(chartDiv);
+            chart.draw(chartData, options);
+        }
+    </script>
     @endslot
 
     @slot('body')
@@ -228,6 +351,9 @@
                             <li class="nav-item">
                                 <a class="nav-link @if($navLink == 'lokasi') active @endif" data-toggle="tab" href="#lokasi" role="tab">Lokasi</a>
                             </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if($navLink == 'reportView') active @endif" data-toggle="tab" href="#reportView" onclick="vewReport()" role="tab">Report View</a>
+                        </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -447,6 +573,48 @@
                             <div class="tab-pane p-3 @if($navLink == 'depositAds') active @endif" id="depositAds" role="tabpanel">
                                 <x-Member.Item.TitipAds :ads="$ads"/>
                             </div>
+                            
+                        <div class="tab-pane p-3 @if($navLink == 'reportView') active @endif" id="reportView" role="tabpanel">
+                           
+                           <form id="filterForm">
+                               @csrf
+                               <div class="form-row">
+                                   <div class="form-group col-md-6">
+                                       <label for="startDate">Tanggal Mulai</label>
+                                       <input type="date" class="form-control" id="startDate" name="start_date" required>
+                                   </div>
+                                   <div class="form-group col-md-6">
+                                       <label for="endDate">Tanggal Akhir</label>
+                                       <input type="date" class="form-control" id="endDate" name="end_date" required>
+                                   </div>
+                               </div>
+                               <button type="submit" class="btn btn-success">Filter</button>
+                           </form>
+                           <div id="spinner" style="display: none;">
+                               <div class="spinner-border text-primary" role="status">
+                                   <span class="sr-only">Loading...</span>
+                               </div>
+                           </div>
+                           <!-- Tabel untuk menampilkan data view ads -->
+                           <h3 class="mt-4">Tabel Jumlah View Iklan</h3>
+                           <div class="mt-4" style="overflow-x: auto;">
+                               <div id="chart_div" style="min-width: 600px; height: auto;"></div>
+                           </div>
+                           <table class="table table-bordered table-striped" id="viewsTable">
+                               <thead>
+                                   <tr>
+                                       <th>Tanggal</th>
+                                       <th>Jumlah View</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <!-- Data akan ditambahkan secara dinamis melalui AJAX -->
+                               </tbody>
+                           </table>
+
+
+
+                       </div>
                         </div>
                     </div>
                 </div>

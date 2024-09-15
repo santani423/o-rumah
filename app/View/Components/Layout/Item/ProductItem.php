@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Layout\Item;
 
+use App\Models\AdvertisingPoints;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -30,9 +31,17 @@ class ProductItem extends Component
         $labels="",
         $adsId=0)
     { 
-        $totalViews = DB::table('advertising_points')->where('ads_id',$adsId)
-        ->sum('advertising_points.views_count');
-         
+        // $totalViews = DB::table('advertising_points')->where('ads_id',$adsId)
+        // ->sum('advertising_points.views_count');
+        $totalViewsData = AdvertisingPoints::where('advertising_points.ads_id', $adsId)
+    ->join('view_ads', 'view_ads.advertising_points_id', '=', 'advertising_points.id')
+    ->select(
+        DB::raw('DATE(view_ads.created_at) as date'),
+        DB::raw('COUNT(view_ads.id) as total_ads')
+    )->groupBy('date')
+    ->orderBy('date', 'ASC')
+    ->get();
+    $totalViews = $totalViewsData->sum('total_ads');
         $this->title = $title;
         $this->price = "Rp " . number_format($price, 0, ',', '.');
         $this->area = $area;

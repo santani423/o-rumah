@@ -123,7 +123,7 @@ class ListingController extends Controller
         ->join('id_districts','id_districts.id','=','ads_properties.district_id')
         ->join('id_cities','id_cities.code','=','id_districts.city_code')
         ->join('id_provinces','id_provinces.code','=','id_cities.province_code')
-        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id','id_cities.name as name_cities','id_provinces.name as name_provinces')
+        ->select('ads.*', 'ads_properties.*', 'ads.id as ads_id','ads_properties.id as ads_properties_id','id_cities.name as name_cities','id_provinces.name as name_provinces','ads.created_at as start_date_ads')
         ->first();
         // dd($ads);
         $media = Media::where('model_id', $ads->ads_id)

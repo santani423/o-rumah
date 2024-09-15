@@ -34,8 +34,9 @@
     <script src="{{ asset('zenter/horizontal/assets/pages/upload.init.js') }}"></script>
     <script>
         let numreportview = 0;
-        let adsId =  @json($ads->ads_id);
-  
+        let adsId = @json($ads->ads_id);
+        let start_date_ads = @json($ads->start_date_ads);
+
         document.addEventListener('DOMContentLoaded', function() {
             // Handle Image Modal
             $('#imageModal').on('show.bs.modal', function(event) {
@@ -78,10 +79,17 @@
 
         function vewReport() {
 
-            // if (numreportview > 0) {
-            
+            if (numreportview <= 0) {
+                var today = new Date();
+                var year = today.getFullYear();
+                var month = String(today.getMonth() + 1).padStart(2, '0'); // Tambahkan 1 karena bulan dimulai dari 0
+                var day = String(today.getDate()).padStart(2, '0');
+
+                var currentDate = year + '-' + month + '-' + day;
+                reportAds(null,null);
+                numreportview++
+            }
         }
-        // }
     </script> <!-- Load Google Charts library -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -94,6 +102,12 @@
             e.preventDefault();
             var startDate = $('#startDate').val();
             var endDate = $('#endDate').val();
+            reportAds(startDate,endDate);
+
+        });
+
+        function reportAds(startDate,endDate) {
+        
 
             $.ajax({
                 url: "{{ route('ads.views.filter') }}",
@@ -102,7 +116,11 @@
                     _token: "{{ csrf_token() }}",
                     start_date: startDate,
                     end_date: endDate,
-                    adsId:adsId
+                    adsId: adsId
+                },
+                beforeSend: function() {
+                    // Tampilkan spinner saat proses ajax dimulai
+                    $('#spinner').show();
                 },
                 success: function(response) {
                     updateTable(response);
@@ -110,17 +128,26 @@
                 },
                 error: function() {
                     alert('Gagal memuat data');
+                },
+                complete: function() {
+                    // Sembunyikan spinner setelah proses selesai
+                    $('#spinner').hide();
                 }
             });
-        });
+        }
 
         function updateTable(data) {
             var tableBody = $('#viewsTable tbody');
             tableBody.empty(); // Kosongkan tabel sebelum mengisi ulang
 
+            var totalViews = 0; // Variable untuk menyimpan total views
+
             data.forEach(function(row) {
                 var date = row.date;
                 var views = row.views;
+
+                // Tambahkan views ke totalViews
+                totalViews += views;
 
                 var newRow = '<tr>' +
                     '<td>' + date + '</td>' +
@@ -129,7 +156,16 @@
 
                 tableBody.append(newRow);
             });
+
+            // Tambahkan baris total di akhir tabel
+            var totalRow = '<tr>' +
+                '<td><strong>Total</strong></td>' +
+                '<td><strong>' + totalViews + '</strong></td>' +
+                '</tr>';
+
+            tableBody.append(totalRow);
         }
+
 
         function drawChart(data) {
             var chartDiv = document.getElementById('chart_div');
@@ -479,11 +515,7 @@
                         </div>
 
                         <div class="tab-pane p-3 @if($navLink == 'reportView') active @endif" id="reportView" role="tabpanel">
-                        <div id="spinner" style="display: none;">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </div>
+                           
                             <form id="filterForm">
                                 @csrf
                                 <div class="form-row">
@@ -498,7 +530,11 @@
                                 </div>
                                 <button type="submit" class="btn btn-success">Filter</button>
                             </form>
-
+                            <div id="spinner" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
                             <!-- Tabel untuk menampilkan data view ads -->
                             <h3 class="mt-4">Tabel Jumlah View Iklan</h3>
                             <div class="mt-4" style="overflow-x: auto;">
@@ -516,7 +552,7 @@
                                 </tbody>
                             </table>
 
-                            
+
 
                         </div>
 

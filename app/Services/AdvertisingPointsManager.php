@@ -48,7 +48,7 @@ trait AdvertisingPointsManager
                 'page_visited' => 'ads_page', // You can set the actual page being visited
                 'advertising_points_id' => $AdvertisingPoints->id,
             ]);
-            dd($AdvertisingPoints->id);
+            // dd($AdvertisingPoints->id);
     
             if ($controll->klik > 0 && $AdvertisingPoints->views_count >= $controll->klik) {
                 $AdvertisingPoints->points_deducted = $controll->nilai;

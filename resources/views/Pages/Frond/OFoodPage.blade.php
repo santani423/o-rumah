@@ -245,7 +245,7 @@
         <!-- Recommendations -->
         <div class="row mt-5">
             <div class="col-12">
-                <h4 class="text-white">Rekomendasi Sesuai Pencarianmu</h4>
+                <h4 class="">Rekomendasi Sesuai Pencarianmu</h4>
             </div>
         </div>
        

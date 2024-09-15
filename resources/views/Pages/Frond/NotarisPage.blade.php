@@ -362,7 +362,7 @@
         </button>
     </div>
     <div class="row mt-3">
-        <h2 class="text-center w-100 text-white">Cari Notaris</h2> <!-- Judul baru -->
+        <h2 class="text-center w-100">Cari Notaris</h2> <!-- Judul baru -->
         @foreach ($userLists as $user) 
             <x-Layout.Item.UserProfileCard :user="$user" dataTarget="userDetailModal">
             </x-Layout.Item.UserProfileCard >

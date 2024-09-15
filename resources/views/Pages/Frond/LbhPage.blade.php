@@ -352,7 +352,7 @@
     <x-Item.PropertySearchBar beliSewa=0>
     </x-Item.PropertySearchBar>
     <div class="row mt-3">
-        <h2 class="text-center w-100 text-white">Cari Law Office</h2> <!-- Judul baru -->
+        <h2 class="text-center w-100 ">Cari Law Office</h2> <!-- Judul baru -->
         @foreach ($userLists as $user)
 
         <x-Layout.Item.UserProfileCard :user="$user" dataTarget="userDetailModal">

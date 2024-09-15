@@ -335,7 +335,7 @@
     <x-Item.PropertySearchBar beliSewa=0>
     </x-Item.PropertySearchBar>
     <div class="row mt-3">
-        <h2 class="text-center w-100 text-white">Cari Agen</h2> <!-- Judul baru -->
+        <h2 class="text-center w-100 ">Cari Agen</h2> <!-- Judul baru -->
          
         <!--end col-->
     </div>

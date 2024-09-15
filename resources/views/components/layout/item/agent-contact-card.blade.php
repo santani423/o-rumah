@@ -250,7 +250,7 @@
     <small class="text-muted d-block ${isUserMessage ? 'text-right' : 'text-left'}">${time}</small>
     <div class="d-flex align-items-start ${isUserMessage ? 'justify-content-end' : 'justify-content-start'} mb-3">
         ${!isUserMessage ? `<img src="${profileImage}" class="rounded-circle mr-2" height="50" width="50" alt="User">` : ''}
-        <div class="${isUserMessage ? 'bg-success text-white' : 'bg-light text-dark'} rounded p-2">
+        <div class="${isUserMessage ? 'bg-success' : 'bg-light text-dark'} rounded p-2">
             ${messageContent}   
             ${image ? `<img src="/storage/${image}" alt="Image" class="img-fluid mt-2">` : ''}
         </div>

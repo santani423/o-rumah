@@ -232,7 +232,8 @@
                 latitude: lat,
                 longitude: long,
                 search: searchQuery,
-                page: page
+                page: page,
+                district_id: districtId,
             },
             success: function(response) {
                 if (page === 1) {
@@ -264,6 +265,7 @@
         })
         .then(response => response.json())
         .then(data => {
+          
             const sampleLocationsDiv = document.getElementById('sampleLocations');
             sampleLocationsDiv.innerHTML = '';
 

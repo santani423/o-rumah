@@ -276,7 +276,7 @@
                 <div class="nav-container">
                     <div class="nav-links row">
                     @foreach ($kategori as $ktg)
-                        <div class="nav-item col-6 col-md-4 col-lg-3 mb-3">
+                        <div class="nav-item col-4 col-md-4 col-lg-3 mb-3">
                             <a href="{{ route('omerchant.by.kategori', $ktg->slug) }}" class="text-wrap text-break">
                             <img src="@if($ktg->gambar) {{asset($ktg->gambar)}} @else {{asset('/assets/icons/homeIconbg6.png')}} @endif" class="menu-icon" alt=""><br>{{ $ktg->nama }}
                             </a>

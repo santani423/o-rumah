@@ -81,6 +81,9 @@
     height: 50px; /* Ganti dengan ukuran yang diinginkan */
 }
  
+.bg-dark {
+    background-color: #eff3f6 ;
+}
 </style>
 
     <link href="{{ asset('zenter/horizontal/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
@@ -92,7 +95,7 @@
 
 
 
-<body class="bg-dark" translate="no">
+<body class="bg-light" translate="no">
 
     <!-- Loader -->
     <div id="preloader">

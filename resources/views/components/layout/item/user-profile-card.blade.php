@@ -14,7 +14,7 @@
                         <h5 class="mt-0 font-18">
                             {{$user['name']}}
                         </h5>
-                        <p>{{$user['joined_at']}}</p>
+                        <p>{{$user['joined_at']}} </p><p>{{$user['district_name']}} </p>
                     </div>
                 </div>
 

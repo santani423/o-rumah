@@ -391,7 +391,7 @@ class HomeController extends Controller
 {
     $districtId = $request->input('district_id');
     $page = $request->input('page');
- 
+    // dd($districtId);
 
     // Panggil service untuk mendapatkan daftar agen
     $agents = $this->findAgentsByDistrictId($districtId,6, $page);

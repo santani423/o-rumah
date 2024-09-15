@@ -288,17 +288,29 @@ trait PropertyRepository
 
     public function findAgentsByDistrictId($districtId = null,$perPage = 8, $page=0)
     {
+    
         // Jika districtId tidak diberikan, tampilkan semua agen dengan paginasi
-        if (is_null($districtId)) {
+        if ($districtId) {
             // Tampilkan agen dengan paginasi, 8 agen per halaman
-            $agents = User::where('type', 'agent')
-                ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
-                
-            ->paginate($perPage, ['*'], 'page', $page);
+              // Query untuk menampilkan data users berdasarkan district_id dari ads_properties
+              $agents = User::join('ads', 'users.id', '=', 'ads.user_id')
+              ->join('ads_properties', 'ads.id', '=', 'ads_properties.ads_id')
+              ->join('id_districts', 'id_districts.id', '=', 'ads_properties.district_id')
+              ->where('users.type', 'agent')
+              ->where('users.is_active', 1)
+              ->where('ads_properties.district_id', $districtId)
+              ->select('users.*', 'id_districts.name as district_name') // Pilih kolom name dari id_districts
+              ->distinct() // Hanya tampilkan user yang unik
+              ->paginate($perPage, ['*'], 'page', $page);
+          
+            // $agents = User::where('type', 'agent')
+            //     ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
+            // dd($agents);   
+            // ->paginate($perPage, ['*'], 'page', $page);
 
             return $agents;
         }
-
+     
         // Jika districtId diberikan, cari semua wilayah kerja berdasarkan district_id
         $wilayahKerjas = WilayahKerja::where('district_id', $districtId)->get();
         // dd($wilayahKerjas);
@@ -306,8 +318,7 @@ trait PropertyRepository
         $userIds = $wilayahKerjas->pluck('user_id');
 
         // Cari user dengan tipe agent yang user_id nya ada di dalam hasil wilayah kerja
-        $agents = User::whereIn('id', $userIds)
-            ->where('type', 'agent')
+        $agents = User::where('type', 'agent')
             ->where('is_active', 1) // Optional: hanya tampilkan user yang aktif
             ->get();
 

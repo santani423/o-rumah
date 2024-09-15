@@ -52,7 +52,7 @@
         </div>
         <div class="card-body">
             <h4 class="card-title font-20 mt-0 text-truncate d-block" style="max-width: 100%;">{{$title}}</h4>
-            <h6 class="card-title mt-0 text-primary">{{$price}} </h6>
+            <h5 class="card-title mt-0 text-primary">{{$price}} </h5>
             <p class="card-text text-truncate d-block">
                 @if($address){{$address}}@else <br> @endif
             </p>

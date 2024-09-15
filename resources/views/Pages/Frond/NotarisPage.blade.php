@@ -351,16 +351,7 @@
     <x-Item.PropertySearchBar beliSewa=0>
     </x-Item.PropertySearchBar>
     <!-- Search Bar -->
-    <div class="search-bar d-flex align-items-center mt-3">
-         
-        <div class="location-input flex-grow-1 ml-3">
-            <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-            <input type="text" class="form-control border-0" placeholder="Lokasi, keyword, area, project, developer">
-        </div>
-        <button class="btn btn-success ml-3">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
+    
     <div class="row mt-3">
         <h2 class="text-center w-100">Cari Notaris</h2> <!-- Judul baru -->
         @foreach ($userLists as $user) 

@@ -1,6 +1,6 @@
 <div class="topbar ">
 
-    <nav class="navbar-custom bg-dark">
+    <nav class="navbar-custom  " style="background-color: #47C8C5;">
 
         <ul class="list-inline float-right mb-0 ">
             <!-- language-->

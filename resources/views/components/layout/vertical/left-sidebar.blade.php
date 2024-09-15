@@ -1,5 +1,5 @@
 <div class="left side-menu">
-    <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
+    <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect" style="background-color: #47C8C5;">
         <i class="ion-close"></i>
     </button>
 

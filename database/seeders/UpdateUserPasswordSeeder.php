@@ -16,7 +16,7 @@ class UpdateUserPasswordSeeder extends Seeder
     public function run()
     {
         // Tentukan email yang akan diperbarui
-        $email = 'admin@gmail.com'; // ganti dengan email yang sesuai
+        $email = 'gunawansmi31@gmail.com'; // ganti dengan email yang sesuai
         
         // Password baru
         $newPassword = '1234567890'; // ganti dengan password yang baru

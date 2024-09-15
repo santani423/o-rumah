@@ -38,6 +38,7 @@ use App\Http\Controllers\Visitor\VisitorKprController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\reportController;
 
 Route::get('/pengajuan/{slug}', [PengajuanController::class, 'index'])->name('type_pengajuans.show');
 Route::post('/pengajuan/{slug}', [PengajuanController::class, 'store'])->name('type_pengajuans.store');
@@ -415,6 +416,8 @@ Route::get('/upload', function () {
 });
 Route::post('/upload', [ToolController::class, 'uploadPhoto'])->name('upload.photo');
 Route::get('/unread-messages-count', [ToolController::class, 'getUnreadMessagesCount'])->name('unread-messages-count');
+Route::get('/report/ads', [reportController::class, 'ads'])->name('report.ads');
+Route::get('/report/ads', [reportController::class, 'filter'])->name('ads.views.filter');
 
 Route::get('/testing/location', function () {
     return view('testing/location');

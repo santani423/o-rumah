@@ -28,3 +28,4 @@ class SetAdvin extends Seeder
         }
     }
 }
+// php artisan db:seed --class=SetAdvin

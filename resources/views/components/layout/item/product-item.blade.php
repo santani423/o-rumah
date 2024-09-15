@@ -57,10 +57,12 @@
                 @if($address){{$address}}@else <br> @endif
             </p>
             <!-- Tambahkan keterangan jumlah orang yang melihat dengan icon -->
+             @if($adsId)
             <div class="viewers-info">
                 <i class="fas fa-eye"></i> <!-- Icon mata dari Font Awesome -->
                 <span>{{$totalViews}} orang telah melihat</span>
             </div>
+            @endif
         </div>
  
         <ul class="list-group list-group-flush">

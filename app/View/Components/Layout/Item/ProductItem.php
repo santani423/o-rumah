@@ -11,7 +11,7 @@ class ProductItem extends Component
     /**
      * Create a new component instance.
      */
-    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label,$totalViews;
+    public $title, $image, $area, $address, $linkTujuan, $jk, $jkm, $lb, $lt, $content, $price,$type,$label,$totalViews,$adsId;
 
     public function __construct(
         $title = "", 
@@ -47,6 +47,7 @@ class ProductItem extends Component
         $this->lt = $lt;
         $this->label = $label;
         $this->totalViews = $totalViews;
+        $this->adsId = $adsId;
     }
 
     /**

@@ -289,7 +289,13 @@ if (numreportview <= 0) {
 
 
         function drawChart(data) {
+            // Check if the data is empty
             var chartDiv = document.getElementById('chart_div');
+    if (data.length === 0) {
+        chartDiv.innerHTML = "<p>No data available to display the chart.</p>";
+        return; // Stop execution if data is empty
+    }
+
             var chartData = new google.visualization.DataTable();
             chartData.addColumn('date', 'Tanggal');
             chartData.addColumn('number', 'Jumlah View');

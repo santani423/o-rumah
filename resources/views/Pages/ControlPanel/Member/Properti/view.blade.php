@@ -168,37 +168,45 @@
 
 
         function drawChart(data) {
-            var chartDiv = document.getElementById('chart_div');
-            var chartData = new google.visualization.DataTable();
-            chartData.addColumn('date', 'Tanggal');
-            chartData.addColumn('number', 'Jumlah View');
+    var chartDiv = document.getElementById('chart_div');
+    
+    // Check if the data is empty
+    if (data.length === 0) {
+        chartDiv.innerHTML = "<p>No data available to display the chart.</p>";
+        return; // Stop execution if data is empty
+    }
 
-            data.forEach(function(row) {
-                var dateParts = row.date.split('-'); // Split 'YYYY-MM-DD'
-                var year = parseInt(dateParts[0]);
-                var month = parseInt(dateParts[1]) - 1;
-                var day = parseInt(dateParts[2]);
-                chartData.addRow([new Date(year, month, day), row.views]);
-            });
+    var chartData = new google.visualization.DataTable();
+    chartData.addColumn('date', 'Tanggal');
+    chartData.addColumn('number', 'Jumlah View');
 
-            var options = {
-                chart: {
-                    title: 'Laporan Jumlah View Iklan'
-                },
-                width: '100%',
-                height: 500,
-                hAxis: {
-                    format: 'dd MMM yyyy',
-                    title: 'Tanggal'
-                },
-                vAxis: {
-                    title: 'Jumlah View'
-                }
-            };
+    data.forEach(function(row) {
+        var dateParts = row.date.split('-'); // Split 'YYYY-MM-DD'
+        var year = parseInt(dateParts[0]);
+        var month = parseInt(dateParts[1]) - 1;
+        var day = parseInt(dateParts[2]);
+        chartData.addRow([new Date(year, month, day), row.views]);
+    });
 
-            var chart = new google.charts.Line(chartDiv);
-            chart.draw(chartData, options);
+    var options = {
+        chart: {
+            title: 'Laporan Jumlah View Iklan'
+        },
+        width: '100%',
+        height: 500,
+        hAxis: {
+            format: 'dd MMM yyyy',
+            title: 'Tanggal'
+        },
+        vAxis: {
+            title: 'Jumlah View'
         }
+    };
+
+    var chart = new google.charts.Line(chartDiv);
+    chart.draw(chartData, options);
+}
+
     </script>
     @endslot
 
